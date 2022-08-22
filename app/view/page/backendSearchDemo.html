@@ -1,0 +1,351 @@
+{% extends 'template/jhTemplateV3.html'%}
+
+{% block vue_template %}
+
+<jh-layout-v3>
+<template slot="serverSearch">
+  <v-row class="ma-0 align-center" :class="{'pa-0': isMobile, 'pa-2': !isMobile}" style="justify-content: end">
+    <v-col cols="12" sm="12" xs="5" md="3" xl="2" class="pb-3" :class="{'px-0': isMobile, 'pt-0': isMobile}">
+      <v-text-field v-model="serverSearchInput.studentId" color="success" prefix="学生ID：" class="cus-v-input" :class="{'mr-2': !isMobile}" dense filled single-line></v-text-field>
+    </v-col>
+    <v-col cols="12" sm="12" xs="5" md="3" xl="2" class="pb-3" :class="{'pt-0': isMobile}">
+      <v-text-field v-model="serverSearchInput.classId" color="success" prefix="班级ID：" class="cus-v-input" :class="{'mr-2': !isMobile}" dense filled single-line></v-text-field>
+    </v-col>
+    <v-col class="pl-0" :class="{'pr-0': isMobile, 'pt-0': isMobile}" style="max-width: 77px">
+      <v-btn
+          class="elevation-0"
+          color="success"
+          dark
+          @click="refreshTableData"
+      >
+        查询
+      </v-btn>
+    </v-col>
+  </v-row>
+</template>
+<!-- 页面主要内容 -->
+<v-container class="fullScreen d-flex flex-column pa-0">
+  <v-card :class="{'px-2': isMobile}">
+    <v-row class="ma-0 align-center pt-0 flex-xl-wrap" :class="{'pa-4': !isMobile, 'pb-0': !isMobile, 'pa-2': isMobile}">
+
+      <v-col cols="12" xs="12" sm="4" md="4" xl="4" class="pl-0">
+        <v-btn color="success" dark class="elevation-0 mr-2" @click="doUiAction('startCreateItem', null)">新增</v-btn>
+        <span class="body-2">共{{ tableData.length }}条记录</span>
+      </v-col>
+
+      <v-spacer></v-spacer>
+
+      <v-col cols="12" xs="6" sm="3" md="2" xl="2" class="pl-0" :class="{'pr-0': isMobile}">
+        <v-select class="cus-v-input mr-2" v-model="currentTableGenderType" :items="[{value: 'all', text: '全部'}, ...constantCollection.gender]"
+                  prefix="性别：" dense item-text="text" item-value="value" dense filled single-line></v-select>
+      </v-col>
+
+      <v-col cols="12" xs="6" sm="4" md="3" xl="3" class="pr-0">
+        <v-text-field v-model="searchInput" color="success" prefix="表格过滤：" class="cus-v-input" dense filled single-line></v-text-field>
+      </v-col>
+
+    </v-row>
+    <v-data-table :headers="headers"
+                  :items="tableData"
+                  :search="searchInput"
+                  :footer-props="{ itemsPerPageOptions: [20, 40, 60, 100, -1] }"
+                  :items-per-page="20"
+                  mobile-breakpoint="0"
+                  :loading="isTableLoading"
+                  checkbox-color="success"
+                  :class="{'mx-2': isMobile}"
+                  class="elevation-0 mt-0 flex-fill d-flex flex-column">
+      <template v-slot:item.gender="{ item }">
+        {{ getConstantCollectionItemText('gender', item.gender) }}
+      </template>
+      <template v-slot:item.level="{ item }">
+        {{ getConstantCollectionItemText('level', item.level) }}
+      </template>
+      <template v-slot:item.action="{ item }">
+        <v-btn small class="mr-2 success" @click="doUiAction('startUpdateItem', item)">
+          修改
+        </v-btn>
+        <v-btn small class="mr-2 error" @click="doUiAction('deleteItem', item)">
+          删除
+        </v-btn>
+      </template>
+    </v-data-table>
+  </v-card>
+</v-container>
+<v-overlay app :value="isEditDrawerShow"></v-overlay>
+<!-- 编辑抽屉 -->
+<v-navigation-drawer v-model="isEditDrawerShow" fixed temporary right width="80%" hide-overlay
+                     class="elevation-24">
+  <v-form v-model="isFormValid" v-if="isEditDrawerShow" ref="form" lazy-validation>
+    <v-row class="pt-8">
+      <span class="title pa-6" :class="{'pl-12': !isMobile, 'pl-6': isMobile}">{{ editItem.id ? "修改" : "新增" }}信息</span>
+      <v-spacer></v-spacer>
+      <v-btn class="mt-7 mr-8 elevation-0" fab x-small @click="isEditDrawerShow = false">
+        <v-icon dark>mdi-close</v-icon>
+      </v-btn>
+    </v-row>
+    <v-row  :class="{'px-10': !isMobile, 'px-3': isMobile, 'pb-7': isMobile}">
+      <v-col cols="12" sm="12" md="4" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
+        <span class="inputLabel">学生ID</span>
+        <v-text-field class="cus-v-input mr-2" dense filled single-line label="学生ID" v-model="editItem.studentId" :rules="requireRules"></v-text-field>
+      </v-col>
+      <v-col cols="12" sm="12" md="4" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
+        <span class="inputLabel">班级ID</span>
+        <v-select class="cus-v-input mr-2" dense filled single-line clearable label="班级ID" v-model="editItem.classId" :items="constantCollection.classId"></v-select>
+      </v-col>
+      <v-col cols="12" sm="12" md="4" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
+        <span class="inputLabel">学生名字</span>
+        <v-text-field class="cus-v-input mr-2" dense filled single-line label="学生名字" v-model="editItem.name"></v-text-field>
+      </v-col>
+      <v-col cols="12" sm="12" md="4" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
+        <span class="inputLabel">年级</span>
+        <v-select class="cus-v-input mr-2" dense filled single-line clearable label="年级" v-model="editItem.level" :items="constantCollection.level"></v-select>
+      </v-col>
+      <v-col cols="12" sm="12" md="4" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
+        <span class="inputLabel">性别</span>
+        <v-select class="cus-v-input mr-2" dense filled single-line clearable label="性别" v-model="editItem.gender" :items="constantCollection.gender"></v-select>
+      </v-col>
+      <v-col cols="12" sm="12" md="4" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
+        <span class="inputLabel">出生日期</span>
+        <v-menu class="cus-v-input mr-2" offset-y max-width="290">
+          <template v-slot:activator="{ on, attrs }">
+            <v-text-field class="cus-v-input mr-2" dense filled single-line v-on="on" label="出生日期" v-model="editItem.dateOfBirth"></v-text-field>
+          </template>
+          <v-date-picker color="success" elevation="20" v-model="editItem.dateOfBirth"></v-date-picker>
+        </v-menu>
+      </v-col>
+      <v-col cols="12" sm="12" md="4" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
+        <span class="inputLabel">身高</span>
+        <v-text-field class="cus-v-input mr-2" dense filled single-line label="身高" v-model="editItem.bodyHeight"></v-text-field>
+      </v-col>
+      <v-col cols="12" sm="12" md="4" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
+        <span class="inputLabel">学生状态</span>
+        <v-select class="cus-v-input mr-2" dense filled single-line clearable label="学生状态" v-model="editItem.studentStatus" :items="constantCollection.studentStatus"></v-select>
+      </v-col>
+      <v-col cols="12" sm="12" md="4" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
+        <span class="inputLabel">备注</span>
+        <v-text-field class="cus-v-input mr-2" dense filled single-line label="备注" v-model="editItem.remarks"></v-text-field>
+      </v-col>
+    </v-row>
+    <v-row class="justify-end mx-0 mt-8" :class="{'px-10': !isMobile, 'px-4': isMobile, 'mb-8': isMobile}">
+      <v-btn color="success"  @click="doUiAction(dialogSaveInfoAction)" >保存</v-btn>
+      <v-btn class="elevation-0 mr-2 ml-2"  @click="isEditDrawerShow = false" >取消</v-btn>
+    </v-row>
+  </v-form>
+</v-navigation-drawer>
+
+</jh-layout-v3>
+
+{% endblock %}
+
+{% block vue_body %}
+<script type="module">
+  window.registerData({
+    // 表格相关数据
+    isFormValid: true,
+    requireRules: [
+      v => !!v || 'This is required',
+    ],
+    constantCollection: {
+      gender: [{"value": "male", "text": "男"}, {"value": "female", "text": "女"}],
+      classId: [
+        {"value": "2021-01级-01班", "text": "2021-01级-01班"}, {"value": "2021-01级-02班", "text": "2021-01级-02班"},
+        {"value": "2021-02级-01班", "text": "2021-02级-01班"}, {"value": "2021-02级-02班", "text": "2021-02级-02班"},
+        {"value": "2021-03级-01班", "text": "2021-03级-01班"}, {"value": "2021-03级-02班", "text": "2021-03级-02班"}
+      ],
+      level: [{"value": "01", "text": "一年级"}, {"value": "02", "text": "二年级"}, {"value": "03", "text": "三年级"}],
+      icType: [{"value": "身份证", "text": "身份证"}, {"value": "护照", "text": "护照"}],
+      enrollmentType: [{"value": "正常升学", "text": "正常升学"}, {"value": "借读", "text": "借读"}],
+      studentStatus: [{"value": "正常", "text": "正常"}, {"value": "退学", "text": "退学"}]
+    },
+
+    serverSearchInput: {
+      studentId: null,
+      classId: null
+    },
+    currentTableGenderType: 'all',
+    isEditDrawerShow: false,
+    searchInput: null,
+    isTableLoading: true,
+    tableDataFromBackend: [],
+    headers: [
+      {text: "学生ID", value: "studentId", width: 120, class: 'fixed', cellClass: 'fixed'},
+      {text: "班级ID", value: "classId", width: 140},
+      {text: "学生名字", value: "name", width: 120},
+      {text: "年级", value: "level", width: 120},
+      {text: "性别", value: "gender", width: 120},
+      {text: "出生日期", value: "dateOfBirth", width: 120},
+      {text: "身高", value: "bodyHeight", width: 120},
+      {text: "学生状态", value: "studentStatus", width: 120},
+      {text: "备注", value: "remarks", width: 120},
+      {text: "操作者", value: "operationByUser", width: 120},
+      {text: "操作时间", value: "operationAt", width: 250},
+      {text: '操作', value: 'action', align: 'center', sortable: false, width: 200, class: 'fixed', cellClass: 'fixed'},
+    ],
+
+    editItem: {},
+    dialogSaveInfoAction: ''
+  })
+</script>
+
+
+
+<script type="module">
+new Vue({
+  el: '#app',
+  template: '#app-template',
+  vueComponent: 'page',
+  vuetify: new Vuetify(),
+  mixins: [window.jianghuUiActionMixins],
+  data: () => window.vueData,
+  computed: {
+    isMobile() {
+      return window.innerWidth < 600;
+    },
+    tableData() {
+      if (!this.currentTableGenderType || this.currentTableGenderType === 'all') {
+        return this.tableDataFromBackend;
+      }
+      return this.tableDataFromBackend.filter(({gender}) => gender === this.currentTableGenderType);
+    }
+  },
+  watch: {},
+  async created() {
+  },
+  mounted() {
+    this.doUiAction('refreshTableData');
+  },
+  methods: {
+    /**
+     * 获取表格数据
+     */
+    async refreshTableData() {
+      this.isTableLoading = true;
+      const serverSearchInput = _.pickBy(this.serverSearchInput, value=> !!value);
+      const rows = (await window.jianghuAxios({
+        data: {
+          appData: {
+            pageId: 'backendSearchDemo',
+            actionId: 'selectItemList',
+            actionData: {},
+            where: {},
+            whereLike: serverSearchInput,
+            orderBy: [{column: 'operationAt', order: 'desc'}]
+          }
+        }
+      })).data.appData.resultData.rows;
+      await window.jianghuAxios({
+        data: {
+          appData: {
+            pageId: 'allPage',
+            actionId: 'getConstantList',
+            actionData: {},
+            where: {},
+          }
+        }
+      })
+      this.tableDataFromBackend = rows;
+      this.isTableLoading = false;
+    },
+
+    async clearItemData() {
+      this.editItem = {};
+    },
+
+    // validate
+    prepareValidate() {
+      return this.$refs.form.validate();
+    },
+
+    async openCreateDialog() {
+      this.isEditDrawerShow = true;
+      this.dialogSaveInfoAction = 'createItem';
+    },
+
+    async confirmCreateItemDialog() {
+      return window.confirmDialog({ title: '新增', content: '确定新增吗？'})
+    },
+
+    async doCreateItem() {
+      const {id, ...data} = this.editItem;
+      await window.vtoast.loading("新增学生");
+      await window.jianghuAxios({
+        data: {
+          appData: {
+            pageId: 'backendSearchDemo',
+            actionId: 'insertItem',
+            actionData: data
+          }
+        }
+      })
+      await window.vtoast.success("新增学生成功");
+    },
+
+    async closeDrawerShow() {
+      this.isEditDrawerShow = false;
+    },
+
+    async prepareItemData(item) {
+      this.editItem = {...item};
+    },
+
+    async openUpdateDialog() {
+      this.isEditDrawerShow = true;
+      this.dialogSaveInfoAction = 'updateItem';
+    },
+
+    async confirmUpdateItemDialog() {
+      return window.confirmDialog({ title: '修改', content: '确定修改吗？'});
+    },
+
+    async doUpdateItem() {
+      const {id, ...data} = this.editItem;
+      await window.vtoast.loading("修改学生");
+      await window.jianghuAxios({
+        data: {
+          appData: {
+            pageId: 'backendSearchDemo',
+            actionId: 'updateItem',
+            actionData: data,
+            where: {id}
+          }
+        }
+      })
+      await window.vtoast.success("修改学生成功");
+      this.isEditDrawerShow = false;
+    },
+
+    async confirmDeleteItemDialog() {
+      return window.confirmDialog({ title: '删除', content: '确定删除吗？'});
+    },
+
+    async doDeleteItem() {
+      const { id } = this.editItem;
+      await window.vtoast.loading("删除学生");
+      await window.jianghuAxios({
+        data: {
+          appData: {
+            pageId: 'backendSearchDemo',
+            actionId: 'deleteItem',
+            actionData: {},
+            where: { id: id }
+          }
+        }
+      });
+      await window.vtoast.success("删除学生成功");
+    },
+
+    getConstantCollectionItemText(key, _value) {
+      const constantCollectionItemFind = this.constantCollection[key].find(({value}) => value === _value);
+      if(constantCollectionItemFind) {
+        return constantCollectionItemFind.text;
+      }
+      return _value;
+    }
+  }
+})
+</script>
+
+<style scoped>
+</style>
+{% endblock %}
