@@ -198,6 +198,7 @@ new Vue({
   vuetify: new Vuetify(),
   mixins: [window.jianghuUiActionMixins],
   data: {
+    isMobile: window.innerWidth < 600,
     // 表格相关数据
     isFormValid: true,
     requireRules: [
@@ -226,17 +227,50 @@ new Vue({
     isUpdateDrawerShow: false,
     updateItem: {},
   },
-  computed: {
-    isMobile() {
-      return window.innerWidth < 600;
-    },
-  },
   watch: {},
   mounted() {
     this.doUiAction('refreshTableData');
   },
   methods: {
 
+    async doUiAction(actionId, actionData) {
+      switch (actionId) {
+        case 'refreshTableData':
+          await this.refreshTableData();
+          break;
+        case 'startInsertItem':
+          await this.clearCreateForm();
+          await this.openCreateDrawer();
+          break;
+        case 'createItem':
+          await this.prepareValidate();
+          await this.prepareCreateItem();
+          await this.confirmCreateFormDialog();
+          await this.doCreateItem();
+          await this.closeCreateDrawer();
+          await this.refreshTableData();
+          break;
+        case 'startUpdateItem':
+          await this.fillUpdateForm(actionData);
+          await this.openUpdateDrawer();
+          break;
+        case 'updateItem':
+          await this.prepareValidate();
+          await this.confirmUpdateItemDialog();
+          await this.doUpdateItem();
+          await this.refreshTableData();
+          await this.closeUpdateDrawer();
+          break;
+        case 'deleteItem':
+          await this.confirmDeleteItemDialog(actionData);
+          await this.doDeleteItem(actionData);
+          await this.refreshTableData();
+          break;
+        default:
+          console.error("[doUiAction] actionId not find", { actionId });
+          break;
+      }
+    },
     async refreshTableData() {
       this.isTableLoading = true;
       const result = await window.jianghuAxios({
@@ -271,8 +305,9 @@ new Vue({
       delete this.createItem.id;
     },
     async confirmCreateFormDialog() {
-      // retrun false 会中断后面的 uiAction function
-      return await window.confirmDialog({title: "新增", content: "确定新增吗？"});
+      if((await window.confirmDialog({title: "新增", content: "确定新增吗？"})) === false) {
+        throw new Error("[confirmCreateFormDialog] 否")
+      }
     },
     async doCreateItem() {
       await window.vtoast.loading("新增学生");
@@ -305,7 +340,9 @@ new Vue({
     },
     async confirmUpdateItemDialog() {
       // retrun false 会中断后面的 uiAction function
-      return await window.confirmDialog({title: "修改", content: "确定修改吗？"});
+      if((await window.confirmDialog({title: "修改", content: "确定修改吗？"})) === false) {
+        throw new Error("[confirmUpdateItemDialog] 否")
+      }
     },
     async doUpdateItem() {
       const {id, ...actionData} = this.updateItem;
@@ -334,7 +371,9 @@ new Vue({
         window.vtoast.fail("数据异常");
         return
       }
-      return await window.confirmDialog({title: "删除", content: "确定删除吗？"});
+      if((await window.confirmDialog({title: "删除", content: "确定删除吗？"})) === false) {
+        throw new Error("[confirmDeleteItemDialog] 否")
+      }
     },
     async doDeleteItem({item}) {
       const {id} = item;

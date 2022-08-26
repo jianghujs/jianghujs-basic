@@ -11,7 +11,7 @@
            :class="{'pa-4': !isMobile, 'pb-0': !isMobile, 'pa-2': isMobile}">
 
       <v-col cols="12" xs="12" sm="4" md="4" xl="4" class="pl-0">
-        <v-btn color="success" dark class="elevation-0 mr-2" @click="doAction('startInsertItem')">新增</v-btn>
+        <v-btn color="success" dark class="elevation-0 mr-2" @click="doUiAction('startInsertItem')">新增</v-btn>
         <span class="body-2">共{{ tableDataFromBackend.length }}条记录</span>
       </v-col>
 
@@ -35,10 +35,10 @@
         class="elevation-0 mt-0 flex-fill d-flex flex-column">
 
       <template v-slot:item.action="{ item }">
-        <v-btn small class="mr-2 success" @click="doAction('startUpdateItem', {item})">
+        <v-btn small class="mr-2 success" @click="doUiAction('startUpdateItem', {item})">
           修改
         </v-btn>
-        <v-btn small class="mr-2 error" @click="doAction('deleteItem', {item})">
+        <v-btn small class="mr-2 error" @click="doUiAction('deleteItem', {item})">
           删除
         </v-btn>
       </template>
@@ -105,7 +105,7 @@
     </v-row>
 
     <v-row class="justify-end mx-0 mt-8" :class="{'px-10': !isMobile, 'px-4': isMobile, 'mb-8': isMobile}">
-      <v-btn color="success elevation-0" @click="doAction('createItem')">保存
+      <v-btn color="success elevation-0" @click="doUiAction('createItem')">保存
       </v-btn>
       <v-btn class="elevation-0 mr-2 ml-2"
              @click="isCreateDrawerShow = false">取消
@@ -173,7 +173,7 @@
     </v-row>
 
     <v-row class="justify-end mx-0 mt-8" :class="{'px-10': !isMobile, 'px-4': isMobile, 'mb-8': isMobile}">
-      <v-btn color="success elevation-0" @click="doAction('updateItem')">保存
+      <v-btn color="success elevation-0" @click="doUiAction('updateItem')">保存
       </v-btn>
       <v-btn class="elevation-0 mr-2 ml-2"
              @click="isUpdateDrawerShow = false">取消
@@ -194,8 +194,8 @@ new Vue({
   template: '#app-template',
   vueComponent: 'page',
   vuetify: new Vuetify(),
-  mixins: [window.jianghuUiActionMixins],
   data: {
+    isMobile: window.innerWidth < 600,
     // 表格相关数据
     isFormValid: true,
     requireRules: [
@@ -224,52 +224,46 @@ new Vue({
     isUpdateDrawerShow: false,
     updateItem: {},
   },
-  computed: {
-    isMobile() {
-      return window.innerWidth < 600;
-    },
-  },
   watch: {},
   mounted() {
-    this.doAction('refreshTableData');
+    this.doUiAction('refreshTableData');
   },
   methods: {
-    
-    async doAction(actionId, actionData) {
+    async doUiAction(actionId, actionData) {
       switch (actionId) {
         case 'refreshTableData':
-          await this.refreshTableData(actionData);
+          await this.refreshTableData();
           break;
         case 'startInsertItem':
-          await this.clearCreateForm(actionData);
-          await this.openCreateDrawer(actionData);
+          await this.clearCreateForm();
+          await this.openCreateDrawer();
           break;
         case 'createItem':
-          await this.prepareValidate(actionData);
-          await this.prepareCreateItem(actionData);
-          await this.confirmCreateFormDialog(actionData);
-          await this.doCreateItem(actionData);
-          await this.closeCreateDrawer(actionData);
-          await this.refreshTableData(actionData);
+          await this.prepareValidate();
+          await this.prepareCreateItem();
+          await this.confirmCreateFormDialog();
+          await this.doCreateItem();
+          await this.closeCreateDrawer();
+          await this.refreshTableData();
           break;
         case 'startUpdateItem':
           await this.fillUpdateForm(actionData);
-          await this.openUpdateDrawer(actionData);
+          await this.openUpdateDrawer();
           break;
         case 'updateItem':
-          await this.prepareValidate(actionData);
-          await this.confirmUpdateItemDialog(actionData);
-          await this.doUpdateItem(actionData);
-          await this.refreshTableData(actionData);
-          await this.closeUpdateDrawer(actionData);
+          await this.prepareValidate();
+          await this.confirmUpdateItemDialog();
+          await this.doUpdateItem();
+          await this.refreshTableData();
+          await this.closeUpdateDrawer();
           break;
         case 'deleteItem':
           await this.confirmDeleteItemDialog(actionData);
           await this.doDeleteItem(actionData);
-          await this.refreshTableData(actionData);
+          await this.refreshTableData();
           break;
         default:
-          console.error("[doAction] actionId not find", { actionId });
+          console.error("[doUiAction] actionId not find", { actionId });
           break;
       }
     },
@@ -279,7 +273,7 @@ new Vue({
       const result = await window.jianghuAxios({
         data: {
           appData: {
-            pageId: 'doAction',
+            pageId: 'doUiAction',
             actionId: 'selectItemList',
             actionData: {},
             where: {},
@@ -320,7 +314,7 @@ new Vue({
       await window.jianghuAxios({
         data: {
           appData: {
-            pageId: 'doAction',
+            pageId: 'doUiAction',
             actionId: 'createItem',
             actionData: this.createItem
           }
@@ -355,7 +349,7 @@ new Vue({
       await window.jianghuAxios({
         data: {
           appData: {
-            pageId: 'doAction',
+            pageId: 'doUiAction',
             actionId: 'updateItem',
             actionData: actionData,
             where: {id}
@@ -386,7 +380,7 @@ new Vue({
       await window.jianghuAxios({
         data: {
           appData: {
-            pageId: 'doAction',
+            pageId: 'doUiAction',
             actionId: 'deleteItem',
             actionData: {},
             where: {id}

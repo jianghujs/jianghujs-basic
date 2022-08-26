@@ -122,8 +122,14 @@
 {% block vue_body %}
 
 <script type="module">
-  window.registerData({
+new Vue({
+  el: '#app',
+  template: '#app-template',
+  vueComponent: 'page',
+  vuetify: new Vuetify(),
+  data: () => ({
     // 表格相关数据
+    isMobile: window.innerWidth < 600,
     isFormValid: true,
     requireRules: [
       v => !!v || 'This is required',
@@ -160,21 +166,8 @@
       {text: '操作', value: 'action', align: 'center', sortable: false, width: 200, class: 'fixed', cellClass: 'fixed'},
     ],
     editItem: {},
-  })
-</script>
-
-<script type="module">
-new Vue({
-  el: '#app',
-  template: '#app-template',
-  vueComponent: 'page',
-  vuetify: new Vuetify(),
-  mixins: [window.jianghuUiActionMixins],
-  data: () => window.vueData,
+  }),
   computed: {
-    isMobile() {
-      return window.innerWidth < 600;
-    },
     tableData() {
       if (!this.currentTableGenderType || this.currentTableGenderType === 'all') {
         return this.tableDataFromBackend;
@@ -187,6 +180,44 @@ new Vue({
     this.doUiAction('refreshTableData')
   },
   methods: {
+    async doUiAction(actionId, actionData) {
+      switch (actionId) {
+        case 'refreshTableData':
+          await this.refreshTableData();
+          break;
+        case 'startCreateItem':
+          await this.clearItemData();
+          await this.openCreateDialog();
+          break;
+        case 'createItem':
+          await this.prepareValidate();
+          await this.confirmCreateItemDialog();
+          await this.doCreateItem();
+          await this.refreshTableData();
+          await this.closeDrawerShow();
+          break;
+        case 'startUpdateItem':
+          await this.prepareItemData(actionData);
+          await this.openUpdateDialog();
+          break;
+        case 'updateItem':
+          await this.prepareValidate();
+          await this.confirmUpdateItemDialog();
+          await this.doUpdateItem();
+          await this.refreshTableData();
+          await this.closeDrawerShow();
+          break;
+        case 'deleteItem':
+          await this.confirmDeleteItemDialog();
+          await this.prepareItemData(actionData);
+          await this.doDeleteItem();
+          await this.refreshTableData();
+          break;
+        default:
+          console.error("[doUiAction] actionId not find", { actionId });
+          break;
+      }
+    },
     /**
      * 获取表格数据
      */
@@ -219,7 +250,9 @@ new Vue({
 
     // createItem
     async confirmCreateItemDialog() {
-      return await window.confirmDialog({ title: "新增", content: "确定新增吗？" });
+      if (await window.confirmDialog({title: "新增", content: "确定新增吗？"}) === false) {
+        throw new Error("[confirmCreateItemDialog] 否");
+      }
     },
 
     /**
@@ -261,7 +294,9 @@ new Vue({
 
     // createItem
     async confirmUpdateItemDialog() {
-      return await window.confirmDialog({ title: "修改", content: "确定修改吗？" });
+      if (await window.confirmDialog({title: "修改", content: "确定修改吗？"}) === false) {
+        throw new Error("[confirmUpdateItemDialog] 否");
+      }
     },
 
     /**
@@ -284,7 +319,9 @@ new Vue({
     },
 
     async confirmDeleteItemDialog() {
-      await window.confirmDialog({ title: '删除', content: '确定删除吗？'});
+      if (await window.confirmDialog({title: "删除", content: "确定删除吗？"}) === false) {
+        throw new Error("[confirmDeleteItemDialog] 否");
+      }
     },
     /**
      * 删除学生

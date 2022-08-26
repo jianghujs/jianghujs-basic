@@ -133,6 +133,7 @@
 <script>
   window.registerData({
     // 组件的 数据
+    isMobile: window.innerWidth < 600,
     classSelectDialog_shown: false,
     classSelectDialog_title: "班级",
     classSelectDialog_selected: null,
@@ -167,6 +168,7 @@
     isEditDrawerShow: false,
     searchInput: null,
     isTableLoading: true,
+    tableData: [],
     tableDataFromBackend: [],
     headers: [
       {text: "学生ID", value: "studentId", width: 120, class: 'fixed', cellClass: 'fixed'},
@@ -196,27 +198,65 @@ new Vue({
   vuetify: new Vuetify(),
   mixins: [window.jianghuUiActionMixins],
   data: window.vueData,
-  computed: {
-    isMobile() {
-      return window.innerWidth < 600;
+  watch: {
+    currentTableGenderType(value) {
+      this.doUiAction('computedTableData');
     },
-    tableData() {
-      let dataList = this.tableDataFromBackend;
-      if (this.currentTableGenderType && this.currentTableGenderType !== 'all') {
-        dataList = dataList.filter(({gender}) => gender === this.currentTableGenderType);
-      }
-      if (this.classSelectDialog_selected) {
-        dataList = dataList.filter(({classId}) => classId === this.classSelectDialog_selected);
-      }
-      return dataList;
-    },
+    classSelectDialog_selected(value) {
+      this.doUiAction('computedTableData');
+    }
   },
-  watch: {},
   mounted() {
     this.doUiAction('refreshTableData');
   },
   methods: {
-
+    async doUiAction(actionId, actionData) {
+      switch (actionId) {
+        case 'refreshTableData':
+          await window.$vueComponent['classSelectDialog'] && window.$vueComponent['classSelectDialog'].selectItem({ "item": { "value": "2021-01级-01班" } });
+          await this.refreshTableData();
+          await this.computedTableData();
+          break;
+        case 'startCreateItem':
+          await this.clearItemData();
+          await this.openCreateDialog();
+          break;
+        case 'insertItem':
+          await this.prepareValidate();
+          await this.confirmCreateItemDialog();
+          await this.prepareCreateItem();
+          await this.doCreateItem();
+          await this.refreshTableData();
+          await this.computedTableData();
+          await this.closeDrawerShow();
+          break;
+        case 'startUpdateItem':
+          await this.prepareItemData(actionData);
+          await this.openUpdateDialog();
+          break;
+        case 'updateItem':
+          await this.prepareValidate();
+          await this.confirmUpdateItemDialog();
+          await this.doUpdateItem();
+          await this.refreshTableData();
+          await this.computedTableData();
+          await this.closeDrawerShow();
+          break;
+        case 'deleteItem':
+          await this.confirmDeleteItemDialog();
+          await this.prepareItemData(actionData);
+          await this.doDeleteItem();
+          await this.refreshTableData();
+          await this.computedTableData();
+          break;
+        case 'computedTableData':
+          await this.computedTableData();
+          break;
+        default:
+          console.error("[doUiAction] actionId not find", { actionId });
+          break;
+      }
+    },
     async refreshTableData() {
       this.isTableLoading = true;
       const result = await window.jianghuAxios({
@@ -233,6 +273,37 @@ new Vue({
 
       this.tableDataFromBackend = result.data.appData.resultData.rows;
       this.isTableLoading = false;
+    },
+
+    computedTableData() {
+      let dataList = this.tableDataFromBackend.slice();
+      if (this.currentTableGenderType && this.currentTableGenderType !== 'all') {
+        dataList = dataList.filter(({gender}) => gender === this.currentTableGenderType);
+      }
+      if (this.classSelectDialog_selected) {
+        dataList = dataList.filter(({classId}) => classId === this.classSelectDialog_selected);
+      }
+      this.tableData = dataList;
+    },
+
+    async confirmCreateItemDialog() {
+      if (await window.confirmDialog({title: "新增", content: "确定新增吗？"}) === false) {
+        throw new Error("[confirmCreateItemDialog] 否");
+      }
+    },
+
+
+    async confirmUpdateItemDialog() {
+      if (await window.confirmDialog({title: "修改", content: "确定修改吗？"}) === false) {
+        throw new Error("[confirmUpdateItemDialog] 否");
+      }
+    },
+
+
+    async confirmDeleteItemDialog() {
+      if (await window.confirmDialog({title: "删除", content: "确定删除吗？"}) === false) {
+        throw new Error("[confirmDeleteItemDialog] 否");
+      }
     },
 
     async clearItemData() {
@@ -292,10 +363,6 @@ new Vue({
         }
       })
       await window.vtoast.success("修改学生成功");
-    },
-
-    async confirmDeleteItemDialog() {
-      return await window.confirmDialog({ title: "删除", content: "确定删除吗？" });
     },
 
     async doDeleteItem() {
