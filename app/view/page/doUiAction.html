@@ -233,7 +233,7 @@ new Vue({
   },
   methods: {
 
-    async doUiAction(actionId, actionData) {
+    async doUiAction(actionId, uiActionData) {
       switch (actionId) {
         case 'refreshTableData':
           await this.refreshTableData();
@@ -251,7 +251,7 @@ new Vue({
           await this.refreshTableData();
           break;
         case 'startUpdateItem':
-          await this.fillUpdateForm(actionData);
+          await this.fillUpdateForm(uiActionData);
           await this.openUpdateDrawer();
           break;
         case 'updateItem':
@@ -262,8 +262,8 @@ new Vue({
           await this.closeUpdateDrawer();
           break;
         case 'deleteItem':
-          await this.confirmDeleteItemDialog(actionData);
-          await this.doDeleteItem(actionData);
+          await this.confirmDeleteItemDialog(uiActionData);
+          await this.doDeleteItem(uiActionData);
           await this.refreshTableData();
           break;
         default:

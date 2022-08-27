@@ -211,7 +211,7 @@ new Vue({
     this.doUiAction('refreshTableData');
   },
   methods: {
-    async doUiAction(actionId, actionData) {
+    async doUiAction(actionId, uiActionData) {
       switch (actionId) {
         case 'refreshTableData':
           await window.$vueComponent['classSelectDialog'] && window.$vueComponent['classSelectDialog'].selectItem({ "item": { "value": "2021-01级-01班" } });
@@ -232,7 +232,7 @@ new Vue({
           await this.closeDrawerShow();
           break;
         case 'startUpdateItem':
-          await this.prepareItemData(actionData);
+          await this.prepareItemData(uiActionData);
           await this.openUpdateDialog();
           break;
         case 'updateItem':
@@ -245,7 +245,7 @@ new Vue({
           break;
         case 'deleteItem':
           await this.confirmDeleteItemDialog();
-          await this.prepareItemData(actionData);
+          await this.prepareItemData(uiActionData);
           await this.doDeleteItem();
           await this.refreshTableData();
           await this.computedTableData();
