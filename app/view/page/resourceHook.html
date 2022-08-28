@@ -178,8 +178,8 @@ new Vue({
     this.doUiAction('refreshTableData')
   },
   methods: {
-    async doUiAction(actionId, actionData) {
-      switch (actionId) {
+    async doUiAction(uiActionId, uiActionData) {
+      switch (uiActionId) {
         case 'refreshTableData':
           await this.refreshTableData();
           await this.computedTableData();
@@ -197,7 +197,7 @@ new Vue({
           await this.closeDrawerShow();
           break;
         case 'startUpdateItem':
-          await this.prepareItemData(actionData);
+          await this.prepareItemData(uiActionData);
           await this.openUpdateDialog();
           break;
         case 'updateItem':
@@ -210,7 +210,7 @@ new Vue({
           break;
         case 'deleteItem':
           await this.confirmDeleteItemDialog();
-          await this.prepareItemData(actionData);
+          await this.prepareItemData(uiActionData);
           await this.doDeleteItem();
           await this.refreshTableData();
           break;
@@ -218,7 +218,7 @@ new Vue({
           await this.computedTableData();
           break;
         default:
-          console.error("[doUiAction] actionId not find", { actionId });
+          console.error("[doUiAction] uiActionId not find", { uiActionId });
           break;
       }
     },
