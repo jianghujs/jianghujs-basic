@@ -9,7 +9,7 @@
   </title>
   <meta charset="utf-8" name="viewport"
         content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
-  <script src="/jianghujs_basic/public/js/lib/axios.min.js"></script>
+  <script src="/jianghujs-basic/public/js/lib/axios.min.js"></script>
 
   <script type="text/javascript">
 
@@ -28,16 +28,15 @@
       }
       const result = await axios({
         method: 'post',
-        url: `/jianghujs_demo_basic/resource`,
+        url: `/jianghujs-basic/resource`,
         data: {
           packageId: '123456',
           packageType: 'httpRequest',
           appData: {
-            appId: 'jianghujs_demo_basic',
             pageId: 'protocolDemo',
             actionId: 'insertItem',
             userAgent: 'demo_userAgent',
-            authToken: localStorage.getItem(`jianghujs_demo_basic_authToken`),
+            authToken: localStorage.getItem(`jianghujs_basic_authToken`),
             actionData: studentInfo,
           }
         }
@@ -50,16 +49,15 @@
     async function selectStudentList() {
       const result = await axios({
         method: 'post',
-        url: `/jianghujs_demo_basic/resource`,
+        url: `/jianghujs-basic/resource`,
         data: {
           packageId: '123456',
           packageType: 'httpRequest',
           appData: {
-            appId: 'jianghujs_demo_basic',
             pageId: 'protocolDemo',
             actionId: 'selectItemList',
             userAgent: 'demo_userAgent',
-            authToken: localStorage.getItem(`jianghujs_demo_basic_authToken`),
+            authToken: localStorage.getItem(`jianghujs_basic_authToken`),
             actionData: {},
             where: {},
           }
@@ -75,16 +73,15 @@
       }
       const result = await axios({
         method: 'post',
-        url: `/jianghujs_demo_basic/resource`,
+        url: `/jianghujs-basic/resource`,
         data: {
           packageId: '123456',
           packageType: 'httpRequest',
           appData: {
-            appId: 'jianghujs_demo_basic',
             pageId: 'protocolDemo',
             actionId: 'updateItem',
             userAgent: 'demo_userAgent',
-            authToken: localStorage.getItem(`jianghujs_demo_basic_authToken`),
+            authToken: localStorage.getItem(`jianghujs_basic_authToken`),
             actionData: studentInfo,
             where: {
               studentId: "G00003",
@@ -99,16 +96,15 @@
     async function deleteStudent() {
       const result = await axios({
         method: 'post',
-        url: `/jianghujs_demo_basic/resource`,
+        url: `/jianghujs-basic/resource`,
         data: {
           packageId: '123456',
           packageType: 'httpRequest',
           appData: {
-            appId: 'jianghujs_demo_basic',
             pageId: 'protocolDemo',
             actionId: 'deleteItem',
             userAgent: 'demo_userAgent',
-            authToken: localStorage.getItem(`jianghujs_demo_basic_authToken`),
+            authToken: localStorage.getItem(`jianghujs_basic_authToken`),
             actionData: {},
             where: {
               studentId: "G00003",
