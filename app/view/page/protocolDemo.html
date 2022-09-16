@@ -36,7 +36,7 @@
             pageId: 'protocolDemo',
             actionId: 'insertItem',
             userAgent: 'demo_userAgent',
-            authToken: localStorage.getItem(`jianghujs-basic_authToken`),
+            authToken: localStorage.getItem(`<$ ctx.app.config.appId $>_authToken`),
             actionData: studentInfo,
           }
         }
@@ -57,7 +57,7 @@
             pageId: 'protocolDemo',
             actionId: 'selectItemList',
             userAgent: 'demo_userAgent',
-            authToken: localStorage.getItem(`jianghujs-basic_authToken`),
+            authToken: localStorage.getItem(`<$ ctx.app.config.appId $>_authToken`),
             actionData: {},
             where: {},
           }
@@ -81,7 +81,7 @@
             pageId: 'protocolDemo',
             actionId: 'updateItem',
             userAgent: 'demo_userAgent',
-            authToken: localStorage.getItem(`jianghujs-basic_authToken`),
+            authToken: localStorage.getItem(`<$ ctx.app.config.appId $>_authToken`),
             actionData: studentInfo,
             where: {
               studentId: "G00003",
@@ -104,7 +104,7 @@
             pageId: 'protocolDemo',
             actionId: 'deleteItem',
             userAgent: 'demo_userAgent',
-            authToken: localStorage.getItem(`jianghujs-basic_authToken`),
+            authToken: localStorage.getItem(`<$ ctx.app.config.appId $>_authToken`),
             actionData: {},
             where: {
               studentId: "G00003",
