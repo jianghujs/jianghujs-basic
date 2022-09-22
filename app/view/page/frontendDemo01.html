@@ -301,7 +301,7 @@
           }
         });
 
-        this.tableDataFromBackend = result.data.appData.rows;
+        this.tableDataFromBackend = result.data.appData.resultData.rows;
         this.isTableLoading = false;
       },
       openEditDialog({ item }) {
