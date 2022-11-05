@@ -5,12 +5,7 @@
 <jh-layout-v3>
   <template slot="serverSearch">
     <div v-if="!isMobile" style="text-align: right;" :style="{'line-height': isMobile ? '22px' : '64px', 'font-size': isMobile ? '12px' : '14px'}" :class="{ 'mt-0': isMobile}">
-      <span class="red pa-2" style="border-radius: 4px; color: #ffffff">备注: 需要为当前登录用户创建一条学生数据, 当前登录用户只能看到自己所在班级的数据（注:创建的学生ID需要是当前登录用户的用户ID)</span>
-    </div>
-    <div v-else class="red pa-2" style=" border-radius: 4px; color: #ffffff"
-         :style="{'line-height': isMobile ? '22px' : '64px', 'text-align': isMobile ? 'left' : 'right', 'font-size': isMobile ? '12px' : '14px'}"
-         :class="{ 'mt-0': isMobile, 'mb-4': isMobile}">
-      <span>备注: 需要为当前登录用户创建一条学生数据, 用户只能看到自己所在班级的数据。</span>
+      <span class="red pa-2" style="border-radius: 4px; color: #ffffff">备注: 当前登录用户只能看到自己所在班级的数据</span>
     </div>
   </template>
   <!-- 页面主要内容 -->
