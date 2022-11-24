@@ -89,6 +89,7 @@ CREATE TABLE `_page` (
 
 INSERT INTO `_page` (`id`,`pageId`,`pageFile`,`pageName`,`pageType`,`sort`,`operation`,`operationByUserId`,`operationByUser`,`operationAt`) VALUES (2,'help','helpV3','帮助','dynamicInMenu','11','insert',NULL,NULL,NULL);
 INSERT INTO `_page` (`id`,`pageId`,`pageFile`,`pageName`,`pageType`,`sort`,`operation`,`operationByUserId`,`operationByUser`,`operationAt`) VALUES (3,'login','loginV3','登陆','','','insert',NULL,NULL,NULL);
+INSERT INTO `_page` (`id`,`pageId`,`pageFile`,`pageName`,`pageType`,`sort`,`operation`,`operationByUserId`,`operationByUser`,`operationAt`) VALUES (4,'manual',NULL,'操作手册','showInMenu','1','insert',NULL,NULL,NULL);
 INSERT INTO `_page` (`id`,`pageId`,`pageFile`,`pageName`,`pageType`,`sort`,`operation`,`operationByUserId`,`operationByUser`,`operationAt`) VALUES (25,'protocolDemo',NULL,'应用协议','showInMenu','2','insert',NULL,NULL,NULL);
 INSERT INTO `_page` (`id`,`pageId`,`pageFile`,`pageName`,`pageType`,`sort`,`operation`,`operationByUserId`,`operationByUser`,`operationAt`) VALUES (27,'frontendDemo01',NULL,'前端对接','showInMenu','3','insert',NULL,NULL,NULL);
 INSERT INTO `_page` (`id`,`pageId`,`pageFile`,`pageName`,`pageType`,`sort`,`operation`,`operationByUserId`,`operationByUser`,`operationAt`) VALUES (28,'frontendDemo02',NULL,'前端jianghuAxios','showInMenu','4','insert',NULL,NULL,NULL);
@@ -118,7 +119,7 @@ CREATE TABLE `_record_history` (
   PRIMARY KEY (`id`),
   KEY `index_record_id` (`recordId`),
   KEY `index_table_action` (`table`, `operation`)
-) ENGINE = InnoDB AUTO_INCREMENT = 15 COMMENT = '数据历史表';
+) ENGINE = InnoDB AUTO_INCREMENT = 5 COMMENT = '数据历史表';
 
 
 
@@ -415,7 +416,7 @@ CREATE TABLE `_user_session` (
   KEY `userId_index` (`userId`),
   KEY `userId_deviceId_index` (`userId`, `deviceId`) USING BTREE,
   KEY `authToken_index` (`authToken`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 COMMENT = '用户session表; deviceId 维度;软删除未启用;';
+) ENGINE = InnoDB AUTO_INCREMENT = 4 COMMENT = '用户session表; deviceId 维度;软删除未启用;';
 
 
 
@@ -468,12 +469,17 @@ CREATE TABLE `student` (
   `operationAt` varchar(255) DEFAULT NULL COMMENT '操作时间; E.g: 2021-05-28T10:24:54+08:00 ',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `studentId` (`studentId`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 188;
+) ENGINE = InnoDB AUTO_INCREMENT = 189;
 
 
 
-INSERT INTO `student` (`id`,`studentId`,`name`,`gender`,`dateOfBirth`,`classId`,`level`,`bodyHeight`,`studentStatus`,`remarks`,`operation`,`operationByUserId`,`operationByUser`,`operationAt`) VALUES (185,'A0002','小米','女','2022-09-14','2021-01级-01班','01','165','正常',NULL,'jhUpdate','admin','系统管理员','2022-10-18T21:55:26+08:00');
-INSERT INTO `student` (`id`,`studentId`,`name`,`gender`,`dateOfBirth`,`classId`,`level`,`bodyHeight`,`studentStatus`,`remarks`,`operation`,`operationByUserId`,`operationByUser`,`operationAt`) VALUES (187,'A0001','张三','男','2022-09-14','2021-01级-02班','01','178','正常',NULL,'jhUpdate','admin','系统管理员','2022-10-18T21:54:53+08:00');
+INSERT INTO `student` (`id`,`studentId`,`name`,`gender`,`dateOfBirth`,`classId`,`level`,`bodyHeight`,`studentStatus`,`remarks`,`operation`,`operationByUserId`,`operationByUser`,`operationAt`) VALUES (181,'111','花花','male','2022-09-15','2021-01级-01班','01',NULL,NULL,NULL,'insert','admin','系统管理员','2022-09-15T23:46:04+08:00');
+INSERT INTO `student` (`id`,`studentId`,`name`,`gender`,`dateOfBirth`,`classId`,`level`,`bodyHeight`,`studentStatus`,`remarks`,`operation`,`operationByUserId`,`operationByUser`,`operationAt`) VALUES (182,'222','草草','female',NULL,'2021-01级-01班','01',NULL,NULL,NULL,'insert','admin','系统管理员','2022-09-15T23:46:22+08:00');
+INSERT INTO `student` (`id`,`studentId`,`name`,`gender`,`dateOfBirth`,`classId`,`level`,`bodyHeight`,`studentStatus`,`remarks`,`operation`,`operationByUserId`,`operationByUser`,`operationAt`) VALUES (183,'333','小小','male',NULL,'2021-01级-01班','01',NULL,NULL,NULL,'insert','admin','系统管理员','2022-09-15T23:47:59+08:00');
+INSERT INTO `student` (`id`,`studentId`,`name`,`gender`,`dateOfBirth`,`classId`,`level`,`bodyHeight`,`studentStatus`,`remarks`,`operation`,`operationByUserId`,`operationByUser`,`operationAt`) VALUES (185,'Q11111','小米','male','2022-09-14','2021-01级-01班','01',NULL,'正常',NULL,'insert','admin','系统管理员','2022-09-15T23:54:11+08:00');
+INSERT INTO `student` (`id`,`studentId`,`name`,`gender`,`dateOfBirth`,`classId`,`level`,`bodyHeight`,`studentStatus`,`remarks`,`operation`,`operationByUserId`,`operationByUser`,`operationAt`) VALUES (186,'D0003','小虾米','male',NULL,'2021-01级-01班','01',NULL,NULL,NULL,'insert','admin','系统管理员','2022-09-15T23:56:23+08:00');
+INSERT INTO `student` (`id`,`studentId`,`name`,`gender`,`dateOfBirth`,`classId`,`level`,`bodyHeight`,`studentStatus`,`remarks`,`operation`,`operationByUserId`,`operationByUser`,`operationAt`) VALUES (187,'admin','admin111','male','890909','2021-01级-02班','01','178','正常',NULL,'jhUpdate','admin','系统管理员','2022-09-16T10:59:51+08:00');
+INSERT INTO `student` (`id`,`studentId`,`name`,`gender`,`dateOfBirth`,`classId`,`level`,`bodyHeight`,`studentStatus`,`remarks`,`operation`,`operationByUserId`,`operationByUser`,`operationAt`) VALUES (188,'123','小胖','male','20220303','2021-01级-02班','01','145','正常','转学','insert','admin','系统管理员','2022-11-05T15:44:06+08:00');
 
 
 
