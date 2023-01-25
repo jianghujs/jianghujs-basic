@@ -6,32 +6,29 @@
 
 <!-- 页面主要内容 -->
 <v-container class="fullScreen d-flex flex-column pa-0">
-  <!-- <v-card :class="{'px-2': isMobile}"> -->
-
     <v-row class="ma-0 align-center flex-none pt-0 "
-           :class="{'pa-4': !isMobile, 'pb-0': !isMobile, 'pa-2': isMobile}">
+           :class="{'pb-0': !isMobile, 'pa-2': isMobile}">
       <v-col cols="12" xs="12" sm="4" md="4" xl="4" class="pl-0">
         <v-btn color="success" dark small class="elevation-0 mr-2" @click="doUiAction('startInsertItem')">新增</v-btn>
-        
       </v-col>
       <v-spacer></v-spacer>
-      <v-col cols="12" xs="12" sm="4" md="3" xl="2" class="px-0">
+      <v-col cols="12" xs="6" sm="3" md="2" xl="2" class="px-0">
         <v-text-field v-model="searchInput" color="success" prefix="表格过滤：" class="cus-v-input" dense filled single-line></v-text-field>
       </v-col>
     </v-row>
 
     <v-data-table
-        :headers="headers"
-        :items="tableDataFromBackend"
-        :search="searchInput"
-        :footer-props="{ itemsPerPageOptions: [20, 40, 60, 100, -1] }"
-        :items-per-page="20"
-        mobile-breakpoint="0"
-        :loading="isTableLoading"
-        :class="{'mx-2': isMobile, 'zebraLine': showTableZebraLine }"
-        checkbox-color="success"
-        fixed-header 
-        class="fixed-table-height elevation-0 mt-0 mb-xs-4 flex-fill d-flex flex-column">
+      :headers="headers"
+      :items="tableDataFromBackend"
+      :search="searchInput"
+      :footer-props="{ itemsPerPageOptions: [20, 40, 60, 100, -1] }"
+      :items-per-page="20"
+      mobile-breakpoint="0"
+      :loading="isTableLoading"
+      :class="{'mx-2': isMobile, 'zebraLine': showTableZebraLine }"
+      checkbox-color="success"
+      fixed-header 
+      class="fixed-table-height elevation-0 mt-0 mb-xs-4 flex-fill d-flex flex-column">
       <template v-slot:item.action="{ item }">
         <span role="button" class="success--text mr-2 font-weight-medium font-size-2" @click="doUiAction('startUpdateItem', {item})">修改</span>
         <span role="button" class="error--text mr-2 font-weight-medium font-size-2" @click="doUiAction('deleteItem', {item})">删除</span>
@@ -41,75 +38,70 @@
         <v-switch v-model="showTableZebraLine" label="显示斑马纹" dense flat></v-switch>
       </template>>
     </v-data-table>
-
-  <!-- </v-card> -->
 </v-container>
 
 <v-overlay app :value="isCreateDrawerShow || isUpdateDrawerShow"></v-overlay>
 <v-navigation-drawer v-model="isCreateDrawerShow" fixed temporary right width="80%" hide-overlay
                      class="elevation-24">
   <v-form v-model="isFormValid" v-if="isCreateDrawerShow" ref="form" lazy-validation>
-    <v-row class="pt-8">
-      <span class="title pa-6" :class="{'pl-12': !isMobile, 'pl-6': isMobile}">添加信息</span>
+    <v-row>
+      <span class="title pa-6" :class="{'pl-8': !isMobile, 'pl-6': isMobile}">添加信息</span>
       <v-spacer></v-spacer>
-      <v-btn class="mt-6 elevation-0" :class="{'mr-16': !isMobile, 'mr-8': isMobile}" fab x-small @click="isCreateDrawerShow = false">
+      <v-btn class="mt-6 elevation-0 mr-8" fab x-small @click="isCreateDrawerShow = false">
         <v-icon dark>mdi-close</v-icon>
       </v-btn>
     </v-row>
-    <v-row  :class="{'px-10': !isMobile, 'px-3': isMobile, 'pb-7': isMobile}">
+    <v-row class="mt-0" :class="{'px-6': !isMobile, 'px-3': isMobile, 'pb-7': isMobile}">
       <v-col cols="12" sm="12" md="4" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
         <span class="inputLabel">学生ID</span>
-        <v-text-field class="cus-v-input mr-2" dense single-line filled label="学生ID" v-model="createItem.studentId"
+        <v-text-field class="cus-v-input" dense single-line filled label="学生ID" v-model="createItem.studentId"
                       :rules="requireRules"></v-text-field>
       </v-col>
       <v-col cols="12" sm="12" md="4" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
         <span class="inputLabel">班级ID</span>
-        <v-text-field class="cus-v-input mr-2" dense single-line filled label="班级ID"
+        <v-text-field class="cus-v-input" dense single-line filled label="班级ID"
                       v-model="createItem.classId"></v-text-field>
       </v-col>
       <v-col cols="12" sm="12" md="4" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
         <span class="inputLabel">学生名字</span>
-        <v-text-field class="cus-v-input mr-2" dense single-line filled label="学生名字"
+        <v-text-field class="cus-v-input" dense single-line filled label="学生名字"
                       v-model="createItem.name"></v-text-field>
       </v-col>
       <v-col cols="12" sm="12" md="4" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
         <span class="inputLabel">年级</span>
-        <v-text-field class="cus-v-input mr-2" dense single-line filled label="年级"
+        <v-text-field class="cus-v-input" dense single-line filled label="年级"
                       v-model="createItem.level"></v-text-field>
       </v-col>
       <v-col cols="12" sm="12" md="4" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
         <span class="inputLabel">性别</span>
-        <v-text-field class="cus-v-input mr-2" dense single-line filled label="性别"
+        <v-text-field class="cus-v-input" dense single-line filled label="性别"
                       v-model="createItem.gender"></v-text-field>
       </v-col>
       <v-col cols="12" sm="12" md="4" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
         <span class="inputLabel">出生日期</span>
-        <v-text-field class="cus-v-input mr-2" dense single-line filled label="出生日期"
+        <v-text-field class="cus-v-input" dense single-line filled label="出生日期"
                       v-model="createItem.dateOfBirth"></v-text-field>
       </v-col>
       <v-col cols="12" sm="12" md="4" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
         <span class="inputLabel">身高</span>
-        <v-text-field class="cus-v-input mr-2" dense single-line filled label="身高"
+        <v-text-field class="cus-v-input" dense single-line filled label="身高"
                       v-model="createItem.bodyHeight"></v-text-field>
       </v-col>
       <v-col cols="12" sm="12" md="4" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
         <span class="inputLabel">学生状态</span>
-        <v-text-field class="cus-v-input mr-2" dense single-line filled label="学生状态"
+        <v-text-field class="cus-v-input" dense single-line filled label="学生状态"
                       v-model="createItem.studentStatus"></v-text-field>
       </v-col>
       <v-col cols="12" sm="12" md="12" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
         <span class="inputLabel">备注</span>
-        <v-textarea class="cus-v-input mr-2" no-resize dense single-line filled label="备注"
+        <v-textarea class="cus-v-input" no-resize dense single-line filled label="备注"
                     v-model="createItem.remarks"></v-textarea>
       </v-col>
     </v-row>
 
-    <v-row class="justify-end mx-0 mt-8" :class="{'px-10': !isMobile, 'px-4': isMobile, 'mb-8': isMobile}">
-      <v-btn color="success elevation-0" @click="doUiAction('createItem')">保存
-      </v-btn>
-      <v-btn class="elevation-0 mr-2 ml-2"
-             @click="isCreateDrawerShow = false">取消
-      </v-btn>
+    <v-row class="justify-end mx-0 mt-8" :class="{'px-6': !isMobile, 'px-4': isMobile, 'mb-8': isMobile}">
+      <v-btn color="success" @click="doUiAction('createItem')" small>保存</v-btn>
+      <v-btn class="ml-2" @click="isCreateDrawerShow = false" small>取消</v-btn>
     </v-row>
   </v-form>
 </v-navigation-drawer>
@@ -117,66 +109,64 @@
 <v-navigation-drawer v-model="isUpdateDrawerShow" fixed temporary right width="80%" hide-overlay
                      class="elevation-24">
   <v-form v-model="isFormValid" v-if="isUpdateDrawerShow" ref="form" lazy-validation>
-    <v-row class="pt-8">
-      <span class="title pa-6" :class="{'pl-12': !isMobile, 'pl-6': isMobile}">修改信息</span>
+    <v-row>
+      <span class="title pa-6" :class="{'pl-8': !isMobile, 'pl-6': isMobile}">修改信息</span>
       <v-spacer></v-spacer>
-      <v-btn class="mt-6 elevation-0" :class="{'mr-16': !isMobile, 'mr-8': isMobile}" fab x-small @click="isUpdateDrawerShow = false">
+      <v-btn class="mt-6 elevation-0 mr-8" fab x-small @click="isUpdateDrawerShow = false">
         <v-icon dark>mdi-close</v-icon>
       </v-btn>
     </v-row>
-    <v-row  :class="{'px-10': !isMobile, 'px-3': isMobile, 'pb-7': isMobile}">
+    <v-row class="mt-0" :class="{'px-6': !isMobile, 'px-3': isMobile, 'pb-7': isMobile}">
       <v-col cols="12" sm="12" md="4" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
         <span class="inputLabel">学生ID</span>
-        <v-text-field class="cus-v-input mr-2" dense single-line filled label="学生ID" v-model="updateItem.studentId"
+        <v-text-field class="cus-v-input" dense single-line filled label="学生ID" v-model="updateItem.studentId"
                       :rules="requireRules"></v-text-field>
       </v-col>
       <v-col cols="12" sm="12" md="4" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
         <span class="inputLabel">班级ID</span>
-        <v-text-field class="cus-v-input mr-2" dense single-line filled label="班级ID" v-model="updateItem.classId"
+        <v-text-field class="cus-v-input" dense single-line filled label="班级ID" v-model="updateItem.classId"
                       :rules="requireRules"></v-text-field>
       </v-col>
       <v-col cols="12" sm="12" md="4" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
         <span class="inputLabel">学生名字</span>
-        <v-text-field class="cus-v-input mr-2" dense single-line filled label="学生名字"
+        <v-text-field class="cus-v-input" dense single-line filled label="学生名字"
                       v-model="updateItem.name"></v-text-field>
       </v-col>
       <v-col cols="12" sm="12" md="4" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
         <span class="inputLabel">年级</span>
-        <v-text-field class="cus-v-input mr-2" dense single-line filled label="年级" v-model="updateItem.level"
+        <v-text-field class="cus-v-input" dense single-line filled label="年级" v-model="updateItem.level"
                       :rules="requireRules"></v-text-field>
       </v-col>
       <v-col cols="12" sm="12" md="4" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
         <span class="inputLabel">性别</span>
-        <v-text-field class="cus-v-input mr-2" dense single-line filled label="性别" v-model="updateItem.gender"
+        <v-text-field class="cus-v-input" dense single-line filled label="性别" v-model="updateItem.gender"
                       :rules="requireRules"></v-text-field>
       </v-col>
       <v-col cols="12" sm="12" md="4" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
         <span class="inputLabel">出生日期</span>
-        <v-text-field class="cus-v-input mr-2" dense single-line filled label="出生日期" v-model="updateItem.dateOfBirth"
+        <v-text-field class="cus-v-input" dense single-line filled label="出生日期" v-model="updateItem.dateOfBirth"
                       :rules="requireRules"></v-text-field>
       </v-col>
       <v-col cols="12" sm="12" md="4" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
         <span class="inputLabel">身高</span>
-        <v-text-field class="cus-v-input mr-2" dense single-line filled label="身高" v-model="updateItem.bodyHeight"
+        <v-text-field class="cus-v-input" dense single-line filled label="身高" v-model="updateItem.bodyHeight"
                       :rules="requireRules"></v-text-field>
       </v-col>
       <v-col cols="12" sm="12" md="4" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
         <span class="inputLabel">学生状态</span>
-        <v-text-field class="cus-v-input mr-2" dense single-line filled label="学生状态" v-model="updateItem.studentStatus"
+        <v-text-field class="cus-v-input" dense single-line filled label="学生状态" v-model="updateItem.studentStatus"
                       :rules="requireRules"></v-text-field>
       </v-col>
       <v-col cols="12" sm="12" md="12" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
         <span class="inputLabel">备注</span>
-        <v-textarea class="cus-v-input mr-2" no-resize dense single-line filled label="备注"
+        <v-textarea class="cus-v-input" no-resize dense single-line filled label="备注"
                     v-model="updateItem.remarks"></v-textarea>
       </v-col>
     </v-row>
 
-    <v-row class="justify-end mx-0 mt-8" :class="{'px-10': !isMobile, 'px-4': isMobile, 'mb-8': isMobile}">
-      <v-btn color="success elevation-0" @click="doUiAction('updateItem')">保存
-      </v-btn>
-      <v-btn class="elevation-0 mr-2 ml-2"
-             @click="isUpdateDrawerShow = false">取消
+    <v-row class="justify-end mx-0 mt-8" :class="{'px-6': !isMobile, 'px-4': isMobile, 'mb-8': isMobile}">
+      <v-btn color="success" small @click="doUiAction('updateItem')">保存</v-btn>
+      <v-btn class="ml-2" small @click="isUpdateDrawerShow = false">取消
       </v-btn>
     </v-row>
   </v-form>

@@ -1,56 +1,93 @@
-{% extends 'template/jhTemplateV3.html'%}
+{% extends 'template/jhTemplateV4.html'%}
 
 {% block vue_template %}
 
-<jh-layout-v3>
+<jh-layout-v4>
 <template slot="serverSearch">
   <v-row class="ma-0 align-center" :class="{'pa-0': isMobile, 'pa-2': !isMobile}" style="justify-content: end">
     <v-col cols="12" sm="12" xs="5" md="3" xl="2" class="pb-3" :class="{'px-0': isMobile, 'pt-0': isMobile}">
-      <v-text-field v-model="serverSearchInput.studentId" color="success" prefix="学生ID：" class="cus-v-input"
+      <v-text-field v-model="serverSearchInput.studentId" color="success" prefix="学生ID：" class="cus-v-input bg-white"
                     :class="{'mr-2': !isMobile}" dense filled single-line></v-text-field>
     </v-col>
     <v-col cols="12" sm="12" xs="5" md="3" xl="2" class="pb-3" :class="{'pt-0': isMobile}">
       <v-text-field v-model="serverSearchInput.classId" color="success" prefix="班级ID：" class="cus-v-input"
                     :class="{'mr-2': !isMobile}" dense filled single-line></v-text-field>
     </v-col>
-    <v-col class="pl-0" :class="{'pr-0': isMobile, 'pt-0': isMobile}" style="max-width: 77px">
-      <v-btn class="elevation-0" color="success" dark @click="refreshTableData">
+    <v-col class="px-0" :class="{'pr-0': isMobile, 'pt-0': isMobile}" style="max-width: max-content;">
+      <v-btn
+          class="elevation-0"
+          color="success"
+          dark
+          @click="refreshTableData"
+          small>
         查询
       </v-btn>
+      <v-btn-toggle v-model="selectedScene" class="ml-3">
+        <v-btn small v-for="(scene, index) in sceneShowList" :key="index">
+          {{scene.name}}
+        </v-btn>
+        <v-menu offset-y>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              v-bind="attrs"
+              v-on="on"
+              small
+            >
+              <span></span>
+              <v-icon right small class="ml-0">mdi-chevron-down</v-icon>
+            </v-btn>
+          </template>
+          <v-list dense class="pb-0">
+            <v-list-item
+              v-for="(scene, index) in sceneHideList"
+              :key="index"
+            >
+              <v-list-item-title>{{ scene.name }}</v-list-item-title>
+            </v-list-item>
+            <v-list-item @click="isAddSceneShow = true">
+              <v-list-item-title class="success--text">
+                <v-icon small  class="success--text">mdi-plus</v-icon>
+                <span  class="success--text">新建场景</span>
+              </v-list-item-title>
+            </v-list-item>
+            <v-list-item @click="isSceneSetShow = true">
+              <v-list-item-title class="success--text">
+                <v-icon small  class="success--text">mdi-cog-outline</v-icon>
+                <span  class="success--text">场景管理</span>
+              </v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </v-btn-toggle>
     </v-col>
   </v-row>
 </template>
 <!-- 页面主要内容 -->
 <v-container class="fullScreen d-flex flex-column pa-0">
-  <v-card :class="{'px-2': isMobile}">
-    <v-row class="ma-0 align-center pt-0 flex-xl-wrap"
-           :class="{'pa-4': !isMobile, 'pb-0': !isMobile, 'pa-2': isMobile}">
-
+    <v-row class="ma-0 align-center flex-none pt-0 " :class="{'pb-0': !isMobile, 'pa-2': isMobile}">
       <v-col cols="12" xs="12" sm="4" md="4" xl="4" class="pl-0">
-        <v-btn color="success" dark class="elevation-0 mr-2" @click="doUiAction('startCreateItem', null)">新增</v-btn>
-        <span class="body-2">共{{ tableData.length }}条记录</span>
+        <v-btn color="success" dark class="elevation-0 mr-2" @click="doUiAction('startCreateItem', null)" small>新增</v-btn>
       </v-col>
-
       <v-spacer></v-spacer>
-
       <v-col cols="12" xs="6" sm="3" md="2" xl="2" class="pl-0" :class="{'pr-0': isMobile}">
         <v-select class="cus-v-input mr-2" v-model="currentTableGenderType"
                   :items="[{value: 'all', text: '全部'}, ...constantCollection.gender]" prefix="性别：" dense
                   item-text="text"
                   item-value="value" dense filled single-line></v-select>
       </v-col>
-
-      <v-col cols="12" xs="6" sm="4" md="3" xl="3" class="pr-0">
+      <v-col cols="12" xs="6" sm="3" md="2" xl="2" class="pr-0">
         <v-text-field v-model="searchInput" color="success" prefix="表格过滤：" class="cus-v-input" dense filled
                       single-line></v-text-field>
       </v-col>
-
     </v-row>
+
     <v-data-table :headers="headers" :items="tableData" :search="searchInput"
                   :footer-props="{ itemsPerPageOptions: [20, 40, 60, 100, -1] }" :items-per-page="20"
                   mobile-breakpoint="0"
-                  :loading="isTableLoading" checkbox-color="success" :class="{'mx-2': isMobile}"
-                  class="elevation-0 mt-0 flex-fill d-flex flex-column">
+                  :loading="isTableLoading" checkbox-color="success" 
+                  :class="{'mx-2': isMobile, 'zebraLine': showTableZebraLine }"
+                  fixed-header 
+                  class="fixed-table-height elevation-0 mt-0 mb-xs-4 flex-fill d-flex flex-column">
       <template v-slot:item.gender="{ item }">
         {{ getConstantCollectionItemText('gender', item.gender) }}
       </template>
@@ -58,15 +95,14 @@
         {{ getConstantCollectionItemText('level', item.level) }}
       </template>
       <template v-slot:item.action="{ item }">
-        <v-btn small class="mr-2 success" @click="doUiAction('startUpdateItem', item)">
-          修改
-        </v-btn>
-        <v-btn small class="mr-2 error" @click="doUiAction('deleteItem', item)">
-          删除
-        </v-btn>
+        <span role="button" class="success--text mr-2 font-weight-medium font-size-2" @click="doUiAction('startUpdateItem', item)">修改</span>
+        <span role="button" class="error--text mr-2 font-weight-medium font-size-2" @click="doUiAction('deleteItem', item)">删除</span>
+      </template>
+      <template v-slot:footer.prepend>
+        <span class="ml-2 table-search-hint-text">共{{ tableData.length }}条记录</span>
+        <v-switch v-model="showTableZebraLine" label="显示斑马纹" dense flat></v-switch>
       </template>
     </v-data-table>
-  </v-card>
 </v-container>
 <v-overlay app :value="isEditDrawerShow"></v-overlay>
 <!-- 编辑抽屉 -->
@@ -140,7 +176,128 @@
   </v-form>
 </v-navigation-drawer>
 
-</jh-layout-v3>
+<!-- 场景设置 -->
+<v-dialog
+v-model="isSceneSetShow"
+persistent
+width="70%"
+>
+<v-card>
+  <v-card-title>
+    <div class="d-flex justify-space-between align-center" style="width: 100%;">
+      <div style="font-size: 16px;">场景管理</div>
+      <div>
+        <v-btn class="elevation-0" fab x-small @click="isSceneSetShow = false">
+          <v-icon dark>mdi-close</v-icon>
+        </v-btn>
+      </div>
+    </div>
+  </v-card-title>
+  <v-card-text>
+    <v-container class="px-0">
+      <div class="mb-2">您可通过拖拽管理场景</div>
+      <v-row>
+        <v-col cols="6">
+          <v-card outlined>
+            <v-card-title class="pa-2">
+              <v-checkbox v-model="selectedAllShowScene" :value="true" dense hide-details class="mt-0">
+                <template v-slot:label>
+                  <h6>显示的场景</h6>
+                </template>
+              </v-checkbox>
+            </v-card-title>
+            <v-divider></v-divider>
+            <v-list dense>
+              <v-list-item v-for="item in constantCollection.status" :key="item.value" class="px-2" style="min-height: auto;">
+                  <v-checkbox v-model="selectedShowScene" :label="item.text" :value="item.value" dense hide-details class="mt-0" style="font-size: 13px;"></v-checkbox>
+              </v-list-item>
+            </v-list>
+          </v-card>
+        </v-col>
+        <v-col cols="6">
+          <v-card outlined>
+            <v-card-title class="pa-2">
+              <v-checkbox v-model="selectedAllHideScene" :value="true" dense hide-details class="mt-0">
+                <template v-slot:label>
+                  <h6>隐藏的场景</h6>
+                </template>
+              </v-checkbox>
+            </v-card-title>
+            <v-divider></v-divider>
+            <v-list dense>
+              <v-list-item v-for="item in constantCollection.status" :key="item.value" class="px-2" style="min-height: auto;">
+                  <v-checkbox v-model="selectedHideScene" :label="item.text" :value="item.value" dense hide-details class="mt-0" style="font-size: 13px;"></v-checkbox>
+              </v-list-item>
+            </v-list>
+          </v-card>
+        </v-col>
+      </v-row>
+      <div class="mt-2" role="button" @click="isAddSceneShow = true">
+          <v-icon right small class="ml-0">mdi-plus</v-icon>
+          添加筛选条件
+      </div>
+      <v-row class="justify-end mx-0 mt-8">
+        <v-btn color="success" @click="doUiAction('sceneSet')" small>保存</v-btn>
+        <v-btn class="ml-2" @click="isSceneSetShow = false" small>取消</v-btn>
+      </v-row>
+    </v-container>
+  </v-card-text>
+</v-card>
+</v-dialog>
+
+<!-- 新建场景 -->
+<v-dialog
+v-model="isAddSceneShow"
+persistent
+width="70%"
+>
+<v-card>
+  <v-card-title>
+    <div class="d-flex justify-space-between align-center" style="width: 100%;">
+      <div style="font-size: 16px;">新建场景</div>
+      <div>
+        <v-btn class="elevation-0" fab x-small @click="isAddSceneShow = false">
+          <v-icon dark>mdi-close</v-icon>
+        </v-btn>
+      </div>
+    </div>
+  </v-card-title>
+  <v-card-text>
+    <v-container class="px-0">
+      <div class="mb-4">
+        <div class="mb-1">场景名称</div>
+        <v-row>
+          <v-col sm="12" md="4" xl="3" :class="{'pa-0': isMobile, 'px-4': isMobile, 'pt-6': isMobile}">
+            <v-text-field class="cus-v-input" :rules="requireRules" dense filled single-line hide-details v-model="editScene.name" placeholder="场景名称，最多10个字符"></v-text-field>
+          </v-col>
+        </v-row>
+      </div>
+      <div class="mb-4">
+        <div>筛选条件</div>
+        <v-row class="ma-0 align-center" :class="{'pa-0': isMobile}" style="justify-content: end">
+          <v-col cols="12" class="px-0 pb-0">
+            <v-text-field v-model="editScene.form.employeeName" prefix="考核名称：" color="success" class="cus-v-input"
+                          dense filled single-line></v-text-field>
+          </v-col>
+          <v-col cols="12" class="px-0 pb-0">
+            <v-select class="cus-v-input" v-model="editScene.form.status"
+                      :items="constantCollection.status"
+                      prefix="状态：" item-text="text" item-value="value" dense filled single-line clearable>
+            </v-select>
+          </v-col>
+        </v-row>
+      </div>
+      <v-checkbox v-model="editScene.default" :value="true" dense hide-details class="mt-0" label="设置为默认场景"></v-checkbox>
+      <v-row class="justify-end mx-0 mt-8">
+        <v-btn color="success" @click="doUiAction('addScene')" small>保存</v-btn>
+        <v-btn class="ml-2" @click="isAddSceneShow = false" small>取消</v-btn>
+      </v-row>
+    </v-container>
+  </v-card-text>
+</v-card>
+</v-dialog>
+
+</jh-layout-v4>
 
 {% endblock %}
 
@@ -155,6 +312,7 @@ new Vue({
   data: () => ({
     // 表格相关数据
     isMobile: window.innerWidth < 600,
+    showTableZebraLine: true,
     isFormValid: true,
     requireRules: [
       v => !!v || 'This is required',
@@ -172,6 +330,45 @@ new Vue({
       studentStatus: [{"value": "正常", "text": "正常"}, {"value": "退学", "text": "退学"}]
     },
 
+    isSceneSetShow: false,
+    selectedAllShowScene: false,
+    selectedAllHideScene: false,
+    selectedShowScene: [],
+    selectedHideScene: [],
+    sceneList: [
+      {
+        name: 'test1',
+        form: {
+          employeeName: '111',
+          status: 1
+        },
+        default: true
+      },
+      {
+        name: 'test2',
+        form: {
+          employeeName: '222',
+          status: 2
+        },
+        default: false
+      },
+      {
+        name: 'test3',
+        form: {
+          employeeName: '333',
+          status: 3
+        },
+        default: false
+      }
+    ],
+    sceneShowList: [],
+    sceneHideList: [],
+    isAddSceneShow: false,
+    selectedScene: null,
+    editScene: {
+      form: {}
+    },
+
     serverSearchInput: {
       studentId: null,
       classId: null
@@ -183,7 +380,8 @@ new Vue({
     tableData: [],
     tableDataFromBackend: [],
     headers: [
-      {text: "学生ID", value: "studentId", width: 120, class: 'fixed', cellClass: 'fixed'},
+      {text: '操作', value: 'action', align: 'center', sortable: false, width: 150, class: 'fixed', cellClass: 'fixed'},
+      {text: "学生ID", value: "studentId", width: 120},
       {text: "班级ID", value: "classId", width: 140},
       {text: "学生名字", value: "name", width: 120},
       {text: "年级", value: "level", width: 120},
@@ -194,7 +392,6 @@ new Vue({
       {text: "备注", value: "remarks", width: 120},
       {text: "操作者", value: "operationByUser", width: 120},
       {text: "操作时间", value: "operationAt", width: 250},
-      {text: '操作', value: 'action', align: 'center', sortable: false, width: 200, class: 'fixed', cellClass: 'fixed'},
     ],
 
     editItem: {},
@@ -203,6 +400,13 @@ new Vue({
   watch: {
     currentTableGenderType(value) {
       this.doUiAction('computedTableData');
+    },
+    sceneList: {
+      handler(value) {
+        this.sceneShowList = value.slice(0, 2)
+        this.sceneHideList = value.slice(2)
+      },
+      immediate: true
     }
   },
   async created() {
