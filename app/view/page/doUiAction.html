@@ -242,7 +242,6 @@ new Vue({
         case 'createItem':
           await this.prepareValidate();
           await this.prepareCreateItem();
-          await this.confirmCreateFormDialog();
           await this.doCreateItem();
           await this.closeCreateDrawer();
           await this.refreshTableData();
@@ -253,7 +252,6 @@ new Vue({
           break;
         case 'updateItem':
           await this.prepareValidate();
-          await this.confirmUpdateItemDialog();
           await this.doUpdateItem();
           await this.refreshTableData();
           await this.closeUpdateDrawer();
@@ -304,12 +302,6 @@ new Vue({
     async prepareCreateItem() {
       delete this.createItem.id;
     },
-    async confirmCreateFormDialog() {
-      // 中断后面的 uiAction function
-      if (await window.confirmDialog({title: "新增", content: "确定新增吗？"}) === false) {
-        throw new Error("[confirmCreateFormDialog] 否");
-      }
-    },
     async doCreateItem() {
       await window.vtoast.loading("新增学生");
       await window.jianghuAxios({
@@ -339,11 +331,6 @@ new Vue({
     async prepareUpdateItem() {
       // TODO: 对this.updateItem做一些数据处理
     },
-    async confirmUpdateItemDialog() {
-      if (await window.confirmDialog({title: "修改", content: "确定修改吗？"}) === false) {
-        throw new Error("[confirmCreateFormDialog] 否");
-      }
-    },
     async doUpdateItem() {
       const {id, ...actionData} = this.updateItem;
       await window.vtoast.loading("修改学生");
@@ -372,7 +359,7 @@ new Vue({
         return
       }
       if (await window.confirmDialog({title: "删除", content: "确定删除吗？"}) === false) {
-        throw new Error("[confirmCreateFormDialog] 否");
+        throw new Error("[confirmDeleteFormDialog] 否");
       }
     },
     async doDeleteItem({item}) {
