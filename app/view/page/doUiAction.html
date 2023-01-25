@@ -293,6 +293,7 @@ new Vue({
       delete this.createItem.id;
     },
     async doCreateItem() {
+      await window.jhMask.show();
       await window.vtoast.loading("新增学生");
       await window.jianghuAxios({
         data: {
@@ -303,6 +304,7 @@ new Vue({
           }
         }
       })
+      await window.jhMask.hide();
       await window.vtoast.success("新增学生成功");
     },
     async closeCreateDrawer() {
@@ -324,6 +326,7 @@ new Vue({
     async doUpdateItem() {
       const {id, ...actionData} = this.updateItem;
       await window.vtoast.loading("修改学生");
+      await window.jhMask.show();
       await window.jianghuAxios({
         data: {
           appData: {
@@ -334,6 +337,7 @@ new Vue({
           }
         }
       })
+      await window.jhMask.hide();
       await window.vtoast.success("修改学生成功");
     },
     async closeUpdateDrawer() {
