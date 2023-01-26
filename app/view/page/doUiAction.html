@@ -36,7 +36,18 @@
       </template>
       <template v-slot:footer.prepend>
         <span class="ml-2 table-search-hint-text">共{{ tableDataFromBackend.length }}条记录</span>
-        <!-- <v-switch v-model="showTableZebraLine" label="显示斑马纹" dense flat></v-switch> -->
+        <v-menu top offset-y :close-on-content-click="false">
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn v-bind="attrs" v-on="on" icon>
+              <v-icon>mdi-menu</v-icon>
+            </v-btn>
+          </template>
+          <v-list>
+            <v-list-item>
+              <v-switch v-model="showTableZebraLine" label="显示斑马纹" dense flat></v-switch>
+            </v-list-item>
+          </v-list>
+        </v-menu>
       </template>
       <template v-slot:footer.page-text="pagination">
           <span>{{pagination.pageStart}}-{{pagination.pageStop}}</span>
@@ -47,15 +58,12 @@
 </v-container>
 
 <v-overlay app :value="isCreateDrawerShow || isUpdateDrawerShow"></v-overlay>
+
 <v-navigation-drawer v-model="isCreateDrawerShow" fixed temporary right width="80%" hide-overlay
-                     class="elevation-24">
+                     class="elevation-24" style="overflow: revert;">
   <v-form v-model="isFormValid" v-if="isCreateDrawerShow" ref="form" lazy-validation>
     <v-row>
       <span class="title pa-6" :class="{'pl-8': !isMobile, 'pl-6': isMobile}">添加信息</span>
-      <v-spacer></v-spacer>
-      <v-btn class="mt-6 elevation-0 mr-8" fab x-small @click="isCreateDrawerShow = false">
-        <v-icon dark>mdi-close</v-icon>
-      </v-btn>
     </v-row>
     <v-row class="mt-0" :class="{'px-6': !isMobile, 'px-3': isMobile, 'pb-7': isMobile}">
       <v-col cols="12" sm="12" md="4" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
@@ -110,17 +118,17 @@
       <v-btn class="ml-2" @click="isCreateDrawerShow = false" small>取消</v-btn>
     </v-row>
   </v-form>
+
+  <v-btn elevation="0" color="success" fab absolute top left small tile class="drawer-close-float-btn" @click="isCreateDrawerShow = false"> 
+    <v-icon>mdi-close</v-icon> 
+  </v-btn>
 </v-navigation-drawer>
 
 <v-navigation-drawer v-model="isUpdateDrawerShow" fixed temporary right width="80%" hide-overlay
-                     class="elevation-24">
+                     class="elevation-24" style="overflow: revert;">
   <v-form v-model="isFormValid" v-if="isUpdateDrawerShow" ref="form" lazy-validation>
     <v-row>
       <span class="title pa-6" :class="{'pl-8': !isMobile, 'pl-6': isMobile}">修改信息</span>
-      <v-spacer></v-spacer>
-      <v-btn class="mt-6 elevation-0 mr-8" fab x-small @click="isUpdateDrawerShow = false">
-        <v-icon dark>mdi-close</v-icon>
-      </v-btn>
     </v-row>
     <v-row class="mt-0" :class="{'px-6': !isMobile, 'px-3': isMobile, 'pb-7': isMobile}">
       <v-col cols="12" sm="12" md="4" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
@@ -176,6 +184,10 @@
       </v-btn>
     </v-row>
   </v-form>
+
+  <v-btn elevation="0" color="success" fab absolute top left small tile class="drawer-close-float-btn" @click="isUpdateDrawerShow = false"> 
+    <v-icon>mdi-close</v-icon> 
+  </v-btn>
 </v-navigation-drawer>
 
 </jh-layout-v4>
