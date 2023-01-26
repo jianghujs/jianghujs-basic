@@ -89,7 +89,7 @@
     <v-dialog
     v-model="isSceneManageShow"
     persistent
-    width="70%"
+    width="800px"
     >
       <v-card class="scene-manage">
         <v-card-title>
@@ -109,7 +109,7 @@
               <v-col cols="5">
                 <v-card outlined>
                   <v-card-title class="pa-2">
-                    <v-checkbox v-model="manageScene.selectedAllShowScene" :value="true" dense hide-details class="mt-0">
+                    <v-checkbox v-model="manageScene.selectedAllShowScene" dense hide-details class="mt-0" @change="doUiAction('onSelectedAllShowSceneChange')">
                       <template v-slot:label>
                         <h6>显示的场景</h6>
                       </template>
@@ -118,12 +118,12 @@
                   <v-divider></v-divider>
                   <v-list dense class="scene-list">
                     <v-list-item v-for="item in manageScene.sceneShowList" :key="item.value" class="px-2" style="min-height: auto;">
-                        <v-checkbox v-model="manageScene.selectedShowScene" :label="item.name" :value="item.id" dense hide-details class="mt-0" style="font-size: 13px;"></v-checkbox>
+                        <v-checkbox v-model="manageScene.selectedShowScene" :label="item.name" :value="item.id" dense hide-details class="mt-0" style="font-size: 13px;" @change="doUiAction('onSelectedShowSceneChange')"></v-checkbox>
                     </v-list-item>
                   </v-list>
                 </v-card>
               </v-col>
-              <v-col cols="2">
+              <v-col cols="2" class="text-center">
                 <v-btn depressed color="primary" :disabled="manageScene.selectedShowScene.length == 0" @click="hideSelectedItem">
                   <v-icon dark> mdi-chevron-right </v-icon>
                 </v-btn>
@@ -134,7 +134,7 @@
               <v-col cols="5">
                 <v-card outlined>
                   <v-card-title class="pa-2">
-                    <v-checkbox v-model="manageScene.selectedAllHideScene" :value="true" dense hide-details class="mt-0">
+                    <v-checkbox v-model="manageScene.selectedAllHideScene" dense hide-details class="mt-0" @change="doUiAction('onSelectedAllHideSceneChange')">
                       <template v-slot:label>
                         <h6>隐藏的场景</h6>
                       </template>
@@ -143,7 +143,7 @@
                   <v-divider></v-divider>
                   <v-list dense class="scene-list">
                     <v-list-item v-for="item in manageScene.sceneHideList" :key="item.value" class="px-2 " style="min-height: auto;">
-                        <v-checkbox v-model="manageScene.selectedHideScene" :label="item.name" :value="item.id" dense hide-details class="mt-0" style="font-size: 13px;"></v-checkbox>
+                        <v-checkbox v-model="manageScene.selectedHideScene" :label="item.name" :value="item.id" dense hide-details class="mt-0" style="font-size: 13px;" @change="doUiAction('onSelectedHideSceneChange')"></v-checkbox>
                     </v-list-item>
                   </v-list>
                 </v-card>
@@ -169,6 +169,14 @@
     template: "#jhScene",
     vueComponent: 'jhScene',
     vuetify: new Vuetify(),
+    props: {
+      initFormData: {
+        type: Object,
+        default: function() {
+          return {};
+        }
+      }
+    },
     data() {
       return { 
         isMobile: window.innerWidth < 600,
@@ -213,6 +221,7 @@
             await this.useScene(uiActionData);
             break;
           case 'openAddScene': 
+            await this.prepareAddSeceneData();
             await this.openAddScene();
             break;
           case 'doAddScene':
@@ -237,6 +246,18 @@
             break;
           case 'closeManageScene': 
             await this.closeManageScene();
+            break;
+          case 'onSelectedAllShowSceneChange':
+            await this.onSelectedAllShowSceneChange();
+            break;
+          case 'onSelectedShowSceneChange':
+            await this.onSelectedShowSceneChange();
+            break;
+          case 'onSelectedAllHideSceneChange':
+            await this.onSelectedAllHideSceneChange();
+            break;
+          case 'onSelectedHideSceneChange':
+            await this.onSelectedHideSceneChange();
             break;
           default:
             console.error("[doUiAction] uiActionId not find", {uiActionId});
@@ -274,7 +295,13 @@
       },
 
       // =================================添加场景 start ======================================
-    
+      // 准备添加场景数据
+      async prepareAddSeceneData() {
+        this.editScene = {
+          form: _.cloneDeep(this.initFormData)
+        };
+      },
+
       // 打开场景添加弹框
       async openAddScene() {
         this.isAddSceneShow = true;
@@ -354,7 +381,28 @@
         this.manageScene.sceneShowList = this.manageScene.sceneShowList.concat(this.manageScene.sceneHideList.filter(item => this.manageScene.selectedHideScene.includes(item.id)));
         this.manageScene.sceneHideList = this.manageScene.sceneHideList.filter(item => !this.manageScene.selectedHideScene.includes(item.id));
         this.manageScene.selectedHideScene = [];
-      }
+      },
+
+      // 全选显示的场景
+      onSelectedAllShowSceneChange() {
+        this.manageScene.selectedShowScene = this.manageScene.selectedAllShowScene ? this.manageScene.sceneShowList.map(item => item.id) : [];
+      },
+
+      // 勾选显示的场景
+      onSelectedShowSceneChange() {
+        this.manageScene.selectedAllShowScene = this.manageScene.selectedShowScene.length === this.manageScene.sceneShowList.length;
+      },
+
+      // 全选隐藏的场景
+      onSelectedAllHideSceneChange() {
+        this.manageScene.selectedHideScene = this.manageScene.selectedAllHideScene ? this.manageScene.sceneHideList.map(item => item.id) : [];
+      },
+
+      // 勾选隐藏的场景
+      onSelectedHideSceneChange() {
+        this.manageScene.selectedAllHideScene = this.manageScene.selectedHideScene.length === this.manageScene.sceneHideList.length;
+      },
+
     },
   });
 
