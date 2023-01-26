@@ -22,8 +22,8 @@
           small>
         查询
       </v-btn>
-      <jhScene @useScene="useScene">
-        <template slot="form" slot-scope="{form}">
+      <jhScene :initFormData="serverSearchInput" @useScene="useScene">
+        <template v-slot:form="{form}">
           <v-row class="ma-0 align-center" :class="{'pa-0': isMobile}" style="justify-content: end">
             <v-col cols="12" class="px-0 pb-0">
               <v-text-field v-model="form.studentId" color="success" prefix="学生ID：" class="cus-v-input bg-white"
