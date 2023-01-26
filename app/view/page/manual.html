@@ -1,7 +1,7 @@
 {% extends 'template/jhTemplateV3.html'%}
 
 <!-- vue template 代码块 -->
-{% block vue_template %}
+{% block vueTemplate %}
 
 <jh-layout-v3 fullScreen>
   <iframe style="border: 0" :src="`/${appInfo.appId}/pageDoc`" width="100%" height="100%"></iframe>
@@ -10,7 +10,7 @@
 
 {% endblock %}
 
-{% block vue_body %}
+{% block vueScript %}
 
 {% include 'layout/jhLayout.html' %}
 
