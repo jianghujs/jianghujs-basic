@@ -181,6 +181,10 @@
         default: function() {
           return {};
         }
+      },
+      sceneId: {
+        type: String,
+        default: location.href.split('/').pop()
       }
     },
     data() {
@@ -294,7 +298,7 @@
       // 场景列表
       async getSceneList() {
         let sceneData = JSON.parse(localStorage.getItem('sceneData') || '{}');
-        this.sceneList = sceneData.backendSearchDemo || [];
+        this.sceneList = sceneData[this.sceneId] || [];
         this.sceneHideList = this.sceneList.filter(item => !item.show);
         this.sceneShowList = this.sceneList.filter(item => item.show);
       },
@@ -329,7 +333,7 @@
       // 添加场景
       async doAddScene() {
         let sceneData = JSON.parse(localStorage.getItem('sceneData') || '{}');
-        let sceneList = sceneData.backendSearchDemo || [];
+        let sceneList = sceneData[this.sceneId] || [];
         // 清空默认场景
         if(this.editScene.default) {
           sceneList.forEach(item => {
@@ -337,7 +341,7 @@
           });
         }
         sceneList.push({...this.editScene, show: true, id: this.getUUID('scene')});
-        sceneData.backendSearchDemo = sceneList;
+        sceneData[this.sceneId] = sceneList;
         localStorage.setItem('sceneData', JSON.stringify(sceneData));
       },
 
@@ -382,7 +386,7 @@
       // 提交场景管理
       async doManageScene() {
         let sceneData = JSON.parse(localStorage.getItem('sceneData') || '{}');
-        sceneData.backendSearchDemo = [
+        sceneData[this.sceneId] = [
           ...this.manageScene.sceneShowList.map(item => ({...item, show: true})),
           ...this.manageScene.sceneHideList.map(item => ({...item, show: false}))
         ];
