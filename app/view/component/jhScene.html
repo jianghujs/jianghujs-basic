@@ -194,10 +194,10 @@
         sceneList: [ ],
         sceneShowList: [],
         sceneHideList: [],
+        selectedScene: null,
 
         // 新建场景
         isAddSceneShow: false,
-        selectedScene: null,
         editScene: {
           form: {}
         },
@@ -222,6 +222,7 @@
         switch (uiActionId) {
           case 'getSceneList':
             await this.getSceneList();
+            await this.useDefaultScene();
             break;
           case 'useScene':
             await this.useScene(uiActionData);
@@ -298,6 +299,15 @@
         this.sceneShowList = this.sceneList.filter(item => item.show);
       },
 
+      // 使用默认场景
+      async useDefaultScene() {
+        let defaultScene = this.sceneList.find(item => item.default === true);
+        if(defaultScene) {
+          this.selectedScene = this.sceneList.findIndex(item => item.default === true);
+          this.useScene(defaultScene);
+        }
+      },
+
       // 使用场景
       async useScene(scene) {
         this.$emit('useScene', scene);
@@ -320,6 +330,12 @@
       async doAddScene() {
         let sceneData = JSON.parse(localStorage.getItem('sceneData') || '{}');
         let sceneList = sceneData.backendSearchDemo || [];
+        // 清空默认场景
+        if(this.editScene.default) {
+          sceneList.forEach(item => {
+            item.default = false;
+          });
+        }
         sceneList.push({...this.editScene, show: true, id: this.getUUID('scene')});
         sceneData.backendSearchDemo = sceneList;
         localStorage.setItem('sceneData', JSON.stringify(sceneData));
