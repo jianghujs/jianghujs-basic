@@ -3,14 +3,15 @@
 {% block vue_template %}
 
 <jh-layout-v4>
+
 <template slot="serverSearch">
-  <v-row class="ma-0 align-center" :class="{'pa-0': isMobile, 'pa-2': !isMobile}" style="justify-content: end">
-    <v-col cols="12" sm="12" xs="5" md="3" xl="2" class="pb-3" :class="{'px-0': isMobile, 'pt-0': isMobile}">
-      <v-text-field v-model="serverSearchInput.studentId" color="success" prefix="学生ID：" class="cus-v-input"
+  <v-row class="ma-0 align-center" style="justify-content: end">
+    <v-col cols="12" xs="6" sm="4" md="3" xl="2" class="pb-3" :class="{'px-0': isMobile, 'pt-0': isMobile}">
+      <v-text-field v-model="serverSearchInput.studentId" color="success" prefix="学生ID：" class="cus-v-input bg-white"
                     :class="{'mr-2': !isMobile}" dense filled single-line></v-text-field>
     </v-col>
-    <v-col cols="12" sm="12" xs="5" md="3" xl="2" class="pb-3" :class="{'pt-0': isMobile}">
-      <v-text-field v-model="serverSearchInput.classId" color="success" prefix="班级ID：" class="cus-v-input"
+    <v-col cols="12" xs="6" sm="4" md="3" xl="2" class="pb-3" :class="{'pt-0': isMobile}">
+      <v-text-field v-model="serverSearchInput.classId" color="success" prefix="班级ID：" class="cus-v-input bg-white"
                     :class="{'mr-2': !isMobile}" dense filled single-line></v-text-field>
     </v-col>
     <v-col class="px-0 d-flex align-center" :class="{'pr-0': isMobile, 'pt-0': isMobile}" style="max-width: max-content;">
@@ -26,7 +27,7 @@
         <template v-slot:form="{form}">
           <v-row class="ma-0 align-center" :class="{'pa-0': isMobile}" style="justify-content: end">
             <v-col cols="12" class="px-0 pb-0">
-              <v-text-field v-model="form.studentId" color="success" prefix="学生ID：" class="cus-v-input bg-white"
+              <v-text-field v-model="form.studentId" color="success" prefix="学生ID：" class="cus-v-input"
                             :class="{'mr-2': !isMobile}" dense filled single-line></v-text-field>
             </v-col>
             <v-col cols="12" class="px-0 pb-0">
@@ -39,20 +40,22 @@
     </v-col>
   </v-row>
 </template>
+
 <!-- 页面主要内容 -->
 <v-container class="fullScreen d-flex flex-column pa-0">
-    <v-row class="ma-0 align-center flex-none pt-0 " :class="{'pb-0': !isMobile, 'pa-2': isMobile}">
+  <v-card :class="{'px-2': isMobile}" class="rounded-lg">
+    <v-row class="ma-0 align-center flex-none pt-0 pa-4" :class="{'pb-0': !isMobile, 'pa-2': isMobile}">
       <v-col cols="12" xs="12" sm="4" md="4" xl="4" class="pl-0">
         <v-btn color="success" dark class="elevation-0 mr-2" @click="doUiAction('startCreateItem', null)" small>新增</v-btn>
       </v-col>
       <v-spacer></v-spacer>
-      <v-col cols="12" xs="6" sm="3" md="2" xl="2" class="pl-0" :class="{'pr-0': isMobile}">
+      <v-col cols="12" xs="6" sm="4" md="3" xl="2" class="pl-0" :class="{'pr-0': isMobile}">
         <v-select class="cus-v-input mr-2" v-model="currentTableGenderType"
                   :items="[{value: 'all', text: '全部'}, ...constantCollection.gender]" prefix="性别：" dense
                   item-text="text"
                   item-value="value" dense filled single-line></v-select>
       </v-col>
-      <v-col cols="12" xs="6" sm="3" md="2" xl="2" class="pr-0">
+      <v-col cols="12" xs="6" sm="4" md="3" xl="2" class="pr-0">
         <v-text-field v-model="searchInput" color="success" prefix="表格过滤：" class="cus-v-input" dense filled
                       single-line></v-text-field>
       </v-col>
@@ -72,28 +75,40 @@
         {{ getConstantCollectionItemText('level', item.level) }}
       </template>
       <template v-slot:item.action="{ item }">
-        <span role="button" class="success--text mr-2 font-weight-medium font-size-2" @click="doUiAction('startUpdateItem', item)">修改</span>
-        <span role="button" class="error--text mr-2 font-weight-medium font-size-2" @click="doUiAction('deleteItem', item)">删除</span>
+        <v-btn color="success" outlined x-small class="elevation-0 mr-2" @click="doUiAction('startUpdateItem', item)">修改</v-btn>
+        <v-btn color="error" outlined x-small class="elevation-0 mr-2" @click="doUiAction('deleteItem', item)">删除</v-btn>
       </template>
       <template v-slot:footer.prepend>
         <span class="ml-2 table-search-hint-text">共{{ tableData.length }}条记录</span>
-        <v-switch v-model="showTableZebraLine" label="显示斑马纹" dense flat></v-switch>
+        <v-menu top offset-y :close-on-content-click="false">
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn v-bind="attrs" v-on="on" icon>
+              <v-icon>mdi-menu</v-icon>
+            </v-btn>
+          </template>
+          <v-list>
+            <v-list-item>
+              <v-switch v-model="showTableZebraLine" label="显示斑马纹" dense flat></v-switch>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </template>
+      <template v-slot:footer.page-text="pagination">
+        <span>{{pagination.pageStart}}-{{pagination.pageStop}}</span>
+        <span class="ml-1">共{{pagination.itemsLength}}条</span>
       </template>
     </v-data-table>
+  </v-card>
 </v-container>
 
 <v-overlay app :value="isEditDrawerShow"></v-overlay>
 <!-- 编辑抽屉 -->
-<v-navigation-drawer v-model="isEditDrawerShow" fixed temporary right width="80%" hide-overlay class="elevation-24">
+<v-navigation-drawer v-model="isEditDrawerShow" fixed temporary right width="80%" hide-overlay class="elevation-24" style="overflow: revert;">
   <v-form v-model="isFormValid" v-if="isEditDrawerShow" ref="form" lazy-validation>
     <v-row>
         <span class="title pa-6" :class="{'pl-8': !isMobile, 'pl-6': isMobile}">{{
             editItem.id ? "修改" : "新增"
           }}信息</span>
-      <v-spacer></v-spacer>
-      <v-btn class="mt-7 mr-8 elevation-0" fab x-small @click="isEditDrawerShow = false">
-        <v-icon dark>mdi-close</v-icon>
-      </v-btn>
     </v-row>
     <v-row class="mt-0" :class="{'px-6': !isMobile, 'px-3': isMobile, 'pb-7': isMobile}">
       <v-col cols="12" sm="12" md="4" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
@@ -152,6 +167,10 @@
       <v-btn class="elevation-0 ml-2" @click="isEditDrawerShow = false" small>取消</v-btn>
     </v-row>
   </v-form>
+
+  <v-btn elevation="0" color="success" fab absolute top left small tile class="drawer-close-float-btn" @click="isEditDrawerShow = false"> 
+    <v-icon>mdi-close</v-icon> 
+  </v-btn>
 </v-navigation-drawer>
 </jh-layout-v4>
 
