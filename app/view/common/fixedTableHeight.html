@@ -8,10 +8,12 @@
       })
     } else {
       for (const table of tables) {
-        table.style.height = window.innerHeight - table.offsetTop - (height ? height : 145) + 'px';
+        const tableHeight = window.innerHeight - table.offsetTop - (height ? height : 130);
+        table.style.height = tableHeight + 'px';
       }
     }
   }
+
   window.onresize = () => {
     resetTableMaxHeight();
   }

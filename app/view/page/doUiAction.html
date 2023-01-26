@@ -6,13 +6,14 @@
 
 <!-- 页面主要内容 -->
 <v-container class="fullScreen d-flex flex-column pa-0">
-    <v-row class="ma-0 align-center flex-none pt-0"
+  <v-card :class="{'px-2': isMobile}" class="rounded-lg">
+    <v-row class="ma-0 align-center flex-none pt-0  pa-4"
            :class="{'pb-0': !isMobile, 'pa-2': isMobile}">
       <v-col cols="12" xs="12" sm="4" md="4" xl="4" class="pl-0">
         <v-btn color="success" dark small class="elevation-0 mr-2" @click="doUiAction('startInsertItem')">新增</v-btn>
       </v-col>
       <v-spacer></v-spacer>
-      <v-col cols="12" xs="6" sm="3" md="2" xl="2" class="px-0">
+      <v-col cols="12" xs="6" sm="4" md="3" xl="2" class="px-0">
         <v-text-field v-model="searchInput" color="success" prefix="表格过滤：" class="cus-v-input" dense filled single-line></v-text-field>
       </v-col>
     </v-row>
@@ -21,23 +22,28 @@
       :headers="headers"
       :items="tableDataFromBackend"
       :search="searchInput"
-      :footer-props="{ itemsPerPageOptions: [20, 40, 60, 100, -1] }"
+      :footer-props="{ itemsPerPageOptions: [20, 40, 60, 100, -1], itemsPerPageText: '每页行数', itemsPerPageAllText: '所有'}"
       :items-per-page="20"
       mobile-breakpoint="0"
       :loading="isTableLoading"
       :class="{'mx-2': isMobile, 'zebraLine': showTableZebraLine }"
       checkbox-color="success"
       fixed-header 
-      class="fixed-table-height elevation-0 mt-0 mb-xs-4 flex-fill d-flex flex-column">
+      class="fixed-table-height elevation-0 mt-0 mb-xs-4 flex-fill d-flex flex-column"> 
       <template v-slot:item.action="{ item }">
-        <span role="button" class="success--text mr-2 font-weight-medium font-size-2" @click="doUiAction('startUpdateItem', {item})">修改</span>
-        <span role="button" class="error--text mr-2 font-weight-medium font-size-2" @click="doUiAction('deleteItem', {item})">删除</span>
+        <v-btn color="success" outlined x-small class="elevation-0 mr-2" @click="doUiAction('startUpdateItem', {item})">修改</v-btn>
+        <v-btn color="error" outlined x-small class="elevation-0 mr-2" @click="doUiAction('deleteItem', {item})">删除</v-btn>
       </template>
       <template v-slot:footer.prepend>
         <span class="ml-2 table-search-hint-text">共{{ tableDataFromBackend.length }}条记录</span>
-        <v-switch v-model="showTableZebraLine" label="显示斑马纹" dense flat></v-switch>
-      </template>>
+        <!-- <v-switch v-model="showTableZebraLine" label="显示斑马纹" dense flat></v-switch> -->
+      </template>
+      <template v-slot:footer.page-text="pagination">
+          <span>{{pagination.pageStart}}-{{pagination.pageStop}}</span>
+          <span class="ml-1">共{{pagination.itemsLength}}条</span>
+      </template>
     </v-data-table>
+  </v-card>
 </v-container>
 
 <v-overlay app :value="isCreateDrawerShow || isUpdateDrawerShow"></v-overlay>
@@ -196,7 +202,7 @@ new Vue({
     isTableLoading: true,
     tableDataFromBackend: [],
     headers: [
-      {text: '操作', value: 'action', align: 'center', sortable: false, width: 100, class: 'fixed', cellClass: 'fixed'},
+      {text: '操作', value: 'action', align: 'center', sortable: false, width: 150, class: 'fixed', cellClass: 'fixed'},
       {text: "学生ID", value: "studentId", width: 120},
       {text: "班级ID", value: "classId", width: 140},
       {text: "学生名字", value: "name", width: 120},

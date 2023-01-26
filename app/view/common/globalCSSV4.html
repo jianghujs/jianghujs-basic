@@ -873,7 +873,7 @@ body .v-application .primary--text {
 }
 body{
   font-size: 13px;
-  background: #fff!important;
+  background: #F9FAFA !important;
 }
 .v-data-table>.v-data-table__wrapper>table>tbody>tr>td, .v-data-table>.v-data-table__wrapper>table>tfoot>tr>td, .v-data-table>.v-data-table__wrapper>table>thead>tr>td{
   min-height: 40px;
@@ -915,6 +915,9 @@ body .v-sheet.v-card:not(.v-sheet--outlined){
 }
 body .headerTab{
   font-weight: 400;
+}
+body .headerTabActive {
+  font-weight: 500;
 }
 .theme--light.v-tabs>.v-tabs-bar .v-tab--disabled, .theme--light.v-tabs>.v-tabs-bar .v-tab:not(.v-tab--active), .theme--light.v-tabs>.v-tabs-bar .v-tab:not(.v-tab--active)>.v-btn, .theme--light.v-tabs>.v-tabs-bar .v-tab:not(.v-tab--active)>.v-icon{
   color: var(--gray-900);
@@ -999,5 +1002,31 @@ body span.inputLabel{
 }
 body .outSideMain .theme--light.v-text-field--filled>.v-input__control>.v-input__slot{
   background: #F9FAFA;
+}
+/* table 定高 */
+.fixed-table-height .v-data-table__wrapper{
+  flex: auto;
+}
+/* 分页紧凑 */
+.v-application--is-ltr .v-data-footer__pagination{
+  margin: 0 12px 0 4px;
+}
+.v-application--is-ltr .v-data-footer__select .v-select{
+  margin: 3px 0 3px 14px;
+}
+.v-application--is-ltr .v-data-footer__select{
+  margin-right: 8px;
+  margin-left: 20px;
+}
+.v-application--is-ltr .v-data-footer__icons-before .v-btn:last-child{
+  margin-right: 0;
+}
+.v-application--is-ltr .v-data-footer__icons-after .v-btn:first-child, .v-application--is-rtl .v-data-footer__icons-before .v-btn:last-child{
+  margin-left: 0;
+}
+/* table 页脚 */
+.v-data-footer{
+  border-top: 1px solid #F4F5F6 !important;
+  margin-right: 0 !important;
 }
 </style>
