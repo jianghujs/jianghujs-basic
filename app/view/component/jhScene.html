@@ -117,8 +117,11 @@
                   </v-card-title>
                   <v-divider></v-divider>
                   <v-list dense class="scene-list">
-                    <v-list-item v-for="item in manageScene.sceneShowList" :key="item.value" class="px-2" style="min-height: auto;">
-                        <v-checkbox v-model="manageScene.selectedShowScene" :label="item.name" :value="item.id" dense hide-details class="mt-0" style="font-size: 13px;" @change="doUiAction('onSelectedShowSceneChange')"></v-checkbox>
+                    <v-list-item class="scene-item" v-for="(item, index) in manageScene.sceneShowList" :key="item.value" class="px-2" style="min-height: auto;">
+                      <v-checkbox v-model="manageScene.selectedShowScene" :label="item.name" :value="item.id" dense hide-details class="mt-0" style="font-size: 13px;" @change="doUiAction('onSelectedShowSceneChange')"> </v-checkbox>
+                      <div class="operate-btn">
+                        <div @click.stop="doUiAction('doDeleteScene', {arrKey: 'sceneShowList', item, index })"> <v-icon>mdi-delete</v-icon> </div>
+                      </div>
                     </v-list-item>
                   </v-list>
                 </v-card>
@@ -142,8 +145,11 @@
                   </v-card-title>
                   <v-divider></v-divider>
                   <v-list dense class="scene-list">
-                    <v-list-item v-for="item in manageScene.sceneHideList" :key="item.value" class="px-2 " style="min-height: auto;">
-                        <v-checkbox v-model="manageScene.selectedHideScene" :label="item.name" :value="item.id" dense hide-details class="mt-0" style="font-size: 13px;" @change="doUiAction('onSelectedHideSceneChange')"></v-checkbox>
+                    <v-list-item v-for="(item, index) in manageScene.sceneHideList" :key="item.value" class="px-2 " style="min-height: auto;">
+                      <v-checkbox v-model="manageScene.selectedHideScene" :label="item.name" :value="item.id" dense hide-details class="mt-0" style="font-size: 13px;" @change="doUiAction('onSelectedHideSceneChange')"></v-checkbox>
+                      <div class="operate-btn">
+                        <div @click.stop="doUiAction('doDeleteScene', {arrKey: 'sceneHideList', item, index })"> <v-icon>mdi-delete</v-icon> </div>
+                      </div>  
                     </v-list-item>
                   </v-list>
                 </v-card>
@@ -246,6 +252,9 @@
             break;
           case 'closeManageScene': 
             await this.closeManageScene();
+            break;
+          case 'doDeleteScene':
+            await this.doDeleteScene(uiActionData);
             break;
           case 'onSelectedAllShowSceneChange':
             await this.onSelectedAllShowSceneChange();
@@ -369,6 +378,15 @@
         this.isSceneManageShow = false;
       },
 
+      // 删除场景
+      async doDeleteScene({arrKey, item, index}) {
+        let selectedShowScene = _.clone(this.manageScene.selectedShowScene);
+        let selectedHideScene = _.clone(this.manageScene.selectedHideScene);
+        this.manageScene[arrKey].splice(index, 1);
+        this.manageScene.selectedShowScene = selectedShowScene;
+        this.manageScene.selectedHideScene = selectedHideScene;
+      },
+
       // 隐藏选中的场景
       hideSelectedItem() {
         this.manageScene.sceneHideList = this.manageScene.sceneHideList.concat(this.manageScene.sceneShowList.filter(item => this.manageScene.selectedShowScene.includes(item.id)));
@@ -390,7 +408,7 @@
 
       // 勾选显示的场景
       onSelectedShowSceneChange() {
-        this.manageScene.selectedAllShowScene = this.manageScene.selectedShowScene.length === this.manageScene.sceneShowList.length;
+        this.manageScene.selectedAllShowScene = (this.manageScene.selectedShowScene || []).length === this.manageScene.sceneShowList.length;
       },
 
       // 全选隐藏的场景
@@ -400,7 +418,7 @@
 
       // 勾选隐藏的场景
       onSelectedHideSceneChange() {
-        this.manageScene.selectedAllHideScene = this.manageScene.selectedHideScene.length === this.manageScene.sceneHideList.length;
+        this.manageScene.selectedAllHideScene = (this.manageScene.selectedHideScene || []).length === this.manageScene.sceneHideList.length;
       },
 
     },
@@ -419,6 +437,22 @@
     height: 200px;
     overflow-y: auto;
   }
-  
+  .scene-manage .scene-list > div {
+    position: relative;
+  }
+  .scene-manage .scene-list > div .operate-btn {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    display: none;
+  }
+  .scene-manage .scene-list > div:hover .operate-btn {
+    display: block;
+  }
+  .scene-manage .scene-list > div .operate-btn i::before {
+    font-size: 18px;
+  }
 </style>
 <!--jhToast.html end-->
