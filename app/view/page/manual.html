@@ -2,11 +2,15 @@
 
 <!-- vue template 代码块 -->
 {% block vueTemplate %}
+<script type="text/x-template" id="app-template">
+  <div>
+    <jh-layout-v4 fullScreen>
+      <iframe style="border: 0" :src="`/${appInfo.appId}/pageDoc`" width="100%" height="100%"></iframe>
+    </jh-layout-v4>
+</script>
 
-<jh-layout-v3 fullScreen>
-  <iframe style="border: 0" :src="`/${appInfo.appId}/pageDoc`" width="100%" height="100%"></iframe>
-</jh-layout-v3>
-
+<div id="app">
+</div>
 
 {% endblock %}
 

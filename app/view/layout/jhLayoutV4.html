@@ -152,7 +152,12 @@
       <v-main class="d-flex flex-column">
         <div class="d-flex" :style="{'flex-wrap': isMobile ? 'wrap' : 'nowrap'}" :class="{'px-8': !isMobile, 'px-4': isMobile}">
           <div>
-            <div class="appTitle pt-3" style="font-size: 18px; font-weight: 700"><slot name='breadcrumbsTitle' :isMobile="isMobile">{{breadcrumbs[1].fullText}}</slot></div>
+            <div class="appTitle pt-3" style="font-size: 18px; font-weight: 700">
+              <slot name='breadcrumbsTitle' :isMobile="isMobile">
+                {{breadcrumbs[1].fullText}}
+                <v-icon @click="isHelpPageDrawerShow = true">mdi-help-circle-outline</v-icon>
+              </slot>
+            </div>
             <slot name='breadcrumbsList' :isMobile="isMobile">
               <v-breadcrumbs
                 class="pb-3 pt-0 pl-0"
@@ -169,6 +174,9 @@
         <div style="flex: 1;" :class="{'px-8': !isMobile, 'pt-4': fullScreen}">
           <slot :isMobile="isMobile"></slot>
         </div>
+        <v-navigation-drawer v-model="isHelpPageDrawerShow" fixed temporary right width="80%" hide-overlay class="elevation-24">
+          <iframe style="border: 0" :src="`/${appInfo.appId}/pageDoc?pageId=<$ ctx.packagePage.pageId $>`" width="100%" height="100%"></iframe>
+        </v-navigation-drawer>
       </v-main>
     </template>
   </v-app>
@@ -192,6 +200,8 @@ Vue.component("jh-layout-v4", {
     selectedItem: -1,
     selectItemTitle: '',
     drawer: null,
+
+    isHelpPageDrawerShow: false,
 
     appDirectoryLink: '<$ ctx.app.config.appDirectoryLink $>',
     appType: '<$ ctx.app.config.appType $>',

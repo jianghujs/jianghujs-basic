@@ -1,0 +1,57 @@
+<!-- index.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="/<$ ctx.app.config.appId $>/public/css/docsify/vue.min.css" />
+  <link href="/<$ ctx.app.config.appId $>/public/plugins/docsify/vue.min.css" rel="stylesheet">
+</head>
+<body>
+<div id="app"></div>
+<script>
+  window.$docsify = {
+    // 读取相对路径
+    relativePath: true,
+    // 加载 _sidebar.md 作为目录
+    loadSidebar: true,
+    // 左栏目录只展示一层
+    subMaxLevel: 1,
+    // 首页读取 manual.md 文件
+    homepage: 'protocolDemo.md',
+
+    // 搜索功能
+    search: {
+      maxAge: 3600,
+      depth: 4,
+    },
+
+    // 生成目录
+    toc: {
+      tocMaxLevel: 3,
+      target: 'h2, h3, h4, h5, h6'
+    },
+  }
+</script>
+<style>
+  .toc-nav {
+    position: fixed;
+    right: 5vw;
+    top: 5vh;
+    width: 15vw;
+    z-index: 10;
+    background: white;
+    padding: 0.5vw;
+    border: #c7c7c7 solid 1px;
+  }
+</style>
+<script src="/<$ ctx.app.config.appId $>/public/plugins/docsify/docsify.min.js"></script>
+<script src="/<$ ctx.app.config.appId $>/public/plugins/docsify/search.min.js"></script>
+<script src="/<$ ctx.app.config.appId $>/public/plugins/docsify/emoji.min.js"></script>
+<script src="/<$ ctx.app.config.appId $>/public/plugins/docsify/docsify-copy-code.min.js"></script>
+<script src="/<$ ctx.app.config.appId $>/public/plugins/docsify/docsify-pagination.min.js"></script>
+<script src="/<$ ctx.app.config.appId $>/public/plugins/docsify/docsify-plugin-toc.min.js"></script>
+</body>
+</html>
