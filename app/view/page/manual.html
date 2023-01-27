@@ -2,10 +2,32 @@
 
 <!-- vue template 代码块 -->
 {% block vueTemplate %}
+
+<script type="text/x-template" id="app-template">
+  <div>
+    <v-app id="inspire" mobile-breakpoint="sm">
+      <jhMenu />
+      <v-main class="d-flex flex-column" style="margin-top: 80px">
+
+        <div style="flex: 1;" :class="{'px-8': !isMobile, 'px-4': isMobile}">
+          <!-- 页面内容 start -->
+          <iframe style="border: 0" :src="`/${appInfo.appId}/pageDoc`" width="100%" height="100%"></iframe>
+          <!-- 页面内容 end -->
+        </div>
+
+      </v-main>
+    </v-app>
+
+    <jhToast />
+    <jhMask />
+    <jhConfirmDialog />
+  </div>
+</script>
+
+
 <script type="text/x-template" id="app-template">
   <div>
     <jh-layout-v4 fullScreen>
-      <iframe style="border: 0" :src="`/${appInfo.appId}/pageDoc`" width="100%" height="100%"></iframe>
     </jh-layout-v4>
 </script>
 
@@ -25,9 +47,16 @@ new Vue({
   template: '#app-template',
   vuetify: new Vuetify(),
   data: () => ({
+    breadcrumbs: window.breadcrumbs,
+    isHelpPageDrawerShow: false,
+
     appInfo: window.appInfo,
   }),
-  computed: {},
+  computed: {
+    isMobile() {
+      return window.innerWidth < 600;
+    }
+  },
   watch: {},
   created() {},
   mounted() {},

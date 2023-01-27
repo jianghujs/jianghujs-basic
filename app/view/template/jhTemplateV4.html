@@ -38,6 +38,8 @@
 
   <!-- 加载工具脚本 start -->
   {% include 'utility/prepareAppInfoV4.html' %}
+  {% include 'utility/prepareUserInfoV4.html' %}
+  {% include 'utility/prepareBreadcrumbsV4.html' %}
   {% include 'utility/jianghuAxiosV4.html' %}
   {% include 'utility/htmlErrorCollectionV4.html' %}
   {% include 'utility/uiActionV4.html' %}
@@ -46,10 +48,9 @@
   <!-- 加载全局组件 start -->
   {% include 'component/jhToastV4.html' %}
   {% include 'component/jhMaskV4.html' %}
+  {% include 'component/jhMenuV4.html' %}
   {% include 'component/jhConfirmDialogV4.html' %}
   <!-- 加载全局组件 end -->
-
-  {% include 'layout/jhLayoutV4.html' %}
 
   {% block vueScript %}
   {% endblock %}

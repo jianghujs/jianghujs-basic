@@ -4,20 +4,45 @@
 
 <script type="text/x-template" id="app-template">
   <div>
+    <v-app id="inspire" mobile-breakpoint="sm">
+      <jhMenu />
+      <v-main class="d-flex flex-column" style="margin-top: 60px">
+        <!-- 头部内容 start -->
+        <div class="d-flex" :style="{'flex-wrap': isMobile ? 'wrap' : 'nowrap'}" :class="{'px-8': !isMobile, 'px-4': isMobile}"><div>
+            <div class="appTitle pt-3" style="font-size: 18px; font-weight: 700">{{ breadcrumbs[1].fullText }}
+              <!-- 帮助页按钮 -->
+              <v-icon @click="isHelpPageDrawerShow = true">mdi-help-circle-outline</v-icon>
+            </div>
+            <v-breadcrumbs class="pb-3 pt-0 pl-0" :items="breadcrumbs" divider="-"></v-breadcrumbs>
+          </div>
+        </div>
+        <!-- 头部内容 end -->
 
-    <jh-layout-v4>
-      <div v-if="error.errorCode">
-        <h2>{{ error.errorCode }} : {{ error.errorReason }}</h2>
-        <hr/>
-        <h2>{{ error.errorReasonSupplement }}</h2>
-      </div>
-      <div v-else>
-        <h2>亲，你似乎迷路了？</h2>
-      </div>
-    </jh-layout-v4>
-    <jhToast/>
-    <jhMask/>
-    <jhConfirmDialog/>
+        <div style="flex: 1;" :class="{'px-8': !isMobile, 'px-4': isMobile}">
+          <!-- 页面内容 start -->
+          <div v-if="error.errorCode">
+            <h2>{{ error.errorCode }} : {{ error.errorReason }}</h2>
+            <hr/>
+            <h2>{{ error.errorReasonSupplement }}</h2>
+          </div>
+          <div v-else>
+            <h2>亲，你似乎迷路了？</h2>
+          </div>
+          <!-- 页面内容 end -->
+        </div>
+
+        <!-- 帮助页抽屉 start -->
+        <v-navigation-drawer v-model="isHelpPageDrawerShow" fixed temporary right width="80%" hide-overlay class="elevation-24">
+          <iframe style="border: 0" :src="`/${appInfo.appId}/pageDoc?pageId=<$ ctx.packagePage.pageId $>`" width="100%" height="100%"></iframe>
+        </v-navigation-drawer>
+        <!-- 帮助页抽屉 end -->
+
+      </v-main>
+    </v-app>
+
+    <jhToast />
+    <jhMask />
+    <jhConfirmDialog />
   </div>
 </script>
 
@@ -29,34 +54,39 @@
 
 {% block vueScript %}
 
-{% include 'layout/jhLayout.html' %}
-
 <script type="module">
-new Vue({
-  el: '#app',
-  template: '#app-template',
-  vuetify: new Vuetify(),
-  data: () => ({
-    error: {
-      errorCode: null,
-      errorReason: null,
-      errorReasonSupplement: null,
-    }
-  }),
-  async created() {
-    const urlParams = new URLSearchParams(location.search);
-    if (urlParams.get('errorCode')) {
-      this.error.errorCode = urlParams.get('errorCode');
-    }
-    if (urlParams.get('errorReason')) {
-      this.error.errorReason = urlParams.get('errorReason');
-    }
-    if (urlParams.get('errorReasonSupplement')) {
-      this.error.errorReasonSupplement = urlParams.get('errorReasonSupplement');
-    }
-  },
-  methods: {}
-})
+  new Vue({
+    el: '#app',
+    template: '#app-template',
+    vuetify: new Vuetify(),
+    data: () => ({
+      error: {
+        errorCode: null,
+        errorReason: null,
+        errorReasonSupplement: null,
+      },
+      breadcrumbs: window.breadcrumbs,
+      isHelpPageDrawerShow: false,
+    }),
+    computed: {
+      isMobile() {
+        return window.innerWidth < 600;
+      }
+    },
+    async created() {
+      const urlParams = new URLSearchParams(location.search);
+      if (urlParams.get('errorCode')) {
+        this.error.errorCode = urlParams.get('errorCode');
+      }
+      if (urlParams.get('errorReason')) {
+        this.error.errorReason = urlParams.get('errorReason');
+      }
+      if (urlParams.get('errorReasonSupplement')) {
+        this.error.errorReasonSupplement = urlParams.get('errorReasonSupplement');
+      }
+    },
+    methods: {}
+  })
 </script>
 
 <style scoped>
