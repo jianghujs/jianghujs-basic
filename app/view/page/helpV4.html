@@ -1,17 +1,29 @@
-{% extends 'template/jhTemplateV3.html'%}
+{% extends 'template/jhTemplateV4.html'%}
 
 {% block vueTemplate %}
 
-<jh-layout-v3>
-  <div v-if="error.errorCode">
-    <h2>{{ error.errorCode }} : {{ error.errorReason }}</h2>
-    <hr/>
-    <h2>{{ error.errorReasonSupplement }}</h2>
+<script type="text/x-template" id="app-template">
+  <div>
+
+    <jh-layout-v4>
+      <div v-if="error.errorCode">
+        <h2>{{ error.errorCode }} : {{ error.errorReason }}</h2>
+        <hr/>
+        <h2>{{ error.errorReasonSupplement }}</h2>
+      </div>
+      <div v-else>
+        <h2>亲，你似乎迷路了？</h2>
+      </div>
+    </jh-layout-v4>
+    <jhToast/>
+    <jhMask/>
+    <jhConfirmDialog/>
   </div>
-  <div v-else>
-    <h2>亲，你似乎迷路了？</h2>
-  </div>
-</jh-layout-v3>
+</script>
+
+<div id="app">
+</div>
+
 
 {% endblock %}
 

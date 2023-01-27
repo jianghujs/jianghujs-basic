@@ -3,7 +3,7 @@
 {% block vueTemplate %}
 
 <script type="text/x-template" id="app-template">
-    <div id="container">
+    <div>
 
       <jh-layout-v4>
 
@@ -190,8 +190,8 @@
 
 {% block vueScript %}
 
-{% include 'common/fixedTableHeight.html' %}
-{% include 'component/jhScene.html' %}
+{% include 'common/fixedTableHeightV4.html' %}
+{% include 'component/jhSceneV4.html' %}
 <script type="module">
 new Vue({
   el: '#app',
