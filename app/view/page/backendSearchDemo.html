@@ -10,11 +10,11 @@
         <template slot="serverSearch">
           <v-row class="ma-0 align-center" style="justify-content: end">
             <v-col cols="12" xs="6" sm="4" md="3" xl="2" class="pb-3" :class="{'px-0': isMobile, 'pt-0': isMobile}">
-              <v-text-field v-model="serverSearchInput.studentId" color="success" prefix="学生ID：" class="cus-v-input bg-white"
+              <v-text-field v-model="serverSearchInput.studentId" color="success" prefix="学生ID：" class="cus-v-input"
                             :class="{'mr-2': !isMobile}" dense filled single-line></v-text-field>
             </v-col>
             <v-col cols="12" xs="6" sm="4" md="3" xl="2" class="pb-3" :class="{'pt-0': isMobile}">
-              <v-text-field v-model="serverSearchInput.classId" color="success" prefix="班级ID：" class="cus-v-input bg-white"
+              <v-text-field v-model="serverSearchInput.classId" color="success" prefix="班级ID：" class="cus-v-input"
                             :class="{'mr-2': !isMobile}" dense filled single-line></v-text-field>
             </v-col>
             <v-col class="px-0 d-flex align-center" :class="{'pr-0': isMobile, 'pt-0': isMobile}" style="max-width: max-content;">
@@ -106,7 +106,7 @@
 
         <v-overlay app :value="isEditDrawerShow"></v-overlay>
         <!-- 编辑抽屉 -->
-        <v-navigation-drawer v-model="isEditDrawerShow" fixed temporary right width="80%" hide-overlay class="elevation-24" style="overflow: revert;">
+        <v-navigation-drawer v-model="isEditDrawerShow" fixed temporary right width="80%" hide-overlay class="elevation-24">
           <v-form v-model="isFormValid" v-if="isEditDrawerShow" ref="form" lazy-validation>
             <v-row>
                 <span class="title pa-6" :class="{'pl-8': !isMobile, 'pl-6': isMobile}">{{

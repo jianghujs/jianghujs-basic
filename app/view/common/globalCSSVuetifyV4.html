@@ -610,19 +610,21 @@ body span.inputLabel{
   font-size: 13px;
   flex: auto;
 }
-body .outSideMain .theme--light.v-text-field--filled>.v-input__control>.v-input__slot{
-  background: #F9FAFA;
-}
 /* table 定高 */
 .fixed-table-height .v-data-table__wrapper{
   flex: auto;
 }
-/* 分页紧凑 */
+/* table 页脚 */
+.v-data-footer{
+  border-top: 1px solid rgba(0, 0, 0, .06) !important;
+  margin-right: 0 !important;
+}
+/* table 分页紧凑 */
 .v-application--is-ltr .v-data-footer__pagination{
   margin: 0 12px 0 4px;
 }
 .v-application--is-ltr .v-data-footer__select .v-select{
-  margin: 3px 0 3px 14px;
+  margin: 8px 0 8px 14px;
 }
 .v-application--is-ltr .v-data-footer__select{
   margin-right: 8px;
@@ -634,9 +636,12 @@ body .outSideMain .theme--light.v-text-field--filled>.v-input__control>.v-input_
 .v-application--is-ltr .v-data-footer__icons-after .v-btn:first-child, .v-application--is-rtl .v-data-footer__icons-before .v-btn:last-child{
   margin-left: 0;
 }
-/* table 页脚 */
-.v-data-footer{
-  border-top: 1px solid #F4F5F6 !important;
-  margin-right: 0 !important;
+/* drawer */
+.v-navigation-drawer{
+  overflow: revert;
+}
+.drawer-close-float-btn{
+  top: 120px !important;
+  left: -40px !important;
 }
 </style>

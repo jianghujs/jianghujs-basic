@@ -63,7 +63,7 @@
         <v-overlay app :value="isCreateDrawerShow || isUpdateDrawerShow"></v-overlay>
 
         <v-navigation-drawer v-model="isCreateDrawerShow" fixed temporary right width="80%" hide-overlay
-                            class="elevation-24" style="overflow: revert;">
+                            class="elevation-24">
           <v-form v-model="isFormValid" v-if="isCreateDrawerShow" ref="form" lazy-validation>
             <v-row>
               <span class="title pa-6" :class="{'pl-8': !isMobile, 'pl-6': isMobile}">添加信息</span>
@@ -128,7 +128,7 @@
         </v-navigation-drawer>
 
         <v-navigation-drawer v-model="isUpdateDrawerShow" fixed temporary right width="80%" hide-overlay
-                            class="elevation-24" style="overflow: revert;">
+                            class="elevation-24">
           <v-form v-model="isFormValid" v-if="isUpdateDrawerShow" ref="form" lazy-validation>
             <v-row>
               <span class="title pa-6" :class="{'pl-8': !isMobile, 'pl-6': isMobile}">修改信息</span>
