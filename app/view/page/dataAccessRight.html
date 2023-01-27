@@ -3,7 +3,7 @@
 {% block vueTemplate %}
 
 <script type="text/x-template" id="app-template">
-    <div id="container">
+    <div>
 
     <jh-layout-v4>
       <template slot="serverSearch">
@@ -131,7 +131,7 @@
 {% endblock %}
 
 {% block vueScript %}
-{% include 'common/fixedTableHeight.html' %}
+{% include 'common/fixedTableHeightV4.html' %}
 {% include 'layout/jhLayout.html' %}
 
 <script type="module">
