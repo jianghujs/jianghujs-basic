@@ -14,17 +14,7 @@ class PageDocController extends Controller {
   }
 
   async sidebar() {
-    const { allowPageList } = this.ctx.userInfo;
-    // 生成 sidebar 目录内容
-    const menuList = [];
-    menuList.push('* [Home](/)');
-    allowPageList && _.sortBy(allowPageList, [ 'sort' ]).forEach(page => {
-      if (page.pageId === 'manual' || page.pageType !== 'showInMenu') {
-        return;
-      }
-      menuList.push(`* [${page.pageName}(${page.pageId})](${page.pageId})`);
-    });
-    this.ctx.body = menuList.join('\n');
+    // todo delete
   }
 
   async page() {
