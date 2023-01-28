@@ -10,11 +10,7 @@ class PageDocController extends Controller {
     const { ctx } = this;
     // 如果有传指定 pageId，则渲染 single.html
     const { pageId } = this.ctx.query;
-    if (pageId) {
-      await ctx.render('pageDoc/single.html', { pageId });
-    } else {
-      await ctx.render('pageDoc/index.html');
-    }
+    await ctx.render('pageDoc/index.html');
   }
 
   async sidebar() {

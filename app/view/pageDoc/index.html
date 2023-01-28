@@ -18,7 +18,7 @@
     // 加载 _sidebar.md 作为目录
     loadSidebar: true,
     // 左栏目录只展示一层
-    subMaxLevel: 1,
+    subMaxLevel: 3,
     // 首页读取 manual.md 文件
     homepage: 'protocolDemo.md',
 
@@ -27,26 +27,8 @@
       maxAge: 3600,
       depth: 4,
     },
-
-    // 生成目录
-    toc: {
-      tocMaxLevel: 3,
-      target: 'h2, h3, h4, h5, h6'
-    },
   }
 </script>
-<style>
-  .toc-nav {
-    position: fixed;
-    right: 5vw;
-    top: 5vh;
-    width: 15vw;
-    z-index: 10;
-    background: white;
-    padding: 0.5vw;
-    border: #c7c7c7 solid 1px;
-  }
-</style>
 <script src="/<$ ctx.app.config.appId $>/public/plugins/docsify/docsify.min.js"></script>
 <script src="/<$ ctx.app.config.appId $>/public/plugins/docsify/search.min.js"></script>
 <script src="/<$ ctx.app.config.appId $>/public/plugins/docsify/emoji.min.js"></script>
