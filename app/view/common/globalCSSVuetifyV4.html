@@ -74,9 +74,6 @@ table > thead > tr > th.fixed:nth-child(1)
   left: 0;
   z-index: 10!important;
   background: white;
-  -webkit-box-shadow: -1px 0px 3px -1px rgba(0, 0, 0, 0.19);
-  -moz-box-shadow: -1px 0px 3px -1px rgba(0, 0, 0, 0.19);
-  box-shadow: -1px 0px 3px -1px rgba(0, 0, 0, 0.19);
   border-right: none;
 }
 
@@ -89,9 +86,6 @@ table > thead > tr > th.fixed:nth-child(2)
   left: 100px;
   z-index: 10;
   background: white;
-  -webkit-box-shadow: -1px 0px 3px -1px rgba(0, 0, 0, 0.19);
-  -moz-box-shadow: -1px 0px 3px -1px rgba(0, 0, 0, 0.19);
-  box-shadow: -1px 0px 3px -1px rgba(0, 0, 0, 0.19);
   border-right: none;
 }
 
@@ -585,15 +579,6 @@ body span.inputLabel{
 .cus-v-input .v-input__icon--append button{
   font-size: 18px;
 }
-.v-data-table.zebraLine tr:nth-child(even), .v-data-table.zebraLine tr:nth-child(even) td.fixed{
-    background-color: #F9FAFA;
-}
-.theme--light.v-data-table>.v-data-table__wrapper>table>tbody>tr:hover:not(.v-data-table__expanded__content):not(.v-data-table__empty-wrapper){
-  background: #EEF7ED !important;
-}
-.theme--light.v-data-table>.v-data-table__wrapper>table>tbody>tr:hover td.fixed{
-  background: #EEF7ED !important;
-}
 .theme--light.v-data-table .v-data-footer{
   justify-content: end;
 }
@@ -610,8 +595,23 @@ body span.inputLabel{
   font-size: 13px;
   flex: auto;
 }
+/* table 斑马纹 */
+.v-data-table.zebraLine tr:nth-child(even), 
+.v-data-table.zebraLine tr:nth-child(even) td.fixed,
+.v-data-table.zebraLine.fixed-first-column tr:nth-child(even) td:nth-child(1)
+{
+    background-color: #F9FAFA;
+}
+/* table行hover浅绿色背景色 */
+.theme--light.v-data-table>.v-data-table__wrapper>table>tbody>tr:hover:not(.v-data-table__expanded__content):not(.v-data-table__empty-wrapper),
+.theme--light.v-data-table>.v-data-table__wrapper>table>tbody>tr:hover td.fixed,
+.theme--light.v-data-table.fixed-first-column>.v-data-table__wrapper>table>tbody>tr:hover td:nth-child(1)
+{
+  background: #EEF7ED !important;
+}
 /* table 定高 */
-.fixed-table-height:not(.not-fixed-wrapper-height) .v-data-table__wrapper{
+.fixed-table-height:not(.not-fixed-wrapper-height) .v-data-table__wrapper,
+.fixed-table-wrapper-height .v-data-table__wrapper{
   flex: auto;
 }
 /* table 页脚 */
@@ -635,6 +635,17 @@ body span.inputLabel{
 }
 .v-application--is-ltr .v-data-footer__icons-after .v-btn:first-child, .v-application--is-rtl .v-data-footer__icons-before .v-btn:last-child{
   margin-left: 0;
+}
+/* table 固定第一列 */
+.fixed-first-column table > tbody > tr > td:nth-child(1),
+.fixed-first-column table > thead > tr > th:nth-child(1)
+{
+  position: sticky !important;
+  position: -webkit-sticky !important;
+  left: 0;
+  z-index: 12 !important;
+  background: white;
+  border-right: none;
 }
 /* drawer */
 .v-navigation-drawer{
