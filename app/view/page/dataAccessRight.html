@@ -65,7 +65,7 @@
                 <template v-slot:item.level="{ item }">
                   {{ getConstantCollectionItemText('level', item.level) }}
                 </template>
-                <!--表格底部-->
+                <!--表格底部右侧功能按钮-->
                 <template v-slot:footer.prepend>
                   <span class="ml-2 table-search-hint-text">共{{ tableDataFromBackend.length }}条记录</span>
                   <v-menu top offset-y :close-on-content-click="false">
@@ -102,7 +102,7 @@
           <v-overlay app :value="isCreateDrawerShow || isUpdateDrawerShow || isHelpPageDrawerShow"></v-overlay>
           <!-- 新增抽屉 -->
           <v-navigation-drawer v-model="isCreateDrawerShow" fixed temporary right width="80%" hide-overlay
-                              class="elevation-24">
+                               class="elevation-24">
             <v-form v-model="isFormValid" ref="form" lazy-validation>
               <!--抽屉标题-->
               <v-row>
