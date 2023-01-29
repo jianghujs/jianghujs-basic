@@ -596,7 +596,7 @@ body span.inputLabel{
   flex: auto;
 }
 /* table 斑马纹 */
-.v-data-table.zebraLine tr:nth-child(even), 
+.v-data-table.zebraLine tr:nth-child(even),
 .v-data-table.zebraLine tr:nth-child(even) td.fixed,
 .v-data-table.zebraLine.fixed-first-column tr:nth-child(even) td:nth-child(1)
 {
@@ -654,5 +654,61 @@ body span.inputLabel{
 .drawer-close-float-btn{
   top: 120px !important;
   left: -40px !important;
+}
+
+/* v4 手机端适配代码 */
+@media (max-width: 500px) {
+  body .v-application .pageBodyContainer {
+    padding-right: 0!important;
+    padding-left: 0!important;
+  }
+  body .v-application .pageBodyContainer .v-card {
+    padding-right: 0!important;
+    padding-left: 0!important;
+    border-radius: 0!important;
+  }
+  body .v-application .py-xs-0 {
+    padding-top: 0!important;
+    padding-bottom: 0!important;
+  }
+  body .v-application .table-search-hint-text {
+    display: block!important;
+    min-width: 100%!important;
+    margin-top: 10px!important;
+  }
+  body .v-application .v-data-footer {
+    flex-wrap: wrap!important;
+    justify-content: start!important;
+  }
+  body .v-application .v-data-footer__select {
+    flex: 1!important;
+  }
+  body .v-application .v-navigation-drawer {
+    width: 100%!important;
+  }
+  body .v-application .v-navigation-drawer__content {
+    position: relative!important;
+  }
+  body .v-application .v-navigation-drawer__content .drawer-close-float-btn {
+    position: absolute!important;
+    top: 20px!important;
+    left: calc(100% - 60px)!important;
+    background-color: #EEEEEE !important;
+    border-color: #EEEEEE !important;
+    border-radius: 100% !important;
+    color: #000000!important;
+  }
+
+  body .pageNavBar .v-list-item {
+    border-bottom: 1px solid #EEEEEE!important;
+    min-height: 42px!important;
+  }
+  body .pageNavBar .v-navigation-drawer__content .v-list-item--link:before {
+    margin: 0!important;
+    background-color: transparent!important;
+  }
+  body .serverSearchAction {
+    justify-content: right!important;
+  }
 }
 </style>
