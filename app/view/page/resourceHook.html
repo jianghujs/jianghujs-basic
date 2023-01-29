@@ -243,7 +243,7 @@
 
     <!-- 帮助页抽屉 start -->
     <v-navigation-drawer v-model="isHelpPageDrawerShow" fixed temporary right width="80%" class="elevation-24">
-      <iframe style="border: 0" :src="`/${appInfo.appId}/pageDoc?markdownPath=5.resourceHook.md`" width="100%" height="100%"></iframe>
+      <iframe style="border: 0" :src="`/${appInfo.appId}/pageDoc#5.resourceHook.md`" width="100%" height="100%"></iframe>
       <v-btn elevation="0" color="success" fab absolute top left small tile class="drawer-close-float-btn" @click="isHelpPageDrawerShow = false">
         <v-icon>mdi-close</v-icon>
       </v-btn>
