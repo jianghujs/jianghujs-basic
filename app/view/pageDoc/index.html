@@ -26,18 +26,18 @@
     }
     .markdown-section h1 {
         margin: 0 0 3rem;
-        font-size: 38px;
+        font-size: 25px;
         line-height: 1.4;
         letter-spacing: -.02em;
     }
     .markdown-section h2 {
         margin: 0.5rem 0 0.5rem;
         padding-top: 1.8rem;
-        font-size: 24px;
+        font-size: 18px;
         letter-spacing: -.02em;
     }
     .markdown-section h3 {
-        font-size: 19px;
+        font-size: 16px;
         letter-spacing: -.01em;
         margin: 3rem 0 1.25rem;
     }
@@ -127,7 +127,31 @@
     }
     /* 搜索 */
     .search{
-      border-bottom: 1px solid rgba(0, 0, 0, .06);
+      border-bottom: 1px solid rgba(0, 0, 0, .06) !important;
+      padding: 6px 10px !important;
+    }
+    .search input:focus{
+      box-shadow: none !important;
+      border-radius: 6px;
+    }
+    .search input::placeholder {
+        font-size: 13px;
+    }
+    /* 文章列表 */
+    .sidebar ul{
+      margin: 0 0 0 20px;
+    }
+    .sidebar li{
+      margin: 0;
+    }
+    .sidebar-nav>ul>li>a{
+      font-weight: 500 !important;
+    }
+    .sidebar ul li a:hover{
+      text-decoration: none;
+    }
+    .sidebar ul li.active>a{
+      font-weight: normal;
     }
   </style>
 </head>

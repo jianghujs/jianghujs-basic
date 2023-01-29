@@ -11,7 +11,7 @@
         <div class="d-flex" :style="{'flex-wrap': isMobile ? 'wrap' : 'nowrap'}" :class="{'px-8': !isMobile, 'px-4': isMobile}"><div>
             <div class="appTitle pt-3" style="font-size: 18px; font-weight: 700">{{ breadcrumbs[1].fullText }}
               <!-- 帮助页按钮 -->
-              <v-icon @click="isHelpPageDrawerShow = true">mdi-help-circle-outline</v-icon>
+              <v-icon @click="isHelpPageDrawerShow = true" small>mdi-help-circle-outline</v-icon>
             </div>
             <v-breadcrumbs class="pb-3 pt-0 pl-0" :items="breadcrumbs" divider="-"></v-breadcrumbs>
           </div>
@@ -32,8 +32,11 @@
         </div>
 
         <!-- 帮助页抽屉 start -->
-        <v-navigation-drawer v-model="isHelpPageDrawerShow" fixed temporary right width="80%" hide-overlay class="elevation-24">
+        <v-navigation-drawer v-model="isHelpPageDrawerShow" fixed temporary right width="80%" class="elevation-24">
           <iframe style="border: 0" :src="`/${appInfo.appId}/pageDoc?markdownPath=`" width="100%" height="100%"></iframe>
+          <v-btn elevation="0" color="success" fab absolute top left small tile class="drawer-close-float-btn" @click="isHelpPageDrawerShow = false"> 
+            <v-icon>mdi-close</v-icon> 
+          </v-btn>
         </v-navigation-drawer>
         <!-- 帮助页抽屉 end -->
 
