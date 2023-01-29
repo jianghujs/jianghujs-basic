@@ -7,6 +7,7 @@
             clipped
             v-if="isMobile"
             style="z-index: 99999"
+            class="pageNavBar"
         >
         <v-list>
             <v-list-item-group
@@ -18,7 +19,7 @@
                 :class="{'pa-2': !isMobile}"
                 style="height: 80px!important; color: #333333"
             >
-                <v-list-item-content :class="{'pl-3': isMobile, 'pa-0': isMobile}">
+                <v-list-item-content :class="{'pa-0': isMobile}">
                 <v-list-item-title style="font-size: 18px!important; font-weight: bold">
                     {{ appTitle }}
                 </v-list-item-title>
@@ -30,7 +31,7 @@
                 :key="item.path"
                 @click="jump(item.path, item.query)"
             >
-                <v-list-item-content :class="{'pl-3': isMobile, 'pa-0': isMobile}">
+                <v-list-item-content :class="{'pa-0': isMobile}">
                 <v-list-item-title style="font-size: 14px;">
                     {{ item.title }}
                 </v-list-item-title>

@@ -24,10 +24,10 @@
         </div>
         <!-- 头部内容 end -->
 
-        <div style="flex: 1;" :class="{'px-8': !isMobile, 'px-4': isMobile}">
+        <div class="pageBodyContainer px-8" style="flex: 1;">
           <!-- 页面内容 start -->
           <v-container class="fullScreen d-flex flex-column pa-0">
-            <v-card :class="{'px-2': isMobile}" class="rounded-lg">
+            <v-card class="rounded-lg">
               <v-row class="ma-0 align-center flex-none pt-0 pa-4" :class="{'pb-0': !isMobile, 'pa-2': isMobile}">
                 <!--新增按钮-->
                 <v-col cols="12" xs="12" sm="4" md="4" xl="4" class="pl-0">
@@ -35,12 +35,12 @@
                 </v-col>
                 <v-spacer></v-spacer>
                 <!--性别过滤-->
-                <v-col cols="12" xs="6" sm="3" md="2" xl="2" class="px-0">
+                <v-col cols="12" xs="6" sm="3" md="2" xl="2" class="px-0 py-xs-0">
                   <v-select class="cus-v-input mr-2" v-model="currentTableGenderType" :items="[{value: 'all', text: '全部'}, ...constantCollection.gender]"
                             prefix="性别：" dense item-text="text" item-value="value" dense filled single-line></v-select>
                 </v-col>
                 <!--搜索过滤-->
-                <v-col cols="12" xs="6" sm="3" md="2" xl="2" class="pr-0">
+                <v-col cols="12" xs="6" sm="4" md="3" xl="2" class="px-0 py-xs-0">
                   <v-text-field color="success" v-model="searchInput" prefix="表格过滤：" class="cus-v-input" dense filled single-line></v-text-field>
                 </v-col>
               </v-row>

@@ -9,7 +9,7 @@
       <jhMenu />
       <v-main class="d-flex flex-column" style="margin-top: 80px">
 
-        <div style="flex: 1;" :class="{'px-8': !isMobile, 'px-4': isMobile}">
+        <div class="pageBodyContainer px-8" style="flex: 1;">
           <!-- 页面内容 start -->
           <iframe style="border: 0" :src="`/${appInfo.appId}/pageDoc`" width="100%" height="100%"></iframe>
           <!-- 页面内容 end -->

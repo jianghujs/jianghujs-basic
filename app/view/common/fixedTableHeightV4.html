@@ -8,6 +8,7 @@
        resetTableMaxHeight(param);
      })
    } else {
+     document.getElementsByClassName('pageBodyContainer');
      for (const table of tables) {
        const tableHeight = window.innerHeight - table.offsetTop - height;
        table.style.height = tableHeight + 'px';
