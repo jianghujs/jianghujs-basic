@@ -55,7 +55,7 @@
                     <v-icon size="14" class="success--text">mdi-trash-can-outline</v-icon>删除
                   </span>
                 </template>
-                <!--表格底部右侧-->
+                <!--表格底部右侧功能按钮-->
                 <template v-slot:footer.prepend>
                   <span class="ml-2 table-search-hint-text">共{{ tableDataFromBackend.length }}条记录</span>
                   <v-menu top offset-y :close-on-content-click="false">
@@ -268,7 +268,7 @@ new Vue({
     isTableLoading: true,
     tableDataFromBackend: [],
     headers: [
-      {text: '操作', value: 'action', align: 'center', sortable: false, width: 150, class: 'fixed', cellClass: 'fixed'},
+      {text: '操作', value: 'action', align: 'center', sortable: false, width: 130, class: 'fixed', cellClass: 'fixed'},
       {text: "学生ID", value: "studentId", width: 120},
       {text: "班级ID", value: "classId", width: 140},
       {text: "学生名字", value: "name", width: 120},

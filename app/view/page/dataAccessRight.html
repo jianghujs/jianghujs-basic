@@ -27,118 +27,213 @@
         <div style="flex: 1;" :class="{'px-8': !isMobile, 'px-4': isMobile}">
           <!-- 页面内容 start -->
           <v-container class="fullScreen d-flex flex-column pa-0">
-            <v-row class="ma-0 align-center flex-none pt-0" :class="{'pb-0': !isMobile, 'pa-2': isMobile}">
-              <v-col cols="12" xs="12" sm="4" md="4" xl="4" class="pl-0">
-                <v-btn color="success" dark class="elevation-0 mr-2" @click="doUiAction('startCreateItem', null)" small>新增</v-btn>
-              </v-col>
-              <v-spacer></v-spacer>
-              <v-col cols="12" xs="6" sm="3" md="2" xl="2" class="px-0">
-                <v-select class="cus-v-input mr-2" v-model="currentTableGenderType" :items="[{value: 'all', text: '全部'}, ...constantCollection.gender]"
-                          prefix="性别：" dense item-text="text" item-value="value" dense filled single-line></v-select>
-              </v-col>
-              <v-col cols="12" xs="6" sm="3" md="2" xl="2" class="pr-0">
-                <v-text-field color="success" v-model="searchInput" prefix="表格过滤：" class="cus-v-input" dense filled single-line></v-text-field>
-              </v-col>
-            </v-row>
-
-            <v-data-table 
-                :headers="headers"
-                :items="tableData"
-                :search="searchInput"
-                :footer-props="{ itemsPerPageOptions: [20, 40, 60, 100, -1] }"
-                :items-per-page="20"
-                mobile-breakpoint="0"
-                :loading="isTableLoading"
-                checkbox-color="success"
-                :class="{'zebraLine': showTableZebraLine }"
-                fixed-header 
-                class="fixed-table-height elevation-0 mt-0 mb-xs-4 flex-fill d-flex flex-column">
-              <template v-slot:item.gender="{ item }">
-                {{ getConstantCollectionItemText('gender', item.gender) }}
-              </template>
-              <template v-slot:item.level="{ item }">
-                {{ getConstantCollectionItemText('level', item.level) }}
-              </template>
-              <template v-slot:footer.prepend>
-                  <span class="ml-2 table-search-hint-text">共{{ tableData.length }}条记录</span>
-                  <v-switch v-model="showTableZebraLine" label="显示斑马纹" dense flat></v-switch>
-              </template>
-              <template v-slot:item.action="{ item }">
-                <span role="button" class="success--text mr-2 font-weight-medium font-size-2" @click="doUiAction('startUpdateItem', item)">修改</span>
-                <span role="button" class="error--text mr-2 font-weight-medium font-size-2" @click="doUiAction('deleteItem', item)">删除</span>
-              </template>
-            </v-data-table>
+            <v-card :class="{'px-2': isMobile}" class="rounded-lg">
+              <v-row class="ma-0 align-center flex-none pt-0 pa-4" :class="{'pb-0': !isMobile, 'pa-2': isMobile}">
+                <!--新增按钮-->
+                <v-col cols="12" xs="12" sm="4" md="4" xl="4" class="pl-0">
+                  <v-btn color="success" dark class="elevation-0 mr-2" @click="doUiAction('startCreateItem')" small>新增</v-btn>
+                </v-col>
+                <v-spacer></v-spacer>
+                <!--性别过滤-->
+                <v-col cols="12" xs="6" sm="3" md="2" xl="2" class="px-0">
+                  <v-select class="cus-v-input mr-2" v-model="currentTableGenderType" :items="[{value: 'all', text: '全部'}, ...constantCollection.gender]"
+                            prefix="性别：" dense item-text="text" item-value="value" dense filled single-line></v-select>
+                </v-col>
+                <!--搜索过滤-->
+                <v-col cols="12" xs="6" sm="3" md="2" xl="2" class="pr-0">
+                  <v-text-field color="success" v-model="searchInput" prefix="表格过滤：" class="cus-v-input" dense filled single-line></v-text-field>
+                </v-col>
+              </v-row>
+              <!--表格-->
+              <v-data-table
+                  :headers="headers"
+                  :items="tableData"
+                  :search="searchInput"
+                  :footer-props="{ itemsPerPageOptions: [20, 40, 60, 100, -1], itemsPerPageText: '每页行数', itemsPerPageAllText: '所有'}"
+                  :items-per-page="20"
+                  mobile-breakpoint="0"
+                  :loading="isTableLoading"
+                  checkbox-color="success"
+                  :class="{'zebraLine': showTableZebraLine }"
+                  fixed-header
+                  class="fixed-table-height elevation-0 mt-0 mb-xs-4 flex-fill d-flex flex-column">
+                <!--性别-->
+                <template v-slot:item.gender="{ item }">
+                  {{ getConstantCollectionItemText('gender', item.gender) }}
+                </template>
+                <!--等级-->
+                <template v-slot:item.level="{ item }">
+                  {{ getConstantCollectionItemText('level', item.level) }}
+                </template>
+                <!--表格底部-->
+                <template v-slot:footer.prepend>
+                  <span class="ml-2 table-search-hint-text">共{{ tableDataFromBackend.length }}条记录</span>
+                  <v-menu top offset-y :close-on-content-click="false">
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-btn v-bind="attrs" v-on="on" icon>
+                        <v-icon>mdi-menu</v-icon>
+                      </v-btn>
+                    </template>
+                    <v-list>
+                      <v-list-item>
+                        <v-switch v-model="showTableZebraLine" label="显示斑马纹" dense flat></v-switch>
+                      </v-list-item>
+                    </v-list>
+                  </v-menu>
+                </template>
+                <!--表格操作-->
+                <template v-slot:item.action="{ item }">
+                  <span role="button" class="success--text mr-2 font-weight-medium font-size-2" @click="doUiAction('startUpdateItem', item)">
+                      <v-icon size="14" class="success--text">mdi-note-edit-outline</v-icon>修改
+                  </span>
+                    <span role="button" class="success--text mr-2 font-weight-medium font-size-2" @click="doUiAction('deleteItem', item)">
+                      <v-icon size="14" class="success--text">mdi-trash-can-outline</v-icon>删除
+                  </span>
+                </template>
+                <!--表格分页-->
+                <template v-slot:footer.page-text="pagination">
+                  <span>{{pagination.pageStart}}-{{pagination.pageStop}}</span>
+                  <span class="ml-1">共{{pagination.itemsLength}}条</span>
+                </template>
+              </v-data-table>
+            </v-card>
           </v-container>
-
-          <v-overlay app :value="isEditDrawerShow || isHelpPageDrawerShow"></v-overlay>
-          <!-- 编辑抽屉 -->
-          <v-navigation-drawer v-model="isEditDrawerShow" fixed temporary right width="80%" hide-overlay
+          <!--抽屉遮罩层-->
+          <v-overlay app :value="isCreateDrawerShow || isUpdateDrawerShow || isHelpPageDrawerShow"></v-overlay>
+          <!-- 新增抽屉 -->
+          <v-navigation-drawer v-model="isCreateDrawerShow" fixed temporary right width="80%" hide-overlay
                               class="elevation-24">
             <v-form v-model="isFormValid" ref="form" lazy-validation>
+              <!--抽屉标题-->
               <v-row>
-                <span class="title pa-6" :class="{'pl-8': !isMobile, 'pl-6': isMobile}">{{ currentClickButton.title }}信息</span>
-                <v-spacer></v-spacer>
-                <v-btn class="mt-7 mr-8 elevation-0" fab x-small @click="isEditDrawerShow = false">
-                  <v-icon dark>mdi-close</v-icon>
-                </v-btn>
+                <span class="title pa-6" :class="{'pl-8': !isMobile, 'pl-6': isMobile}">新增信息</span>
               </v-row>
+              <!--抽屉表单-->
               <v-row class="mt-0" :class="{'px-6': !isMobile, 'px-3': isMobile, 'pb-7': isMobile}">
                 <v-col cols="12" sm="12" md="4" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
                   <span class="inputLabel">学生ID</span>
-                  <v-text-field class="cus-v-input" dense single-line filled label="学生ID" v-model="editItem.studentId" :rules="requireRules"></v-text-field>
+                  <v-text-field class="cus-v-input" dense single-line filled label="学生ID" v-model="createItem.studentId" :rules="requireRules"></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="12" md="4" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
                   <span class="inputLabel">班级ID</span>
-                  <v-select class="cus-v-input" dense single-line filled clearable label="班级ID" v-model="editItem.classId" :items="constantCollection.classId"></v-select>
+                  <v-select class="cus-v-input" dense single-line filled clearable label="班级ID" v-model="createItem.classId" :items="constantCollection.classId"></v-select>
                 </v-col>
                 <v-col cols="12" sm="12" md="4" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
                   <span class="inputLabel">学生名字</span>
-                  <v-text-field class="cus-v-input" dense single-line filled label="学生名字" v-model="editItem.name"></v-text-field>
+                  <v-text-field class="cus-v-input" dense single-line filled label="学生名字" v-model="createItem.name"></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="12" md="4" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
                   <span class="inputLabel">年级</span>
-                  <v-select class="cus-v-input" dense single-line filled clearable label="年级" v-model="editItem.level" :items="constantCollection.level"></v-select>
+                  <v-select class="cus-v-input" dense single-line filled clearable label="年级" v-model="createItem.level" :items="constantCollection.level"></v-select>
                 </v-col>
                 <v-col cols="12" sm="12" md="4" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
                   <span class="inputLabel">性别</span>
-                  <v-select class="cus-v-input" dense single-line filled clearable label="性别" v-model="editItem.gender" :items="constantCollection.gender"></v-select>
+                  <v-select class="cus-v-input" dense single-line filled clearable label="性别" v-model="createItem.gender" :items="constantCollection.gender"></v-select>
                 </v-col>
                 <v-col cols="12" sm="12" md="4" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
                   <span class="inputLabel">出生日期</span>
                   <v-menu class="cus-v-input" offset-y max-width="290">
                     <template v-slot:activator="{ on, attrs }">
-                      <v-text-field class="cus-v-input" dense single-line filled v-on="on" label="出生日期" v-model="editItem.dateOfBirth"></v-text-field>
+                      <v-text-field class="cus-v-input" dense single-line filled v-on="on" label="出生日期" v-model="createItem.dateOfBirth"></v-text-field>
                     </template>
-                    <v-date-picker color="success" elevation="20" v-model="editItem.dateOfBirth"></v-date-picker>
+                    <v-date-picker color="success" elevation="20" v-model="createItem.dateOfBirth"></v-date-picker>
                   </v-menu>
                 </v-col>
                 <v-col cols="12" sm="12" md="4" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
                   <span class="inputLabel">身高</span>
-                  <v-text-field class="cus-v-input" dense single-line filled label="身高" v-model="editItem.bodyHeight"></v-text-field>
+                  <v-text-field class="cus-v-input" dense single-line filled label="身高" v-model="createItem.bodyHeight"></v-text-field>
                 </v-col>
                 <v-col cols="12" sm="12" md="4" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
                   <span class="inputLabel">学生状态</span>
-                  <v-select class="cus-v-input" dense single-line filled clearable label="学生状态" v-model="editItem.studentStatus" :items="constantCollection.studentStatus"></v-select>
+                  <v-select class="cus-v-input" dense single-line filled clearable label="学生状态" v-model="createItem.studentStatus" :items="constantCollection.studentStatus"></v-select>
                 </v-col>
                 <v-col cols="12" sm="12" md="4" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
                   <span class="inputLabel">备注</span>
-                  <v-text-field class="cus-v-input" dense single-line filled label="备注" v-model="editItem.remarks"></v-text-field>
+                  <v-text-field class="cus-v-input" dense single-line filled label="备注" v-model="createItem.remarks"></v-text-field>
                 </v-col>
               </v-row>
+              <!--抽屉操作按钮-->
               <v-row class="justify-end mx-0 mt-8" :class="{'px-6': !isMobile, 'px-4': isMobile, 'mb-8': isMobile}">
-                <v-btn color="success" @click="doUiAction(dialogSaveInfoAction)" small>保存</v-btn>
-                <v-btn class="elevation-0 ml-2" @click="isEditDrawerShow = false" small>取消</v-btn>
+                <v-btn color="success" @click="doUiAction('createItem')" small>保存</v-btn>
+                <v-btn class="elevation-0 ml-2" @click="isCreateDrawerShow = false" small>取消</v-btn>
               </v-row>
             </v-form>
+            <!--抽屉关闭按钮-->
+            <v-btn elevation="0" color="success" fab absolute top left small tile class="drawer-close-float-btn" @click="isCreateDrawerShow = false">
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
+          </v-navigation-drawer>
+          <!-- 编辑抽屉 -->
+          <v-navigation-drawer v-model="isUpdateDrawerShow" fixed temporary right width="80%" hide-overlay
+                              class="elevation-24">
+            <v-form v-model="isFormValid" ref="form" lazy-validation>
+              <!--抽屉标题-->
+              <v-row>
+                <span class="title pa-6" :class="{'pl-8': !isMobile, 'pl-6': isMobile}">新增信息</span>
+              </v-row>
+              <!--抽屉表单-->
+              <v-row class="mt-0" :class="{'px-6': !isMobile, 'px-3': isMobile, 'pb-7': isMobile}">
+                <v-col cols="12" sm="12" md="4" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
+                  <span class="inputLabel">学生ID</span>
+                  <v-text-field class="cus-v-input" disabled dense single-line filled label="学生ID" v-model="updateItem.studentId" :rules="requireRules"></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="12" md="4" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
+                  <span class="inputLabel">班级ID</span>
+                  <v-select class="cus-v-input" dense single-line filled clearable label="班级ID" v-model="updateItem.classId" :items="constantCollection.classId"></v-select>
+                </v-col>
+                <v-col cols="12" sm="12" md="4" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
+                  <span class="inputLabel">学生名字</span>
+                  <v-text-field class="cus-v-input" dense single-line filled label="学生名字" v-model="updateItem.name"></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="12" md="4" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
+                  <span class="inputLabel">年级</span>
+                  <v-select class="cus-v-input" dense single-line filled clearable label="年级" v-model="updateItem.level" :items="constantCollection.level"></v-select>
+                </v-col>
+                <v-col cols="12" sm="12" md="4" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
+                  <span class="inputLabel">性别</span>
+                  <v-select class="cus-v-input" dense single-line filled clearable label="性别" v-model="updateItem.gender" :items="constantCollection.gender"></v-select>
+                </v-col>
+                <v-col cols="12" sm="12" md="4" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
+                  <span class="inputLabel">出生日期</span>
+                  <v-menu class="cus-v-input" offset-y max-width="290">
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-text-field class="cus-v-input" dense single-line filled v-on="on" label="出生日期" v-model="updateItem.dateOfBirth"></v-text-field>
+                    </template>
+                    <v-date-picker color="success" elevation="20" v-model="updateItem.dateOfBirth"></v-date-picker>
+                  </v-menu>
+                </v-col>
+                <v-col cols="12" sm="12" md="4" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
+                  <span class="inputLabel">身高</span>
+                  <v-text-field class="cus-v-input" dense single-line filled label="身高" v-model="updateItem.bodyHeight"></v-text-field>
+                </v-col>
+                <v-col cols="12" sm="12" md="4" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
+                  <span class="inputLabel">学生状态</span>
+                  <v-select class="cus-v-input" dense single-line filled clearable label="学生状态" v-model="updateItem.studentStatus" :items="constantCollection.studentStatus"></v-select>
+                </v-col>
+                <v-col cols="12" sm="12" md="4" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
+                  <span class="inputLabel">备注</span>
+                  <v-text-field class="cus-v-input" dense single-line filled label="备注" v-model="updateItem.remarks"></v-text-field>
+                </v-col>
+              </v-row>
+              <!--抽屉操作按钮-->
+              <v-row class="justify-end mx-0 mt-8" :class="{'px-6': !isMobile, 'px-4': isMobile, 'mb-8': isMobile}">
+                <v-btn color="success" @click="doUiAction('updateItem')" small>保存</v-btn>
+                <v-btn class="elevation-0 ml-2" @click="isUpdateDrawerShow = false" small>取消</v-btn>
+              </v-row>
+            </v-form>
+            <!--抽屉关闭按钮-->
+            <v-btn elevation="0" color="success" fab absolute top left small tile class="drawer-close-float-btn" @click="isUpdateDrawerShow = false">
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
           </v-navigation-drawer>
           <!-- 页面内容 end -->
         </div>
 
         <!-- 帮助页抽屉 start -->
         <v-navigation-drawer v-model="isHelpPageDrawerShow" fixed temporary right width="80%" hide-overlay class="elevation-24">
-          <iframe style="border: 0" :src="`/${appInfo.appId}/pageDoc?markdownPath=`" width="100%" height="100%"></iframe>
-          <v-btn elevation="0" color="success" fab absolute top left small tile class="drawer-close-float-btn" @click="isHelpPageDrawerShow = false"> 
-            <v-icon>mdi-close</v-icon> 
+          <iframe style="border: 0" :src="`/${appInfo.appId}/pageDoc?pageId=<$ ctx.packagePage.pageId $>`" width="100%" height="100%"></iframe>
+          <v-btn elevation="0" color="success" fab absolute top left small tile class="drawer-close-float-btn" @click="isHelpPageDrawerShow = false">
+            <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-navigation-drawer>
         <!-- 帮助页抽屉 end -->
@@ -178,6 +273,7 @@ new Vue({
     requireRules: [
       v => !!v || 'This is required',
     ],
+    // 下拉选项
     constantCollection: {
       gender: [{"value": "male", "text": "男"}, {"value": "female", "text": "女"}],
       classId: [
@@ -191,13 +287,12 @@ new Vue({
       studentStatus: [{"value": "正常", "text": "正常"}, {"value": "退学", "text": "退学"}]
     },
     currentTableGenderType: 'all',
-    isEditDrawerShow: false,
     searchInput: null,
     isTableLoading: true,
     tableData: [],
     tableDataFromBackend: [],
     headers: [
-      {text: '操作', value: 'action', type: 'button', align: 'center', sortable: false, width: 200, class: 'fixed', cellClass: 'fixed'},
+      {text: '操作', value: 'action', type: 'button', align: 'center', sortable: false, width: 130, class: 'fixed', cellClass: 'fixed'},
       {text: "学生ID", value: "studentId", type: "input", width: 120},
       {text: "班级ID", value: "classId", type: "select", width: 140},
       {text: "学生名字", value: "name", type: "input", width: 120},
@@ -211,12 +306,10 @@ new Vue({
       {text: "操作时间", value: "operationAt", type: "input", width: 250},
     ],
 
-    currentClickButton: {title: '新增', action: 'add'},
-    editItem: {},
-    tableButtonList: [
-      {text: '修改', buttonType: 'edit', color: 'success',},
-      {text: '删除', buttonType: 'delete', color: 'error',},
-    ],
+    isCreateDrawerShow: false,
+    createItem: {},
+    isUpdateDrawerShow: false,
+    updateItem: {},
   }),
   watch: {
     currentTableGenderType(value) {
@@ -236,7 +329,7 @@ new Vue({
           await this.computedTableData();
           break;
         case 'startCreateItem':
-          await this.clearItemData();
+          await this.prepareCreateFormData();
           await this.openCreateDialog();
           break;
         case 'createItem':
@@ -248,7 +341,7 @@ new Vue({
           await this.closeDrawerShow();
           break;
         case 'startUpdateItem':
-          await this.prepareItemData(uiActionData);
+          await this.prepareUpdateFormData(uiActionData);
           await this.openUpdateDialog();
           break;
         case 'updateItem':
@@ -261,7 +354,7 @@ new Vue({
           break;
         case 'deleteItem':
           await this.confirmDeleteItemDialog();
-          await this.prepareItemData(uiActionData);
+          await this.prepareUpdateFormData(uiActionData);
           await this.doDeleteItem();
           await this.refreshTableData();
           await this.computedTableData();
@@ -303,14 +396,12 @@ new Vue({
       }
     },
 
-    async clearItemData() {
-      this.editItem = {};
+    async prepareCreateFormData() {
+      this.createItem = {};
     },
 
     async openCreateDialog() {
-      this.currentClickButton = {action: 'add', title: '新增'};
-      this.isEditDrawerShow = true;
-      this.dialogSaveInfoAction = 'createItem';
+      this.isCreateDrawerShow = true;
     },
 
     // validate
@@ -328,7 +419,7 @@ new Vue({
      * 新增学生
      */
     async doCreateItem() {
-      const {id, ...data} = this.editItem;
+      const {id, ...data} = this.createItem;
       await window.vtoast.loading("新增学生");
       await window.jianghuAxios({
         data: {
@@ -340,21 +431,19 @@ new Vue({
         }
       })
       await window.vtoast.success("新增学生成功");
-      this.isEditDrawerShow = false;
     },
 
     async closeDrawerShow() {
-      this.isEditDrawerShow = false;
+      this.isCreateDrawerShow = false;
+      this.isUpdateDrawerShow = false;
     },
 
-    async prepareItemData(item) {
-      this.editItem = {...item};
+    async prepareUpdateFormData(item) {
+      this.updateItem = {...item};
     },
 
     async openUpdateDialog() {
-      this.currentClickButton = {action: 'edit', title: '修改'};
-      this.isEditDrawerShow = true;
-      this.dialogSaveInfoAction = 'updateItem';
+      this.isUpdateDrawerShow = true;
     },
 
     async confirmUpdateItemDialog() {
@@ -367,7 +456,7 @@ new Vue({
      * 保存学生
      */
     async doUpdateItem() {
-      const {id, ...data} = this.editItem;
+      const {id, ...data} = this.updateItem;
       await window.vtoast.loading("修改学生");
       await window.jianghuAxios({
         data: {
@@ -380,7 +469,6 @@ new Vue({
         }
       })
       await window.vtoast.success("修改学生成功");
-      this.isEditDrawerShow = false;
     },
 
     async confirmDeleteItemDialog() {
@@ -390,7 +478,7 @@ new Vue({
     },
 
     async doDeleteItem() {
-      const { id } = this.editItem;
+      const { id } = this.updateItem;
       await window.vtoast.loading("删除学生");
       await window.jianghuAxios({
         data: {
@@ -404,6 +492,7 @@ new Vue({
       });
       await window.vtoast.success("删除学生成功");
     },
+    // 字段内容转换
     getConstantCollectionItemText(key, _value) {
       const constantCollectionItemFind = this.constantCollection[key].find(({value}) => value === _value);
       if(constantCollectionItemFind) {
