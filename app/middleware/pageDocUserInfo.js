@@ -29,7 +29,7 @@ module.exports = options => {
       if (ctx.path.endsWith('.md') && !ctx.path.endsWith('_sidebar.md')) {
         const filePath = ctx.path.replace(`/${config.appId}/pageDoc/`, '')
         const content = fs.readFileSync(config.baseDir + '/app/view/pageDoc/' + filePath)
-        ctx.body = new String(content).replace(/]\(\.\//g, `](/${config.appId}/pageDoc/`)
+        ctx.body = new String(content).replace(/]\(\.\/([^)]+?)(?<!\.md)\)/g, `](${ctx.request.origin}/${config.appId}/pageDoc/$1)`)
         return
       }
 

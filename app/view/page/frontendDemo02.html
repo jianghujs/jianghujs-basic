@@ -2,7 +2,7 @@
 
 {% block vueTemplate %}
 
-<script type="text/x-template" id="app-template">
+<script type="text/html" id="app-template">
   <div>
     <v-app id="inspire" mobile-breakpoint="sm">
       <jhMenu />
@@ -147,7 +147,7 @@
 
         <!-- 帮助页抽屉 start -->
         <v-navigation-drawer v-model="isHelpPageDrawerShow" fixed temporary right width="80%" hide-overlay class="elevation-24">
-          <iframe style="border: 0" :src="`/${appInfo.appId}/pageDoc?pageId=<$ ctx.packagePage.pageId $>`" width="100%" height="100%"></iframe>
+          <iframe style="border: 0" :src="`/${appInfo.appId}/pageDoc?markdownPath=`" width="100%" height="100%"></iframe>
         </v-navigation-drawer>
         <!-- 帮助页抽屉 end -->
 
