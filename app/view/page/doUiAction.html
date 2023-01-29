@@ -7,7 +7,7 @@
     <v-app id="inspire" mobile-breakpoint="sm">
       <jhMenu />
       <v-main class="d-flex flex-column" style="margin-top: 60px">
-        <!-- 头部内容 start -->
+        <!-- 头部内容 >>>>>>>>>>>>> -->
         <div class="d-flex" :style="{'flex-wrap': isMobile ? 'wrap' : 'nowrap'}" :class="{'px-8': !isMobile, 'px-4': isMobile}"><div>
             <div class="appTitle pt-3" style="font-size: 18px; font-weight: 700">{{ breadcrumbs[1].fullText }}
               <!-- 帮助页按钮 -->
@@ -16,10 +16,10 @@
             <v-breadcrumbs class="pb-3 pt-0 pl-0" :items="breadcrumbs" divider="-"></v-breadcrumbs>
           </div>
         </div>
-        <!-- 头部内容 end -->
+        <!-- <<<<<<<<<<<<< 头部内容 -->
 
         <div class="pageBodyContainer px-8" style="flex: 1;">
-          <!-- 页面内容 start -->
+          <!-- 页面内容 >>>>>>>>>>>>> -->
           <v-container class="fullScreen d-flex flex-column pa-0">
             <v-card class="rounded-lg">
               <v-row class="ma-0 align-center flex-none pt-0 pa-4" :class="{'pb-0': !isMobile, 'pa-2': isMobile}">
@@ -216,10 +216,10 @@
               <v-icon>mdi-close</v-icon>
             </v-btn>
           </v-navigation-drawer>
-          <!-- 页面内容 end -->
+          <!-- <<<<<<<<<<<<< 页面内容 -->
         </div>
 
-        <!-- 帮助页抽屉 start -->
+        <!-- 帮助页抽屉 >>>>>>>>>>>>> -->
         <v-navigation-drawer v-model="isHelpPageDrawerShow" fixed temporary right width="80%" hide-overlay class="elevation-24">
           <iframe style="border: 0" :src="`/${appInfo.appId}/pageDoc#4.doUiAction.md`" width="100%" height="100%"></iframe>
           
@@ -227,7 +227,7 @@
             <v-icon>mdi-close</v-icon> 
           </v-btn>
         </v-navigation-drawer>
-        <!-- 帮助页抽屉 end -->
+        <!-- <<<<<<<<<<<<< 帮助页抽屉 -->
 
       </v-main>
     </v-app>
@@ -348,7 +348,7 @@ new Vue({
     },
 
 
-    // ====================================Create Start===========================================
+    // ====================================Create >>>>>>>>>>>>>===========================================
     async clearCreateForm() {
       this.createItem = {};
     },
@@ -385,7 +385,7 @@ new Vue({
     // ====================================Create End===========================================
 
 
-    // ====================================Update Start===========================================
+    // ====================================Update >>>>>>>>>>>>>===========================================
     async fillUpdateForm(item) {
       this.updateItem = _.clone(item);
     },
@@ -418,7 +418,7 @@ new Vue({
     // ====================================Update End===========================================
 
 
-    // ====================================Delete Start===========================================
+    // ====================================Delete >>>>>>>>>>>>>===========================================
     async confirmDeleteItemDialog(item) {
       if (!item || !item.id) {
         window.vtoast.fail("数据异常");
