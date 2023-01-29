@@ -22,17 +22,18 @@
           <!-- 页面内容 start -->
           <v-container class="fullScreen d-flex flex-column pa-0">
             <v-card :class="{'px-2': isMobile}" class="rounded-lg">
-              <v-row class="ma-0 align-center flex-none pt-0 pa-4"
-                    :class="{'pb-0': !isMobile, 'pa-2': isMobile}">
+              <v-row class="ma-0 align-center flex-none pt-0 pa-4" :class="{'pb-0': !isMobile, 'pa-2': isMobile}">
+                <!--新增按钮-->
                 <v-col cols="12" xs="12" sm="4" md="4" xl="4" class="pl-0">
                   <v-btn color="success" dark small class="elevation-0 mr-2" @click="doUiAction('startInsertItem')">新增</v-btn>
                 </v-col>
                 <v-spacer></v-spacer>
+                <!--表格过滤-->
                 <v-col cols="12" xs="6" sm="4" md="3" xl="2" class="px-0">
                   <v-text-field v-model="searchInput" color="success" prefix="表格过滤：" class="cus-v-input" dense filled single-line></v-text-field>
                 </v-col>
               </v-row>
-
+              <!--表格-->
               <v-data-table
                 :headers="headers"
                 :items="tableDataFromBackend"
@@ -43,12 +44,18 @@
                 :loading="isTableLoading"
                 :class="{'mx-2': isMobile, 'zebraLine': showTableZebraLine }"
                 checkbox-color="success"
-                fixed-header 
-                class="fixed-table-height elevation-0 mt-0 mb-xs-4 flex-fill d-flex flex-column"> 
+                fixed-header
+                class="fixed-table-height elevation-0 mt-0 mb-xs-4 flex-fill d-flex flex-column">
+                <!--表格行操作按钮-->
                 <template v-slot:item.action="{ item }">
-                  <v-btn color="success" outlined x-small class="elevation-0 mr-2" @click="doUiAction('startUpdateItem', {item})">修改</v-btn>
-                  <v-btn color="error" outlined x-small class="elevation-0 mr-2" @click="doUiAction('deleteItem', {item})">删除</v-btn>
+                  <span role="button" class="success--text mr-2 font-weight-medium font-size-2" @click="doUiAction('startUpdateItem', item)">
+                    <v-icon size="14" class="success--text">mdi-note-edit-outline</v-icon>修改
+                  </span>
+                  <span role="button" class="success--text mr-2 font-weight-medium font-size-2" @click="doUiAction('deleteItem', item)">
+                    <v-icon size="14" class="success--text">mdi-trash-can-outline</v-icon>删除
+                  </span>
                 </template>
+                <!--表格底部右侧-->
                 <template v-slot:footer.prepend>
                   <span class="ml-2 table-search-hint-text">共{{ tableDataFromBackend.length }}条记录</span>
                   <v-menu top offset-y :close-on-content-click="false">
@@ -64,6 +71,7 @@
                     </v-list>
                   </v-menu>
                 </template>
+                <!--表格底部右侧分页-->
                 <template v-slot:footer.page-text="pagination">
                     <span>{{pagination.pageStart}}-{{pagination.pageStop}}</span>
                     <span class="ml-1">共{{pagination.itemsLength}}条</span>
@@ -71,15 +79,17 @@
               </v-data-table>
             </v-card>
           </v-container>
-
+          <!--抽屉遮罩层-->
           <v-overlay app :value="isCreateDrawerShow || isUpdateDrawerShow || isHelpPageDrawerShow"></v-overlay>
-
+          <!--新增抽屉-->
           <v-navigation-drawer v-model="isCreateDrawerShow" fixed temporary right width="80%" hide-overlay
                               class="elevation-24">
             <v-form v-model="isFormValid" v-if="isCreateDrawerShow" ref="form" lazy-validation>
+              <!--抽屉标题-->
               <v-row>
                 <span class="title pa-6" :class="{'pl-8': !isMobile, 'pl-6': isMobile}">添加信息</span>
               </v-row>
+              <!--抽屉表单主体-->
               <v-row class="mt-0" :class="{'px-6': !isMobile, 'px-3': isMobile, 'pb-7': isMobile}">
                 <v-col cols="12" sm="12" md="4" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
                   <span class="inputLabel">学生ID</span>
@@ -127,24 +137,25 @@
                               v-model="createItem.remarks"></v-textarea>
                 </v-col>
               </v-row>
-
+              <!--抽屉操作按钮-->
               <v-row class="justify-end mx-0 mt-8" :class="{'px-6': !isMobile, 'px-4': isMobile, 'mb-8': isMobile}">
                 <v-btn color="success" @click="doUiAction('createItem')" small>保存</v-btn>
                 <v-btn class="ml-2" @click="isCreateDrawerShow = false" small>取消</v-btn>
               </v-row>
             </v-form>
-
-            <v-btn elevation="0" color="success" fab absolute top left small tile class="drawer-close-float-btn" @click="isCreateDrawerShow = false"> 
-              <v-icon>mdi-close</v-icon> 
+            <!--抽屉关闭按钮-->
+            <v-btn elevation="0" color="success" fab absolute top left small tile class="drawer-close-float-btn" @click="isCreateDrawerShow = false">
+              <v-icon>mdi-close</v-icon>
             </v-btn>
           </v-navigation-drawer>
-
-          <v-navigation-drawer v-model="isUpdateDrawerShow" fixed temporary right width="80%" hide-overlay
-                              class="elevation-24">
+          <!--编辑抽屉-->
+          <v-navigation-drawer v-model="isUpdateDrawerShow" fixed temporary right hide-overlay width="80%" class="elevation-24">
             <v-form v-model="isFormValid" v-if="isUpdateDrawerShow" ref="form" lazy-validation>
+              <!--抽屉标题-->
               <v-row>
                 <span class="title pa-6" :class="{'pl-8': !isMobile, 'pl-6': isMobile}">修改信息</span>
               </v-row>
+              <!--抽屉表单-->
               <v-row class="mt-0" :class="{'px-6': !isMobile, 'px-3': isMobile, 'pb-7': isMobile}">
                 <v-col cols="12" sm="12" md="4" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
                   <span class="inputLabel">学生ID</span>
@@ -192,7 +203,7 @@
                               v-model="updateItem.remarks"></v-textarea>
                 </v-col>
               </v-row>
-
+              <!--抽屉操作按钮-->
               <v-row class="justify-end mx-0 mt-8" :class="{'px-6': !isMobile, 'px-4': isMobile, 'mb-8': isMobile}">
                 <v-btn color="success" small @click="doUiAction('updateItem')">保存</v-btn>
                 <v-btn class="ml-2" small @click="isUpdateDrawerShow = false">取消
@@ -200,8 +211,9 @@
               </v-row>
             </v-form>
 
-            <v-btn elevation="0" color="success" fab absolute top left small tile class="drawer-close-float-btn" @click="isUpdateDrawerShow = false"> 
-              <v-icon>mdi-close</v-icon> 
+            <!--抽屉关闭按钮-->
+            <v-btn elevation="0" color="success" fab absolute top left small tile class="drawer-close-float-btn" @click="isUpdateDrawerShow = false">
+              <v-icon>mdi-close</v-icon>
             </v-btn>
           </v-navigation-drawer>
           <!-- 页面内容 end -->
@@ -209,10 +221,10 @@
 
         <!-- 帮助页抽屉 start -->
         <v-navigation-drawer v-model="isHelpPageDrawerShow" fixed temporary right width="80%" hide-overlay class="elevation-24">
-          <iframe style="border: 0" :src="`/${appInfo.appId}/pageDoc?markdownPath=`" width="100%" height="100%"></iframe>
-          
-          <v-btn elevation="0" color="success" fab absolute top left small tile class="drawer-close-float-btn" @click="isHelpPageDrawerShow = false"> 
-            <v-icon>mdi-close</v-icon> 
+          <iframe style="border: 0" :src="`/${appInfo.appId}/pageDoc?pageId=<$ ctx.packagePage.pageId $>`" width="100%" height="100%"></iframe>
+
+          <v-btn elevation="0" color="success" fab absolute top left small tile class="drawer-close-float-btn" @click="isHelpPageDrawerShow = false">
+            <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-navigation-drawer>
         <!-- 帮助页抽屉 end -->
@@ -374,7 +386,7 @@ new Vue({
 
 
     // ====================================Update Start===========================================
-    async fillUpdateForm({item}) {
+    async fillUpdateForm(item) {
       this.updateItem = _.clone(item);
     },
     async openUpdateDrawer() {
@@ -407,7 +419,7 @@ new Vue({
 
 
     // ====================================Delete Start===========================================
-    async confirmDeleteItemDialog({item}) {
+    async confirmDeleteItemDialog(item) {
       if (!item || !item.id) {
         window.vtoast.fail("数据异常");
         return
