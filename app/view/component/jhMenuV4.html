@@ -1,6 +1,7 @@
 <!--jhMenu.html >>>>>>>>>>>>> -->
 <script type="text/html" id="jhMenu">
     <div>
+        <!-- 手机端左边抽屉菜单 >>>>>>>>>>>>> -->
         <v-navigation-drawer
             v-model="mobileMenuDrawer"
             app
@@ -9,59 +10,62 @@
             style="z-index: 99999"
             class="pageNavBar"
         >
-        <v-list>
+          <v-list>
             <v-list-item-group
                 v-model="selectedItem"
                 color="success"
             >
-            <v-list-item
-                disabled
-                :class="{'pa-2': !isMobile}"
-                style="height: 80px!important; color: #333333"
-            >
-                <v-list-item-content :class="{'pa-0': isMobile}">
-                <v-list-item-title style="font-size: 18px!important; font-weight: bold">
-                    {{ appTitle }}
-                </v-list-item-title>
+              <v-list-item
+                  disabled
+                  class="pa-2"
+                  style="color: #333333"
+              >
+                <v-list-item-content>
+                  <v-list-item-title style="font-size: 18px!important; font-weight: bold">
+                      {{ appTitle }}
+                  </v-list-item-title>
                 </v-list-item-content>
-            </v-list-item>
-            <v-list-item
-                v-for="item in inMenuList"
-                :class="{'pa-2': !isMobile}"
-                :key="item.path"
-                @click="jump(item.path, item.query)"
-            >
-                <v-list-item-content :class="{'pa-0': isMobile}">
-                <v-list-item-title style="font-size: 14px;">
-                    {{ item.title }}
-                </v-list-item-title>
-                </v-list-item-content>
-            </v-list-item>
+              </v-list-item>
+              <v-list-item
+                  v-for="item in inMenuList"
+                  class="pa-2"
+                  :key="item.path"
+                  @click="jump(item.path, item.query)"
+              >
+                  <v-list-item-content>
+                  <v-list-item-title style="font-size: 14px;">
+                      {{ item.title }}
+                  </v-list-item-title>
+                  </v-list-item-content>
+              </v-list-item>
             </v-list-item-group>
-        </v-list>
+          </v-list>
         </v-navigation-drawer>
+        <!-- <<<<<<<<<<<<< 手机端左边抽屉菜单 -->
+        <!-- 页面头部 >>>>>>>>>>>>> -->
         <v-app-bar
             app
             clipped-left
             height="60"
-            :class="{'px-8': !isMobile, 'px-4': isMobile}"
+            class="pageHeader px-8"
             style="z-index: 50;"
             flat
         >
-        <v-app-bar-nav-icon color="success" @click.stop="mobileMenuDrawer = !mobileMenuDrawer" v-if="isMobile"></v-app-bar-nav-icon>
-
-        <v-toolbar-title ref="toolbarTitle" class="mr-8 pa-0 align-center" style="font-size: 14px" :style="{'flex': isMobile ? 1 : 'none'}">
+          <!--手机端左侧菜单开启按钮-->
+          <v-app-bar-nav-icon color="success" @click.stop="mobileMenuDrawer = !mobileMenuDrawer" v-if="isMobile"></v-app-bar-nav-icon>
+          <!--页面标题-->
+          <v-toolbar-title ref="toolbarTitle" class="mr-8 pa-0 align-center" style="font-size: 14px; flex: none">
             <span class="title" style="font-size: 18px!important; font-weight: 700">{{ appTitle }}</span>
-        </v-toolbar-title>
-
-        <v-tabs
-            v-model="selectedItem"
-            v-if="!isMobile"
-            show-arrows
-            slider-size="0"
-            color="success"
-            :style="{maxWidth: tabsMaxWidth}"
-        >
+          </v-toolbar-title>
+          <!--pc端菜单 >>>>>>>>>>>>>-->
+          <v-tabs
+              v-model="selectedItem"
+              v-if="!isMobile"
+              show-arrows
+              slider-size="0"
+              color="success"
+              :style="{maxWidth: tabsMaxWidth}"
+          >
             <template v-for="item in inMenuList">
             <v-tab
                 class="px-5 headerTab"
@@ -77,7 +81,8 @@
                 vertical
             ></v-divider>
             </template>
-        </v-tabs>
+          </v-tabs>
+          <!--<<<<<<<<<<<<<pc端菜单-->
 
         <div style="white-space: nowrap">
             <v-menu offset-y>
