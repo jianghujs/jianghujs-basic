@@ -282,6 +282,9 @@ body .v-text-field>.v-input__control>.v-input__slot:before {
 body .v-text-field>.v-input__control>.v-input__slot:after {
   border: none;
 }
+body .v-application .pageSecondBar {
+  flex-wrap: nowrap;
+}
 body .v-breadcrumbs li {
   font-size: 12px!important;
 }
@@ -291,13 +294,13 @@ body .theme--light.v-input--is-disabled, .theme--light.v-input--is-disabled inpu
 body .theme--light.v-text-field--filled>.v-input__control>.v-input__slot {
   background: #f5f8fa;
 }
-body .outSideMain .theme--light.v-text-field--filled>.v-input__control>.v-input__slot {
+body .serverSearchContainer .theme--light.v-text-field--filled>.v-input__control>.v-input__slot {
   background: #ffffff;
 }
 body .theme--light.v-text-field--filled:not(.v-input--is-focused):not(.v-input--has-state)>.v-input__control>.v-input__slot:hover {
   background: #edeff1 !important;
 }
-body .outSideMain .theme--light.v-text-field--filled:not(.v-input--is-focused):not(.v-input--has-state)>.v-input__control>.v-input__slot:hover {
+body .serverSearchContainer .theme--light.v-text-field--filled:not(.v-input--is-focused):not(.v-input--has-state)>.v-input__control>.v-input__slot:hover {
   background: #dcdcdc !important;
 }
 body .v-menu__content {
@@ -445,7 +448,7 @@ body .v-overlay {
     height: 52px;
   }
 
-  body .outSideMain {
+  body .serverSearchContainer {
     min-width: 100%;
     max-width: 100%;
   }
@@ -661,14 +664,34 @@ body span.inputLabel{
 
 /* v4 手机端适配代码 */
 @media (max-width: 500px) {
+  /* 页面的主体container */
   body .v-application .pageBodyContainer {
     padding-right: 0!important;
     padding-left: 0!important;
   }
+  /* 页面的主体card */
   body .v-application .pageBodyContainer .v-card {
     padding-right: 0!important;
     padding-left: 0!important;
     border-radius: 0!important;
+  }
+  /* 抽屉的标题 */
+  body .v-application .pageBodyContainer .v-navigation-drawer .v-navigation-drawer__content .title {
+    padding-left: 24px!important;
+  }
+  /* 抽屉表单元素 */
+  body .v-application .pageBodyContainer .v-navigation-drawer .v-navigation-drawer__content > form > .row:nth-child(2) {
+    padding-left: 12px!important;
+    padding-right: 12px!important;
+  }
+  body .v-application .pageBodyContainer .v-navigation-drawer .v-navigation-drawer__content > form > .row:nth-child(2) > div {
+    padding-top: 16px!important;
+    padding-bottom: 0!important;
+  }
+  /* 抽屉的操作按钮 */
+  body .v-application .pageBodyContainer .v-navigation-drawer .v-navigation-drawer__content > form > .row:nth-child(3) {
+    padding-left: 12px!important;
+    padding-right: 12px!important;
   }
   body .v-application .py-xs-0 {
     padding-top: 0!important;
@@ -679,6 +702,7 @@ body span.inputLabel{
     min-width: 100%!important;
     margin-top: 10px!important;
   }
+  /* 表格的底部 >>>>>> */
   body .v-application .v-data-footer {
     flex-wrap: wrap!important;
     justify-content: start!important;
@@ -686,12 +710,15 @@ body span.inputLabel{
   body .v-application .v-data-footer__select {
     flex: 1!important;
   }
-  body .v-application .v-navigation-drawer {
+  /* <<<<< 表格的底部 */
+  /* 抽屉 除了系统菜单抽屉 */
+  body .v-application .v-navigation-drawer:not(.pageNavBar) {
     width: 100%!important;
   }
   body .v-application .v-navigation-drawer__content {
     position: relative!important;
   }
+  /* 抽屉 绿色关闭按钮 */
   body .v-application .v-navigation-drawer__content .drawer-close-float-btn {
     position: absolute!important;
     top: 10px!important;
@@ -700,7 +727,7 @@ body span.inputLabel{
     height: 30px;
     width: 30px;
   }
-
+  /* 系统菜单 item */
   body .pageNavBar .v-list-item {
     border-bottom: 1px solid #EEEEEE!important;
     min-height: 42px!important;
@@ -721,6 +748,26 @@ body span.inputLabel{
   }
   body .serverSearchAction {
     justify-content: right!important;
+  }
+  /* 页面第二个工具栏 */
+  body .v-application .pageSecondBar {
+    flex-wrap: wrap!important;
+    padding-left: 16px!important;
+    padding-right: 16px!important;
+  }
+  body .v-application .pageSecondBar .serverSearchContainer {
+    padding-top: 0!important;
+  }
+  body .v-application .pageSecondBar .serverSearchContainer > .row {
+    margin: 0 -8px!important;
+  }
+  body .v-application .pageSecondBar .serverSearchContainer > .row > div {
+    padding-top: 0!important;
+    padding-left: 8px!important;
+    padding-right: 8px!important;
+  }
+  body .v-application .pageSecondBar .serverSearchContainer > .row > div > div {
+    margin-right: 0!important;
   }
 }
 </style>

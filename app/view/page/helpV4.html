@@ -8,7 +8,7 @@
       <jhMenu />
       <v-main class="d-flex flex-column" style="margin-top: 60px">
         <!-- 头部内容 >>>>>>>>>>>>> -->
-        <div class="d-flex" :style="{'flex-wrap': isMobile ? 'wrap' : 'nowrap'}" :class="{'px-8': !isMobile, 'px-4': isMobile}"><div>
+        <div class="pageSecondBar d-flex px-8"><div>
             <div class="appTitle pt-3" style="font-size: 18px; font-weight: 700">{{ breadcrumbs[1].fullText }}
               <!-- 帮助页按钮 -->
               <v-icon @click="isHelpPageDrawerShow = true" small>mdi-help-circle-outline</v-icon>

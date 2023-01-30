@@ -8,7 +8,7 @@
       <jhMenu />
       <v-main class="d-flex flex-column" style="margin-top: 60px">
         <!-- 头部内容 >>>>>>>>>>>>> -->
-        <div class="d-flex" :style="{'flex-wrap': isMobile ? 'wrap' : 'nowrap'}" :class="{'px-8': !isMobile, 'px-4': isMobile}"><div>
+        <div class="pageSecondBar d-flex px-8"><div>
             <div class="appTitle pt-3" style="font-size: 18px; font-weight: 700">{{ breadcrumbs[1].fullText }}
               <!-- 帮助页按钮 -->
               <v-icon @click="isHelpPageDrawerShow = true" small>mdi-help-circle-outline</v-icon>
@@ -87,58 +87,58 @@
             <v-form v-model="isFormValid" v-if="isCreateDrawerShow" ref="form" lazy-validation>
               <!--抽屉标题-->
               <v-row>
-                <span class="title pa-6" :class="{'pl-8': !isMobile, 'pl-6': isMobile}">添加信息</span>
+                <span class="title pa-6 pl-8">添加信息</span>
               </v-row>
               <!--抽屉表单主体-->
-              <v-row class="mt-0" :class="{'px-6': !isMobile, 'px-3': isMobile, 'pb-7': isMobile}">
-                <v-col cols="12" sm="12" md="4" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
+              <v-row class="mt-0 px-6">
+                <v-col cols="12" sm="12" md="4">
                   <span class="inputLabel">学生ID</span>
                   <v-text-field class="cus-v-input" dense single-line filled label="学生ID" v-model="createItem.studentId"
                                 :rules="requireRules"></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="12" md="4" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
+                <v-col cols="12" sm="12" md="4">
                   <span class="inputLabel">班级ID</span>
                   <v-text-field class="cus-v-input" dense single-line filled label="班级ID"
                                 v-model="createItem.classId"></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="12" md="4" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
+                <v-col cols="12" sm="12" md="4">
                   <span class="inputLabel">学生名字</span>
                   <v-text-field class="cus-v-input" dense single-line filled label="学生名字"
                                 v-model="createItem.name"></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="12" md="4" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
+                <v-col cols="12" sm="12" md="4">
                   <span class="inputLabel">年级</span>
                   <v-text-field class="cus-v-input" dense single-line filled label="年级"
                                 v-model="createItem.level"></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="12" md="4" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
+                <v-col cols="12" sm="12" md="4">
                   <span class="inputLabel">性别</span>
                   <v-text-field class="cus-v-input" dense single-line filled label="性别"
                                 v-model="createItem.gender"></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="12" md="4" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
+                <v-col cols="12" sm="12" md="4">
                   <span class="inputLabel">出生日期</span>
                   <v-text-field class="cus-v-input" dense single-line filled label="出生日期"
                                 v-model="createItem.dateOfBirth"></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="12" md="4" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
+                <v-col cols="12" sm="12" md="4">
                   <span class="inputLabel">身高</span>
                   <v-text-field class="cus-v-input" dense single-line filled label="身高"
                                 v-model="createItem.bodyHeight"></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="12" md="4" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
+                <v-col cols="12" sm="12" md="4">
                   <span class="inputLabel">学生状态</span>
                   <v-text-field class="cus-v-input" dense single-line filled label="学生状态"
                                 v-model="createItem.studentStatus"></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="12" md="12" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
+                <v-col cols="12" sm="12" md="12">
                   <span class="inputLabel">备注</span>
                   <v-textarea class="cus-v-input" no-resize dense single-line filled label="备注"
                               v-model="createItem.remarks"></v-textarea>
                 </v-col>
               </v-row>
               <!--抽屉操作按钮-->
-              <v-row class="justify-end mx-0 mt-8" :class="{'px-6': !isMobile, 'px-4': isMobile, 'mb-8': isMobile}">
+              <v-row class="justify-end mx-0 mt-8 px-6">
                 <v-btn color="success" @click="doUiAction('createItem')" small>保存</v-btn>
                 <v-btn class="ml-2" @click="isCreateDrawerShow = false" small>取消</v-btn>
               </v-row>
@@ -153,58 +153,58 @@
             <v-form v-model="isFormValid" v-if="isUpdateDrawerShow" ref="form" lazy-validation>
               <!--抽屉标题-->
               <v-row>
-                <span class="title pa-6" :class="{'pl-8': !isMobile, 'pl-6': isMobile}">修改信息</span>
+                <span class="title pa-6 pl-8">修改信息</span>
               </v-row>
               <!--抽屉表单-->
-              <v-row class="mt-0" :class="{'px-6': !isMobile, 'px-3': isMobile, 'pb-7': isMobile}">
-                <v-col cols="12" sm="12" md="4" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
+              <v-row class="mt-0 px-6">
+                <v-col cols="12" sm="12" md="4">
                   <span class="inputLabel">学生ID</span>
                   <v-text-field class="cus-v-input" dense single-line filled label="学生ID" v-model="updateItem.studentId"
                                 :rules="requireRules"></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="12" md="4" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
+                <v-col cols="12" sm="12" md="4">
                   <span class="inputLabel">班级ID</span>
                   <v-text-field class="cus-v-input" dense single-line filled label="班级ID" v-model="updateItem.classId"
                                 :rules="requireRules"></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="12" md="4" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
+                <v-col cols="12" sm="12" md="4">
                   <span class="inputLabel">学生名字</span>
                   <v-text-field class="cus-v-input" dense single-line filled label="学生名字"
                                 v-model="updateItem.name"></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="12" md="4" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
+                <v-col cols="12" sm="12" md="4">
                   <span class="inputLabel">年级</span>
                   <v-text-field class="cus-v-input" dense single-line filled label="年级" v-model="updateItem.level"
                                 :rules="requireRules"></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="12" md="4" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
+                <v-col cols="12" sm="12" md="4">
                   <span class="inputLabel">性别</span>
                   <v-text-field class="cus-v-input" dense single-line filled label="性别" v-model="updateItem.gender"
                                 :rules="requireRules"></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="12" md="4" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
+                <v-col cols="12" sm="12" md="4">
                   <span class="inputLabel">出生日期</span>
                   <v-text-field class="cus-v-input" dense single-line filled label="出生日期" v-model="updateItem.dateOfBirth"
                                 :rules="requireRules"></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="12" md="4" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
+                <v-col cols="12" sm="12" md="4">
                   <span class="inputLabel">身高</span>
                   <v-text-field class="cus-v-input" dense single-line filled label="身高" v-model="updateItem.bodyHeight"
                                 :rules="requireRules"></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="12" md="4" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
+                <v-col cols="12" sm="12" md="4">
                   <span class="inputLabel">学生状态</span>
                   <v-text-field class="cus-v-input" dense single-line filled label="学生状态" v-model="updateItem.studentStatus"
                                 :rules="requireRules"></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="12" md="12" :class="{'pa-0': isMobile, 'px-3': isMobile, 'pt-6': isMobile}">
+                <v-col cols="12" sm="12" md="12">
                   <span class="inputLabel">备注</span>
                   <v-textarea class="cus-v-input" no-resize dense single-line filled label="备注"
                               v-model="updateItem.remarks"></v-textarea>
                 </v-col>
               </v-row>
               <!--抽屉操作按钮-->
-              <v-row class="justify-end mx-0 mt-8" :class="{'px-6': !isMobile, 'px-4': isMobile, 'mb-8': isMobile}">
+              <v-row class="justify-end mx-0 mt-8 px-6">
                 <v-btn color="success" small @click="doUiAction('updateItem')">保存</v-btn>
                 <v-btn class="ml-2" small @click="isUpdateDrawerShow = false">取消
                 </v-btn>
@@ -257,7 +257,6 @@ new Vue({
     breadcrumbs: window.breadcrumbs,
     isHelpPageDrawerShow: false,
 
-    isMobile: window.innerWidth < 600,
     showTableZebraLine: true,
     // 表格相关数据
     isFormValid: true,
