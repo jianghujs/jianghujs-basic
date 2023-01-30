@@ -15,40 +15,95 @@
             </div>
             <v-breadcrumbs class="pb-3 pt-0 pl-0" :items="breadcrumbs" divider="-"></v-breadcrumbs>
           </div>
+          <v-spacer v-if="isMobile"></v-spacer>
           <!-- 服务端搜索 -->
-          <div style="flex: 1" class="serverSearchContainer pt-2">
+          <div v-if="isMobile" class="d-flex flex-column pt-3 text-right">
+            <v-btn small color="success" @click="doUiAction('startBackendSearch')">服务端搜索<v-icon size="18" >mdi-menu-open</v-icon></v-btn>
+            <div  style="color: #999999; font-size: 12px">
+              <span v-if="serverSearchInput.studentId">学生ID：{{serverSearchInput.studentId}}</span>
+              <span v-if="serverSearchInput.classId">班级ID：{{serverSearchInput.classId}}</span>
+            </div>
+          </div>
+          <!-- 手机服务端搜索弹窗 >>>>>>>>>>>>> -->
+          <v-dialog
+              v-model="isBackendSearchDialogShow"
+              persistent
+              width="800px"
+          >
+            <v-card>
+              <v-card-title>
+                <div class="d-flex justify-space-between align-center" style="width: 100%;">
+                    <div style="font-size: 16px;">服务端搜索</div>
+                  <div>
+                    <v-btn class="elevation-0" fab x-small @click="doUiAction('closeBackendSearch')">
+                      <v-icon dark>mdi-close</v-icon>
+                    </v-btn>
+                  </div>
+                </div>
+              </v-card-title>
+              <v-card-text class="px-2">
+                <v-col cols="12" xs="6" sm="4" md="3" xl="2" class="pb-3">
+                  <v-text-field v-model="serverSearchInput.studentId" color="success" prefix="学生ID：" class="cus-v-input mr-2" dense filled single-line></v-text-field>
+                </v-col>
+                <v-col cols="12" xs="6" sm="4" md="3" xl="2" class="pb-3">
+                  <v-text-field v-model="serverSearchInput.classId" color="success" prefix="班级ID：" class="cus-v-input mr-2"dense filled single-line></v-text-field>
+                </v-col>
+                <jhScene :initFormData="serverSearchInput" @useScene="useScene">
+                  <template v-slot:form="{form}">
+                    <v-row class="ma-0 align-center" style="justify-content: end">
+                      <v-col cols="12" class="px-0 pb-0">
+                        <v-text-field v-model="form.studentId" color="success" prefix="学生ID：" class="cus-v-input mr-2" dense filled single-line></v-text-field>
+                      </v-col>
+                      <v-col cols="12" class="px-0 pb-0">
+                        <v-text-field v-model="form.classId" color="success" prefix="班级ID：" class="cus-v-input mr-2" dense filled single-line></v-text-field>
+                      </v-col>
+                    </v-row>
+                  </template>
+                </jhScene>
+              </v-card-text>
+              <!--弹窗操作按钮 >>>>>>>>>>>>> -->
+              <v-card-actions class="py-4">
+                <v-spacer></v-spacer>
+                <v-btn color="success" small @click="doUiAction('doBackendSearch')"> 搜索</v-btn>
+                <v-btn color="success" small @click="doUiAction('closeBackendSearch')"> 取消</v-btn>
+              </v-card-actions>
+              <!-- <<<<<<<<<<< 弹窗操作按钮 -->
+            </v-card>
+          </v-dialog>
+          <!-- <<<<<<<<<<< 手机服务端搜索弹窗-->
+          <div v-else style="flex: 1" class="serverSearchContainer pt-2">
             <v-row class="ma-0 align-center" style="justify-content: end">
-            <v-col cols="12" xs="6" sm="4" md="3" xl="2" class="pb-3">
-              <v-text-field v-model="serverSearchInput.studentId" color="success" prefix="学生ID：" class="cus-v-input mr-2" dense filled single-line></v-text-field>
-            </v-col>
-            <v-col cols="12" xs="6" sm="4" md="3" xl="2" class="pb-3">
-              <v-text-field v-model="serverSearchInput.classId" color="success" prefix="班级ID：" class="cus-v-input mr-2"dense filled single-line></v-text-field>
-            </v-col>
-            <v-col cols="12" xs="12" class="px-0 d-flex align-center serverSearchAction"
-                   style="max-width: max-content;"
-            >
-              <v-btn
-                  class="elevation-0"
-                  color="success"
-                  dark
-                  @click="doUiAction('refreshTableData')"
-                  small>
-                查询
-              </v-btn>
-              <jhScene :initFormData="serverSearchInput" @useScene="useScene">
-                <template v-slot:form="{form}">
-                  <v-row class="ma-0 align-center" style="justify-content: end">
-                    <v-col cols="12" class="px-0 pb-0">
-                      <v-text-field v-model="form.studentId" color="success" prefix="学生ID：" class="cus-v-input mr-2" dense filled single-line></v-text-field>
-                    </v-col>
-                    <v-col cols="12" class="px-0 pb-0">
-                      <v-text-field v-model="form.classId" color="success" prefix="班级ID：" class="cus-v-input mr-2" dense filled single-line></v-text-field>
-                    </v-col>
-                  </v-row>
-                </template>
-              </jhScene>
-            </v-col>
-          </v-row>
+              <v-col cols="12" xs="6" sm="4" md="3" xl="2" class="pb-3">
+                <v-text-field v-model="serverSearchInput.studentId" color="success" prefix="学生ID：" class="cus-v-input mr-2" dense filled single-line></v-text-field>
+              </v-col>
+              <v-col cols="12" xs="6" sm="4" md="3" xl="2" class="pb-3">
+                <v-text-field v-model="serverSearchInput.classId" color="success" prefix="班级ID：" class="cus-v-input mr-2"dense filled single-line></v-text-field>
+              </v-col>
+              <v-col cols="12" xs="12" class="px-0 d-flex align-center serverSearchAction"
+                     style="max-width: max-content;"
+              >
+                <v-btn
+                    class="elevation-0"
+                    color="success"
+                    dark
+                    @click="doUiAction('refreshTableData')"
+                    small>
+                  查询
+                </v-btn>
+                <jhScene :initFormData="serverSearchInput" @useScene="useScene">
+                  <template v-slot:form="{form}">
+                    <v-row class="ma-0 align-center" style="justify-content: end">
+                      <v-col cols="12" class="px-0 pb-0">
+                        <v-text-field v-model="form.studentId" color="success" prefix="学生ID：" class="cus-v-input mr-2" dense filled single-line></v-text-field>
+                      </v-col>
+                      <v-col cols="12" class="px-0 pb-0">
+                        <v-text-field v-model="form.classId" color="success" prefix="班级ID：" class="cus-v-input mr-2" dense filled single-line></v-text-field>
+                      </v-col>
+                    </v-row>
+                  </template>
+                </jhScene>
+              </v-col>
+            </v-row>
           </div>
         </div>
         <!-- <<<<<<<<<<<<< 头部内容 -->
@@ -268,6 +323,7 @@
         </v-navigation-drawer>
         <!-- <<<<<<<<<<<<< 帮助页抽屉 -->
 
+
       </v-main>
     </v-app>
 
@@ -294,6 +350,7 @@ new Vue({
   data: () => ({
     breadcrumbs: window.breadcrumbs,
     isHelpPageDrawerShow: false,
+    isMobile: window.innerWidth < 500,
 
     // 表格相关数据
     isFormValid: true,
@@ -338,6 +395,7 @@ new Vue({
       {text: "操作时间", value: "operationAt", type: "input", width: 250},
     ],
 
+    isBackendSearchDialogShow: false,
     isCreateDrawerShow: false,
     createItem: {},
     isUpdateDrawerShow: false,
@@ -358,6 +416,17 @@ new Vue({
     async doUiAction(uiActionId, uiActionData) {
       switch (uiActionId) {
         case 'refreshTableData':
+          await this.refreshTableData();
+          await this.computedTableData();
+          break;
+        case 'startBackendSearch':
+          await this.openBackendSearchDialog();
+          break;
+        case 'closeBackendSearch':
+          await this.closeBackendSearchDialog();
+          break;
+        case 'doBackendSearch':
+          await this.closeBackendSearchDialog();
           await this.refreshTableData();
           await this.computedTableData();
           break;
@@ -437,6 +506,14 @@ new Vue({
       } else {
         this.tableData = this.tableDataFromBackend.filter(({gender}) => gender === this.currentTableGenderType);
       }
+    },
+
+    async openBackendSearchDialog() {
+      this.isBackendSearchDialogShow = true;
+    },
+
+    async closeBackendSearchDialog() {
+      this.isBackendSearchDialogShow = false;
     },
 
     async prepareCreateFormData() {
@@ -549,6 +626,7 @@ new Vue({
         ...this.serverSearchInput,
         ...scene.form
       };
+      this.doUiAction('closeBackendSearch');
       this.doUiAction('refreshTableData');
     }
   }
