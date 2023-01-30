@@ -1,4 +1,4 @@
-* [应用协议](/)
+* [应用协议](/1.protocolDemo.md)
 * [前端对接](2.frontendDemo01.md)
 * [前端jianghuAxios](3.frontendDemo02.md)
 * [doUiAction](4.doUiAction.md)
