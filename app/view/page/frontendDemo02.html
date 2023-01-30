@@ -22,7 +22,7 @@
           <!-- 页面内容 >>>>>>>>>>>>> -->
           <v-container class="fullScreen d-flex flex-column pa-0">
             <v-card class="rounded-lg">
-              <v-row class="ma-0 align-center flex-none pt-0 pa-4" :class="{'pb-0': !isMobile, 'pa-2': isMobile}">
+              <v-row class="ma-0 align-center flex-none pt-0 pa-4 pb-0">
                 <!--新增按钮-->
                 <v-col cols="12" xs="12" sm="4" md="4" xl="4" class="pl-0">
                   <v-btn color="success" dark small class="elevation-0 mr-2" @click="doUiAction('startCreateItem')">新增</v-btn>
@@ -80,10 +80,10 @@
                 </template>
                 <!--表格操作-->
                 <template v-slot:item.action="{ item }">
-                  <span role="button" class="success--text mr-2 font-weight-medium font-size-2" @click="doUiAction('startUpdateItem', item)">
+                  <span role="button" class="success--text mr-2 font-weight-medium font-size-3" @click="doUiAction('startUpdateItem', item)">
                     <v-icon size="14" class="success--text">mdi-note-edit-outline</v-icon>修改
                   </span>
-                    <span role="button" class="success--text mr-2 font-weight-medium font-size-2" @click="doUiAction('deleteItem', item)">
+                    <span role="button" class="success--text mr-2 font-weight-medium font-size-3" @click="doUiAction('deleteItem', item)">
                       <v-icon size="14" class="success--text">mdi-trash-can-outline</v-icon>删除
                   </span>
                 </template>
@@ -244,8 +244,8 @@
         <!-- 帮助页抽屉 >>>>>>>>>>>>> -->
         <v-navigation-drawer v-model="isHelpPageDrawerShow" fixed temporary right width="80%" class="elevation-24">
           <iframe style="border: 0" :src="`/${appInfo.appId}/pageDoc#3.frontendDemo02.md`" width="100%" height="100%"></iframe>
-          <v-btn elevation="0" color="success" fab absolute top left small tile class="drawer-close-float-btn" @click="isHelpPageDrawerShow = false"> 
-            <v-icon>mdi-close</v-icon> 
+          <v-btn elevation="0" color="success" fab absolute top left small tile class="drawer-close-float-btn" @click="isHelpPageDrawerShow = false">
+            <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-navigation-drawer>
         <!-- <<<<<<<<<<<<< 帮助页抽屉 -->

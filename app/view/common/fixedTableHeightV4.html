@@ -1,7 +1,7 @@
 <!--resetTableMaxHeight.html >>>>>>>>>>>>> -->
 <script>
   resetTableMaxHeight = (param) => {
-   const {height = 160, className = 'fixed-table-height'} = param || {};
+   const {height = 130, className = 'fixed-table-height'} = param || {};
    const tables = document.getElementsByClassName(className);
    if (_.isEmpty(tables)) {
      window.requestAnimationFrame(() => {

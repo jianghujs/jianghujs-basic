@@ -1,10 +1,10 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("vue"));
+		module.exports = factory(require("app/public/lib/vue/vue"));
 	else if(typeof define === 'function' && define.amd)
-		define(["vue"], factory);
+		define(["app/public/lib/vue/vue"], factory);
 	else if(typeof exports === 'object')
-		exports["Vuetify"] = factory(require("vue"));
+		exports["Vuetify"] = factory(require("app/public/lib/vue/vue"));
 	else
 		root["Vuetify"] = factory(root["Vue"]);
 })(typeof self !== 'undefined' ? self : this, function(__WEBPACK_EXTERNAL_MODULE_vue__) {

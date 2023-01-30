@@ -1,5 +1,5 @@
 <!--jianghuAxios.html >>>>>>>>>>>>> -->
-<script src="/<$ ctx.app.config.appId $>/public/js/lib/spark-md5.min.js"></script>
+<script src="/<$ ctx.app.config.appId $>/public/lib/spark-md5/spark-md5.min.js"></script>
 <script>
 (function () {
   const KB = 1024;
@@ -299,7 +299,7 @@
       oReq.send(null);
     })
   }
-  
+
   // websocket 使用 base64 编码下载
   window.jianghuAxios.socketDownloadByBase64 = async({ downloadPath, filename, onProgress = () => {}}) => {
     const downloadFunc = async function ({ fileSize, total, chunkSize, hash, downloadPath, filename, success = () => {}}) {

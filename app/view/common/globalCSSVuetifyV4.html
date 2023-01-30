@@ -118,10 +118,13 @@ th:not(.v-picker th) {
   border-bottom: thin solid rgba(0, 0, 0, .06) !important;
   box-shadow: none;
 }
-.v-data-table>.v-data-table__wrapper>table>tbody>tr>td, .v-data-table>.v-data-table__wrapper>table>tfoot>tr>td, .v-data-table>.v-data-table__wrapper>table>thead>tr>td {
-  color: #41434f;
-  min-height: 52px;
-  height: 52px;
+.v-data-table>.v-data-table__wrapper>table>tbody>tr>td,
+.v-data-table>.v-data-table__wrapper>table>tfoot>tr>td,
+.v-data-table>.v-data-table__wrapper>table>thead>tr>td {
+  padding: 0 4px!important;
+}
+.v-data-table>.v-data-table__wrapper>table>tbody>tr>td .v-icon.v-icon {
+  transform: translateY(-1px);
 }
 .theme--light.v-data-table>.v-data-table__wrapper>table>thead>tr>th {
   color: rgba(181,181,195);
@@ -691,12 +694,11 @@ body span.inputLabel{
   }
   body .v-application .v-navigation-drawer__content .drawer-close-float-btn {
     position: absolute!important;
-    top: 20px!important;
-    left: calc(100% - 60px)!important;
-    background-color: #EEEEEE !important;
-    border-color: #EEEEEE !important;
+    top: 10px!important;
+    left: calc(100% - 40px)!important;
     border-radius: 100% !important;
-    color: #000000!important;
+    height: 30px;
+    width: 30px;
   }
 
   body .pageNavBar .v-list-item {
