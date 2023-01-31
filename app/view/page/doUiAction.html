@@ -8,7 +8,8 @@
       <jhMenu />
       <v-main class="d-flex flex-column" style="margin-top: 60px">
         <!-- 头部内容 >>>>>>>>>>>>> -->
-        <div class="pageSecondBar d-flex px-8"><div>
+        <div class="pageSecondBar d-flex px-8">
+          <div>
             <div class="appTitle pt-3" style="font-size: 18px; font-weight: 700">{{ breadcrumbs[1].fullText }}
               <!-- 帮助页按钮 -->
               <v-icon @click="isHelpPageDrawerShow = true" small>mdi-help-circle-outline</v-icon>
@@ -30,7 +31,8 @@
                 <v-spacer></v-spacer>
                 <!--表格过滤-->
                 <v-col cols="12" xs="6" sm="4" md="3" xl="2" class="px-0 py-xs-0">
-                  <v-text-field v-model="searchInput" color="success" prefix="表格过滤：" class="cus-v-input" dense filled single-line></v-text-field>
+                  <v-text-field v-model="searchInput" color="success" prefix="表格过滤：" class="cus-v-input" dense filled single-line>
+                  </v-text-field>
                 </v-col>
               </v-row>
               <!--表格-->
@@ -248,204 +250,204 @@
 {% include 'common/fixedTableHeightV4.html' %}
 
 <script type="module">
-new Vue({
-  el: '#app',
-  template: '#app-template',
-  vueComponent: 'page',
-  vuetify: new Vuetify(),
-  data: {
-    breadcrumbs: window.breadcrumbs,
-    isHelpPageDrawerShow: false,
+  new Vue({
+    el: '#app',
+    template: '#app-template',
+    vueComponent: 'page',
+    vuetify: new Vuetify(),
+    data: {
+      breadcrumbs: window.breadcrumbs,
+      isHelpPageDrawerShow: false,
 
-    showTableZebraLine: true,
-    // 表格相关数据
-    isFormValid: true,
-    requireRules: [
-      v => !!v || 'This is required',
-    ],
-    searchInput: null,
-    isTableLoading: true,
-    tableDataFromBackend: [],
-    headers: [
-      {text: '操作', value: 'action', align: 'center', sortable: false, width: 130, class: 'fixed', cellClass: 'fixed'},
-      {text: "学生ID", value: "studentId", width: 120},
-      {text: "班级ID", value: "classId", width: 140},
-      {text: "学生名字", value: "name", width: 120},
-      {text: "年级", value: "level", width: 120},
-      {text: "性别", value: "gender", width: 120},
-      {text: "出生日期", value: "dateOfBirth", width: 120},
-      {text: "身高", value: "bodyHeight", width: 120},
-      {text: "学生状态", value: "studentStatus", width: 120},
-      {text: "备注", value: "remarks", width: 120},
-      {text: "操作者", value: "operationByUser", width: 120},
-      {text: "操作时间", value: "operationAt", width: 250}
-    ],
+      showTableZebraLine: true,
+      // 表格相关数据
+      isFormValid: true,
+      requireRules: [
+        v => !!v || 'This is required',
+      ],
+      searchInput: null,
+      isTableLoading: true,
+      tableDataFromBackend: [],
+      headers: [
+        { text: '操作', value: 'action', align: 'center', sortable: false, width: 130, class: 'fixed', cellClass: 'fixed' },
+        { text: "学生ID", value: "studentId", width: 120 },
+        { text: "班级ID", value: "classId", width: 140 },
+        { text: "学生名字", value: "name", width: 120 },
+        { text: "年级", value: "level", width: 120 },
+        { text: "性别", value: "gender", width: 120 },
+        { text: "出生日期", value: "dateOfBirth", width: 120 },
+        { text: "身高", value: "bodyHeight", width: 120 },
+        { text: "学生状态", value: "studentStatus", width: 120 },
+        { text: "备注", value: "remarks", width: 120 },
+        { text: "操作者", value: "operationByUser", width: 120 },
+        { text: "操作时间", value: "operationAt", width: 250 }
+      ],
 
-    isCreateDrawerShow: false,
-    createItem: {},
-    isUpdateDrawerShow: false,
-    updateItem: {},
-  },
-  watch: {},
-  mounted() {
-    this.doUiAction('refreshTableData');
-  },
-  methods: {
-    async doUiAction(uiActionId, uiActionData) {
-      switch (uiActionId) {
-        case 'refreshTableData':
-          await this.refreshTableData();
-          break;
-        case 'startInsertItem':
-          await this.clearCreateForm();
-          await this.openCreateDrawer();
-          break;
-        case 'createItem':
-          await this.prepareValidate();
-          await this.prepareCreateItem();
-          await this.doCreateItem();
-          await this.closeCreateDrawer();
-          await this.refreshTableData();
-          break;
-        case 'startUpdateItem':
-          await this.fillUpdateForm(uiActionData);
-          await this.openUpdateDrawer();
-          break;
-        case 'updateItem':
-          await this.prepareValidate();
-          await this.doUpdateItem();
-          await this.refreshTableData();
-          await this.closeUpdateDrawer();
-          break;
-        case 'deleteItem':
-          await this.confirmDeleteItemDialog(uiActionData);
-          await this.doDeleteItem(uiActionData);
-          await this.refreshTableData();
-          break;
-        default:
-          console.error("[doUiAction] uiActionId not find", { uiActionId });
-          break;
-      }
+      isCreateDrawerShow: false,
+      createItem: {},
+      isUpdateDrawerShow: false,
+      updateItem: {},
     },
-
-    async refreshTableData() {
-      this.isTableLoading = true;
-      const result = await window.jianghuAxios({
-        data: {
-          appData: {
-            pageId: 'doUiAction',
-            actionId: 'selectItemList',
-            actionData: {},
-            where: {},
-            orderBy: [{column: 'operationAt', order: 'desc'}]
-          }
+    watch: {},
+    mounted() {
+      this.doUiAction('refreshTableData');
+    },
+    methods: {
+      async doUiAction(uiActionId, uiActionData) {
+        switch (uiActionId) {
+          case 'refreshTableData':
+            await this.refreshTableData();
+            break;
+          case 'startInsertItem':
+            await this.clearCreateForm();
+            await this.openCreateDrawer();
+            break;
+          case 'createItem':
+            await this.prepareValidate();
+            await this.prepareCreateItem();
+            await this.doCreateItem();
+            await this.closeCreateDrawer();
+            await this.refreshTableData();
+            break;
+          case 'startUpdateItem':
+            await this.fillUpdateForm(uiActionData);
+            await this.openUpdateDrawer();
+            break;
+          case 'updateItem':
+            await this.prepareValidate();
+            await this.doUpdateItem();
+            await this.refreshTableData();
+            await this.closeUpdateDrawer();
+            break;
+          case 'deleteItem':
+            await this.confirmDeleteItemDialog(uiActionData);
+            await this.doDeleteItem(uiActionData);
+            await this.refreshTableData();
+            break;
+          default:
+            console.error("[doUiAction] uiActionId not find", { uiActionId });
+            break;
         }
-      });
+      },
 
-      this.tableDataFromBackend = result.data.appData.resultData.rows;
-      this.isTableLoading = false;
-    },
-
-
-    // ====================================Create >>>>>>>>>>>>>===========================================
-    async clearCreateForm() {
-      this.createItem = {};
-    },
-    // validate
-    prepareValidate() {
-      if (this.$refs.form.validate() === false) {
-        throw new Error("[prepareValidate] 参数不符合要求");
-      };
-    },
-    async openCreateDrawer() {
-      this.isCreateDrawerShow = true;
-    },
-    async prepareCreateItem() {
-      delete this.createItem.id;
-    },
-    async doCreateItem() {
-      await window.jhMask.show();
-      await window.vtoast.loading("新增学生");
-      await window.jianghuAxios({
-        data: {
-          appData: {
-            pageId: 'doUiAction',
-            actionId: 'createItem',
-            actionData: this.createItem
+      async refreshTableData() {
+        this.isTableLoading = true;
+        const result = await window.jianghuAxios({
+          data: {
+            appData: {
+              pageId: 'doUiAction',
+              actionId: 'selectItemList',
+              actionData: {},
+              where: {},
+              orderBy: [{ column: 'operationAt', order: 'desc' }]
+            }
           }
-        }
-      })
-      await window.jhMask.hide();
-      await window.vtoast.success("新增学生成功");
-    },
-    async closeCreateDrawer() {
-      this.isCreateDrawerShow = false;
-    },
-    // ====================================Create End===========================================
+        });
+
+        this.tableDataFromBackend = result.data.appData.resultData.rows;
+        this.isTableLoading = false;
+      },
 
 
-    // ====================================Update >>>>>>>>>>>>>===========================================
-    async fillUpdateForm(item) {
-      this.updateItem = _.clone(item);
-    },
-    async openUpdateDrawer() {
-      this.isUpdateDrawerShow = true;
-    },
-    async prepareUpdateItem() {
-      // TODO: 对this.updateItem做一些数据处理
-    },
-    async doUpdateItem() {
-      const {id, ...actionData} = this.updateItem;
-      await window.vtoast.loading("修改学生");
-      await window.jhMask.show();
-      await window.jianghuAxios({
-        data: {
-          appData: {
-            pageId: 'doUiAction',
-            actionId: 'updateItem',
-            actionData: actionData,
-            where: {id}
+      // ====================================Create >>>>>>>>>>>>>===========================================
+      async clearCreateForm() {
+        this.createItem = {};
+      },
+      // validate
+      prepareValidate() {
+        if (this.$refs.form.validate() === false) {
+          throw new Error("[prepareValidate] 参数不符合要求");
+        };
+      },
+      async openCreateDrawer() {
+        this.isCreateDrawerShow = true;
+      },
+      async prepareCreateItem() {
+        delete this.createItem.id;
+      },
+      async doCreateItem() {
+        await window.jhMask.show();
+        await window.vtoast.loading("新增学生");
+        await window.jianghuAxios({
+          data: {
+            appData: {
+              pageId: 'doUiAction',
+              actionId: 'createItem',
+              actionData: this.createItem
+            }
           }
-        }
-      })
-      await window.jhMask.hide();
-      await window.vtoast.success("修改学生成功");
-    },
-    async closeUpdateDrawer() {
-      this.isUpdateDrawerShow = false;
-    },
-    // ====================================Update End===========================================
+        })
+        await window.jhMask.hide();
+        await window.vtoast.success("新增学生成功");
+      },
+      async closeCreateDrawer() {
+        this.isCreateDrawerShow = false;
+      },
+      // ====================================Create End===========================================
 
 
-    // ====================================Delete >>>>>>>>>>>>>===========================================
-    async confirmDeleteItemDialog(item) {
-      if (!item || !item.id) {
-        window.vtoast.fail("数据异常");
-        return
-      }
-      if (await window.confirmDialog({title: "删除", content: "确定删除吗？"}) === false) {
-        throw new Error("[confirmDeleteFormDialog] 否");
-      }
-    },
-    async doDeleteItem({item}) {
-      const {id} = item;
-      await window.vtoast.loading("删除学生");
-      await window.jianghuAxios({
-        data: {
-          appData: {
-            pageId: 'doUiAction',
-            actionId: 'deleteItem',
-            actionData: {},
-            where: {id}
+      // ====================================Update >>>>>>>>>>>>>===========================================
+      async fillUpdateForm(item) {
+        this.updateItem = _.clone(item);
+      },
+      async openUpdateDrawer() {
+        this.isUpdateDrawerShow = true;
+      },
+      async prepareUpdateItem() {
+        // TODO: 对this.updateItem做一些数据处理
+      },
+      async doUpdateItem() {
+        const { id, ...actionData } = this.updateItem;
+        await window.vtoast.loading("修改学生");
+        await window.jhMask.show();
+        await window.jianghuAxios({
+          data: {
+            appData: {
+              pageId: 'doUiAction',
+              actionId: 'updateItem',
+              actionData: actionData,
+              where: { id }
+            }
           }
-        }
-      });
-      await window.vtoast.success("删除学生成功");
-    },
-    // ====================================Delete End===========================================
+        })
+        await window.jhMask.hide();
+        await window.vtoast.success("修改学生成功");
+      },
+      async closeUpdateDrawer() {
+        this.isUpdateDrawerShow = false;
+      },
+      // ====================================Update End===========================================
 
-  }
-})
+
+      // ====================================Delete >>>>>>>>>>>>>===========================================
+      async confirmDeleteItemDialog(item) {
+        if (!item || !item.id) {
+          window.vtoast.fail("数据异常");
+          return
+        }
+        if (await window.confirmDialog({ title: "删除", content: "确定删除吗？" }) === false) {
+          throw new Error("[confirmDeleteFormDialog] 否");
+        }
+      },
+      async doDeleteItem({ item }) {
+        const { id } = item;
+        await window.vtoast.loading("删除学生");
+        await window.jianghuAxios({
+          data: {
+            appData: {
+              pageId: 'doUiAction',
+              actionId: 'deleteItem',
+              actionData: {},
+              where: { id }
+            }
+          }
+        });
+        await window.vtoast.success("删除学生成功");
+      },
+      // ====================================Delete End===========================================
+
+    }
+  })
 </script>
 
 <style scoped>
