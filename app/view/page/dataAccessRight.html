@@ -78,10 +78,10 @@
                 </template>
                 <!--表格操作-->
                 <template v-slot:item.action="{ item }">
-                  <span role="button" class="success--text mr-2 font-weight-medium font-size-3" @click="doUiAction('startUpdateItem', item)">
+                  <span role="button" class="success--text font-weight-medium font-size-3" @click="doUiAction('startUpdateItem', item)">
                       <v-icon size="14" class="success--text">mdi-note-edit-outline</v-icon>修改
                   </span>
-                    <span role="button" class="success--text mr-2 font-weight-medium font-size-3" @click="doUiAction('deleteItem', item)">
+                    <span role="button" class="success--text font-weight-medium font-size-3" @click="doUiAction('deleteItem', item)">
                       <v-icon size="14" class="success--text">mdi-trash-can-outline</v-icon>删除
                   </span>
                 </template>
@@ -287,7 +287,7 @@ new Vue({
     tableData: [],
     tableDataFromBackend: [],
     headers: [
-      {text: '操作', value: 'action', type: 'button', align: 'center', sortable: false, width: 130, class: 'fixed', cellClass: 'fixed'},
+      {text: '操作', value: 'action', type: 'button', align: 'center', sortable: false, width: 105, class: 'fixed', cellClass: 'fixed'},
       {text: "学生ID", value: "studentId", type: "input", width: 120},
       {text: "班级ID", value: "classId", type: "select", width: 140},
       {text: "学生名字", value: "name", type: "input", width: 120},

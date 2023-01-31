@@ -49,10 +49,10 @@
                 class="fixed-table-height elevation-0 mt-0 mb-xs-4 flex-fill d-flex flex-column">
                 <!--表格行操作按钮-->
                 <template v-slot:item.action="{ item }">
-                  <span role="button" class="success--text mr-2 font-weight-medium font-size-3" @click="doUiAction('startUpdateItem', item)">
+                  <span role="button" class="success--text font-weight-medium font-size-3" @click="doUiAction('startUpdateItem', item)">
                     <v-icon size="14" class="success--text">mdi-note-edit-outline</v-icon>修改
                   </span>
-                  <span role="button" class="success--text mr-2 font-weight-medium font-size-3" @click="doUiAction('deleteItem', item)">
+                  <span role="button" class="success--text font-weight-medium font-size-3" @click="doUiAction('deleteItem', item)">
                     <v-icon size="14" class="success--text">mdi-trash-can-outline</v-icon>删除
                   </span>
                 </template>
@@ -268,7 +268,7 @@
       isTableLoading: true,
       tableDataFromBackend: [],
       headers: [
-        { text: '操作', value: 'action', align: 'center', sortable: false, width: 130, class: 'fixed', cellClass: 'fixed' },
+        { text: '操作', value: 'action', align: 'center', sortable: false, width: 105, class: 'fixed', cellClass: 'fixed' },
         { text: "学生ID", value: "studentId", width: 120 },
         { text: "班级ID", value: "classId", width: 140 },
         { text: "学生名字", value: "name", width: 120 },
