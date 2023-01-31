@@ -54,10 +54,11 @@
 
 {% endblock %}
 
-
 <!-- vue script 代码块 -->
 <!-- 注意：本项目的 vue 为每个页面使用一个 vue 实例 -->
 {% block vueScript %}
+
+{% include 'utility/prepareDeviceIdV4.html' %}
 
 <script type="module">
   new Vue({
