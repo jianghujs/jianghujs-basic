@@ -87,7 +87,7 @@
       async login() {
         const urlParams = new URLSearchParams(location.search);
         const redirectUrl = urlParams.get('redirectUrl');
-        const deviceId = await window.deviceId;
+        const deviceId = window.deviceId;
         const userId = (this.userId + '').replace(/\s+/g, '');
         const password = this.password + '';
 
