@@ -24,18 +24,12 @@
             <v-card class="rounded-lg">
               <v-row class="ma-0 align-center flex-none pt-0 pa-4 pb-0">
                 <!--新增按钮-->
-                <v-col cols="12" xs="12" sm="4" md="4" xl="4" class="pl-0">
+                <v-col cols="12" xs="4" sm="4" md="4" xl="4" class="pl-0">
                   <v-btn color="success" dark small class="elevation-0 mr-2" @click="doUiAction('startCreateItem')">新增</v-btn>
                 </v-col>
                 <v-spacer></v-spacer>
-                <!--性别过滤-->
-                <v-col cols="12" xs="6" sm="3" md="2" xl="2" class="px-0 py-xs-0">
-                  <v-select class="cus-v-input mr-2" color="success" v-model="currentTableGenderType"
-                            :items="[{value: 'all', text: '全部'}, ...constantCollection.gender]"
-                            prefix="性别：" item-color="success" item-text="text" item-value="value" dense filled></v-select>
-                </v-col>
                 <!--表格过滤-->
-                <v-col cols="12" xs="6" sm="4" md="3" xl="2" class="px-0 py-xs-0">
+                <v-col cols="12" xs="8" sm="4" md="3" xl="2" class="px-0 py-xs-0">
                   <v-text-field color="success" v-model="searchInput" prefix="表格过滤：" class="cus-v-input"
                                 dense filled single-line></v-text-field>
                 </v-col>
@@ -64,7 +58,7 @@
                 </template>
                 <!--表格底部右侧功能按钮-->
                 <template v-slot:footer.prepend>
-                  <span class="ml-2 table-search-hint-text">共{{ tableDataFromBackend.length }}条记录</span>
+
                   <v-menu top offset-y :close-on-content-click="false">
                     <template v-slot:activator="{ on, attrs }">
                       <v-btn v-bind="attrs" v-on="on" icon>
@@ -294,7 +288,6 @@ new Vue({
       enrollmentType: [{"value": "正常升学", "text": "正常升学"}, {"value": "借读", "text": "借读"}],
       studentStatus: [{"value": "正常", "text": "正常"}, {"value": "退学", "text": "退学"}]
     },
-    currentTableGenderType: 'all',
     searchInput: null,
     isTableLoading: true,
     tableData: [],
@@ -320,11 +313,6 @@ new Vue({
     updateItem: {},
 
   }),
-  watch: {
-    currentTableGenderType(value) {
-      this.doUiAction('computedTableData');
-    }
-  },
   async created() {
   },
   mounted() {
@@ -395,12 +383,9 @@ new Vue({
 
       this.tableDataFromBackend = result.data.appData.resultData.rows;
       this.isTableLoading = false;
-    },computedTableData() {
-      if (!this.currentTableGenderType || this.currentTableGenderType === 'all') {
-        this.tableData = this.tableDataFromBackend.slice();
-      } else {
-        this.tableData = this.tableDataFromBackend.filter(({gender}) => gender === this.currentTableGenderType);
-      }
+    },
+    computedTableData() {
+      this.tableData = this.tableDataFromBackend.slice();
     },
 
     async prepareCreateFormData() {
