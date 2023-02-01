@@ -18,27 +18,19 @@
           <v-spacer v-if="isMobile"></v-spacer>
           <!-- 服务端搜索 -->
           <div v-if="isMobile" class="d-flex flex-column pt-3 text-right">
-            <div><v-btn small color="success" @click="doUiAction('startBackendSearch')">服务端搜索<v-icon size="18" >mdi-menu-open</v-icon></v-btn></div>
+            <div><span class="appTitle" style="font-size: 18px; font-weight: 700;" @click="doUiAction('startBackendSearch')">搜索条件<v-icon size="22" style="transform: translateY(-1px)" >mdi-menu-open</v-icon></span></div>
             <div  style="color: #999999; font-size: 12px">
-              <span v-if="serverSearchInput.studentId">学生ID：{{serverSearchInput.studentId}}</span>
-              <span v-if="serverSearchInput.classId">班级ID：{{serverSearchInput.classId}}</span>
               <span v-if="serverSearchInput.level">年级：{{serverSearchInput.level}}</span>
               <span v-if="serverSearchInput.gender">性别：{{serverSearchInput.gender}}</span>
             </div>
           </div>
           <div v-else style="flex: 1" class="serverSearchContainer pt-2">
             <v-row class="ma-0 align-center" style="justify-content: end">
-              <v-col cols="12" xs="6" sm="3" md="2" xl="2" class="pb-0 pr-0">
-                <v-text-field v-model="serverSearchInput.studentId" color="success" prefix="学生ID：" class="cus-v-input" dense filled single-line></v-text-field>
-              </v-col>
-              <v-col cols="12" xs="6" sm="3" md="2" xl="2" class="pb-0 pr-0">
-                <v-text-field v-model="serverSearchInput.classId" color="success" prefix="班级ID：" class="cus-v-input" dense filled single-line></v-text-field>
-              </v-col>
-              <v-col cols="12" xs="6" sm="3" md="2" xl="2" class="pb-0 pr-0">
-                <v-select v-model="serverSearchInput.gender" color="success" prefix="性别：" class="cus-v-input" :items="constantCollection.gender" dense filled single-line></v-select>
-              </v-col>
-              <v-col cols="12" xs="6" sm="3" md="2" xl="2" class="pb-0 pr-0">
+              <v-col cols="12" xs="6" sm="3" md="3" xl="2" class="pb-0 pr-0">
                 <v-select v-model="serverSearchInput.level" color="success" prefix="年级：" class="cus-v-input" :items="constantCollection.level" dense filled single-line></v-select>
+              </v-col>
+              <v-col cols="12" xs="6" sm="3" md="3" xl="2" class="pb-0 pr-0">
+                <v-select v-model="serverSearchInput.gender" color="success" prefix="性别：" class="cus-v-input" :items="constantCollection.gender" dense filled single-line></v-select>
               </v-col>
             </v-row>
             <v-row class="ma-0 align-center" style="justify-content: end">
@@ -57,16 +49,10 @@
                   <template v-slot:form="{form}">
                     <v-row class="ma-0 align-center" style="justify-content: end">
                       <v-col cols="12" class="px-0 pb-0">
-                        <v-text-field v-model="form.studentId" color="success" prefix="学生ID：" class="cus-v-input mr-2" dense filled single-line></v-text-field>
-                      </v-col>
-                      <v-col cols="12" class="px-0 pb-0">
-                        <v-text-field v-model="form.classId" color="success" prefix="班级ID：" class="cus-v-input mr-2" dense filled single-line></v-text-field>
+                        <v-select v-model="form.level" color="success" prefix="年级：" class="cus-v-input mr-2" :items="constantCollection.level" dense filled single-line></v-select>
                       </v-col>
                       <v-col cols="12" class="px-0 pb-0">
                         <v-select v-model="form.gender" color="success" prefix="性别：" class="cus-v-input mr-2" :items="constantCollection.gender" dense filled single-line></v-select>
-                      </v-col>
-                      <v-col cols="12" class="px-0 pb-0">
-                        <v-select v-model="form.level" color="success" prefix="年级：" class="cus-v-input mr-2" :items="constantCollection.level" dense filled single-line></v-select>
                       </v-col>
                     </v-row>
                   </template>
@@ -93,12 +79,6 @@
               </v-card-title>
               <v-card-text class="px-2">
                 <v-col cols="12" xs="6" sm="4" md="3" xl="2" class="pb-3">
-                  <v-text-field v-model="serverSearchInput.studentId" color="success" prefix="学生ID：" class="cus-v-input mr-2" dense filled single-line></v-text-field>
-                </v-col>
-                <v-col cols="12" xs="6" sm="4" md="3" xl="2" class="pb-3">
-                  <v-text-field v-model="serverSearchInput.classId" color="success" prefix="班级ID：" class="cus-v-input mr-2" dense filled single-line></v-text-field>
-                </v-col>
-                <v-col cols="12" xs="6" sm="4" md="3" xl="2" class="pb-3">
                   <v-select v-model="serverSearchInput.level" color="success" prefix="年级：" class="cus-v-input mr-2" :items="constantCollection.level" dense filled single-line></v-select>
                 </v-col>
                 <v-col cols="12" xs="6" sm="4" md="3" xl="2" class="pb-3">
@@ -108,10 +88,10 @@
                   <template v-slot:form="{form}">
                     <v-row class="ma-0 align-center" style="justify-content: end">
                       <v-col cols="12" class="px-0 pb-0">
-                        <v-text-field v-model="form.studentId" color="success" prefix="学生ID：" class="cus-v-input mr-2" dense filled single-line></v-text-field>
+                        <v-text-field v-model="form.level" color="success" prefix="年级：" class="cus-v-input mr-2" dense filled single-line></v-text-field>
                       </v-col>
                       <v-col cols="12" class="px-0 pb-0">
-                        <v-text-field v-model="form.classId" color="success" prefix="班级ID：" class="cus-v-input mr-2" dense filled single-line></v-text-field>
+                        <v-text-field v-model="form.gender" color="success" prefix="性别：" class="cus-v-input mr-2" dense filled single-line></v-text-field>
                       </v-col>
                     </v-row>
                   </template>
@@ -495,8 +475,8 @@ new Vue({
     setDefaultSceneData() {
       const defaultSceneData = {
         "backendSearchDemo":[
-          {"form":{"studentId":null,"level":"02","gender":"male"},"name":"二年级的男生","default":null,"show":true,"id":"scene-7bf92fac3148"},
-          {"form":{"studentId":null,"level":"02","gender":"female"},"name":"二年级的女生","default":null,"show":true,"id":"scene-c43465913948"}
+          {"form":{"level":"02","gender":"male"},"name":"二年级的男生","default":null,"show":true,"id":"scene-7bf92fac3148"},
+          {"form":{"level":"02","gender":"female"},"name":"二年级的女生","default":null,"show":true,"id":"scene-c43465913948"}
         ]
       };
       localStorage.setItem("sceneData", JSON.stringify(defaultSceneData))
