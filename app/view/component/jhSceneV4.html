@@ -105,7 +105,7 @@
       <v-container class="px-0">
         <!-- <div class="mb-2">您可通过拖拽管理场景</div> -->
         <v-row justify="space-between" align="center">
-          <v-col cols="5">
+          <v-col cols="12" xs="12" sm="5" md="5" xl="5" >
             <v-card outlined>
               <v-card-title class="pa-2">
                 <v-checkbox v-model="manageScene.selectedAllShowScene" dense hide-details class="mt-0" @change="doUiAction('onSelectedAllShowSceneChange')">
@@ -116,7 +116,7 @@
               </v-card-title>
               <v-divider></v-divider>
               <v-list dense class="scene-list">
-                <v-list-item class="scene-item" v-for="(item, index) in manageScene.sceneShowList" :key="item.value" class="px-2" style="min-height: auto;">
+                <v-list-item class="scene-item px-2" v-for="(item, index) in manageScene.sceneShowList" :key="item.value" style="min-height: auto;">
                   <v-checkbox v-model="manageScene.selectedShowScene" :label="item.name" :value="item.id" dense hide-details class="mt-0" style="font-size: 13px;"
                               @change="doUiAction('onSelectedShowSceneChange')"></v-checkbox>
                   <div class="operate-btn">
@@ -128,15 +128,19 @@
               </v-list>
             </v-card>
           </v-col>
-          <v-col cols="2" class="text-center">
+          <!-- 场景的隐藏和显示操作按钮 >>>>> -->
+          <v-col cols="12" xs="12" sm="2" md="2" xl="2" class="text-center">
             <v-btn depressed color="primary" :disabled="manageScene.selectedShowScene.length == 0" @click="doUiAction('hideSelectedItem')">
-              <v-icon dark> mdi-chevron-right</v-icon>
+              <v-icon v-if="isMobile" dark> mdi-chevron-down</v-icon>
+              <v-icon v-else dark> mdi-chevron-right</v-icon>
             </v-btn>
-            <v-btn class="mt-2" depressed color="primary" :disabled="manageScene.selectedHideScene.length == 0" @click="doUiAction('showSelectedItem')">
-              <v-icon dark> mdi-chevron-left</v-icon>
+            <v-btn :class="{'mt-2': !isMobile}" depressed color="primary" :disabled="manageScene.selectedHideScene.length == 0" @click="doUiAction('showSelectedItem')">
+              <v-icon v-if="isMobile" dark> mdi-chevron-up</v-icon>
+              <v-icon v-else dark> mdi-chevron-left</v-icon>
             </v-btn>
           </v-col>
-          <v-col cols="5">
+          <!-- <<<<< 场景的隐藏和显示操作按钮 -->
+          <v-col cols="12" xs="12" sm="5" md="5" xl="5">
             <v-card outlined>
               <v-card-title class="pa-2">
                 <v-checkbox v-model="manageScene.selectedAllHideScene" dense hide-details class="mt-0" @change="doUiAction('onSelectedAllHideSceneChange')">
@@ -160,10 +164,6 @@
             </v-card>
           </v-col>
         </v-row>
-        <div class="mt-2" role="button" @click="isAddSceneShow = true">
-          <v-icon right small class="ml-0">mdi-plus</v-icon>
-          新建场景
-        </div>
         <v-row class="justify-end mx-0 mt-8">
           <v-btn color="success" @click="doUiAction('doManageScene')" small>保存</v-btn>
           <v-btn class="ml-2" @click="doUiAction('closeManageScene')" small>取消</v-btn>
@@ -194,6 +194,7 @@ Vue.component('jhScene', {
   },
   data() {
     return {
+      isMobile: window.innerWidth < 500,
       requireRules: [
         v => !!v || 'This is required',
       ],

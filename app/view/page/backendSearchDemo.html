@@ -18,17 +18,20 @@
           <v-spacer v-if="isMobile"></v-spacer>
           <!-- 服务端搜索 -->
           <div v-if="isMobile" class="d-flex flex-column pt-3 text-right">
+            <!--搜索条件启动按钮-->
             <div>
               <span class="appTitle success--text" style="font-size: 18px; font-weight: 700;" @click="doUiAction('startBackendSearch')">
-                搜索条件<v-icon size="22" color="success" style="transform: translateY(-1px)" >mdi-menu-open</v-icon>
+                <v-icon size="22" color="success" style="transform: translateY(-1px)" >mdi-magnify</v-icon>搜索条件
               </span>
             </div>
+            <!--搜索条件展示-->
             <div  style="color: #999999; font-size: 12px">
               <span v-if="serverSearchInput.level">年级：{{serverSearchInput.level}}</span>
               <span v-if="serverSearchInput.gender">性别：{{serverSearchInput.gender}}</span>
             </div>
           </div>
           <div v-else style="flex: 1" class="serverSearchContainer pt-2">
+            <!--pc端的搜索条件表单 >>>>>>>> -->
             <v-row class="ma-0 align-center" style="justify-content: end">
               <v-col cols="12" xs="6" sm="3" md="3" xl="2" class="pb-0 pr-0 pt-0">
                 <v-select v-model="serverSearchInput.level" color="success" prefix="年级：" class="cus-v-input" :items="constantCollection.level" dense filled single-line></v-select>
@@ -36,15 +39,12 @@
               <v-col cols="12" xs="6" sm="3" md="3" xl="2" class="pb-0 pr-0 pt-0">
                 <v-select v-model="serverSearchInput.gender" color="success" prefix="性别：" class="cus-v-input" :items="constantCollection.gender" dense filled single-line></v-select>
               </v-col>
-              <v-btn
-                  class="elevation-0 ml-2"
-                  color="success"
-                  dark
-                  @click="doUiAction('refreshTableData')"
-                  small>
+              <v-btn class="elevation-0 ml-2" color="success" dark small @click="doUiAction('refreshTableData')">
                 查询
               </v-btn>
             </v-row>
+            <!-- <<<<<<<< pc端的搜索条件表单 -->
+            <!-- 搜索场景展示 >>>>>>>> -->
             <v-row class="ma-0 align-center" style="justify-content: end">
               <v-col cols="12" xs="12" sm="12" md="12" xl="12" class="px-0 d-flex align-center serverSearchAction"
                      style="max-width: max-content;"
@@ -64,6 +64,7 @@
                 </jhScene>
               </v-col>
             </v-row>
+            <!-- <<<<<<<<<< 搜索场景展示 -->
           </div>
           <!-- 手机服务端搜索弹窗 >>>>>>>>>>>>> -->
           <v-dialog
