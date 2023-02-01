@@ -18,7 +18,11 @@
           <v-spacer v-if="isMobile"></v-spacer>
           <!-- 服务端搜索 -->
           <div v-if="isMobile" class="d-flex flex-column pt-3 text-right">
-            <div><span class="appTitle" style="font-size: 18px; font-weight: 700;" @click="doUiAction('startBackendSearch')">搜索条件<v-icon size="22" style="transform: translateY(-1px)" >mdi-menu-open</v-icon></span></div>
+            <div>
+              <span class="appTitle success--text" style="font-size: 18px; font-weight: 700;" @click="doUiAction('startBackendSearch')">
+                搜索条件<v-icon size="22" color="success" style="transform: translateY(-1px)" >mdi-menu-open</v-icon>
+              </span>
+            </div>
             <div  style="color: #999999; font-size: 12px">
               <span v-if="serverSearchInput.level">年级：{{serverSearchInput.level}}</span>
               <span v-if="serverSearchInput.gender">性别：{{serverSearchInput.gender}}</span>
@@ -26,23 +30,26 @@
           </div>
           <div v-else style="flex: 1" class="serverSearchContainer pt-2">
             <v-row class="ma-0 align-center" style="justify-content: end">
-              <v-col cols="12" xs="6" sm="3" md="2" xl="2" class="pb-0 pt-0 pr-0">
+              <v-col cols="12" xs="6" sm="3" md="3" xl="2" class="pb-0 pr-0 pt-0">
                 <v-select v-model="serverSearchInput.level" color="success" prefix="年级：" class="cus-v-input" :items="constantCollection.level" dense filled single-line></v-select>
               </v-col>
-              <v-col cols="12" xs="6" sm="3" md="2" xl="2" class="pb-0 pt-0 pr-0">
+              <v-col cols="12" xs="6" sm="3" md="3" xl="2" class="pb-0 pr-0 pt-0">
                 <v-select v-model="serverSearchInput.gender" color="success" prefix="性别：" class="cus-v-input" :items="constantCollection.gender" dense filled single-line></v-select>
               </v-col>
+              <v-btn
+                  class="elevation-0 ml-2"
+                  color="success"
+                  dark
+                  @click="doUiAction('refreshTableData')"
+                  small>
+                查询
+              </v-btn>
+            </v-row>
+            <v-row class="ma-0 align-center" style="justify-content: end">
               <v-col cols="12" xs="12" sm="12" md="12" xl="12" class="px-0 d-flex align-center serverSearchAction"
                      style="max-width: max-content;"
               >
-                <v-btn
-                    class="elevation-0 ml-2"
-                    color="success"
-                    dark
-                    @click="doUiAction('refreshTableData')"
-                    small>
-                  查询
-                </v-btn>
+                <span>搜索场景：</span>
                 <jhScene :initFormData="serverSearchInput" @useScene="useScene">
                   <template v-slot:form="{form}">
                     <v-row class="ma-0 align-center" style="justify-content: end">
@@ -77,10 +84,15 @@
               </v-card-title>
               <v-card-text class="px-2">
                 <v-col cols="12" xs="6" sm="4" md="3" xl="2" class="pb-3">
-                  <v-select v-model="serverSearchInput.level" color="success" prefix="年级：" class="cus-v-input mr-2" :items="constantCollection.level" dense filled single-line></v-select>
+                  <span class="inputLabel">年级：</span>
+                  <v-select v-model="serverSearchInput.level" color="success" class="cus-v-input" :items="constantCollection.level" dense filled single-line></v-select>
                 </v-col>
                 <v-col cols="12" xs="6" sm="4" md="3" xl="2" class="pb-3">
-                  <v-select v-model="serverSearchInput.gender" color="success" prefix="性别：" class="cus-v-input mr-2" :items="constantCollection.gender" dense filled single-line></v-select>
+                  <span class="inputLabel">性别：</span>
+                  <v-select v-model="serverSearchInput.gender" color="success" class="cus-v-input" :items="constantCollection.gender" dense filled single-line></v-select>
+                </v-col>
+                <v-col cols="12" xs="6" sm="4" md="3" xl="2" class="pb-3">
+                  <span class="inputLabel">搜索场景：</span>
                 </v-col>
                 <jhScene :initFormData="serverSearchInput" @useScene="useScene">
                   <template v-slot:form="{form}">
