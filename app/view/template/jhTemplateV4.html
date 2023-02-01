@@ -5,8 +5,11 @@
   <!-- 设置页面默认参数 >>>>>>>>>>>>> -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <title><$ ctx.app.config.appTitle $></title>
-  <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
+  <title>
+    <$ ctx.app.config.appTitle $>
+  </title>
+  <meta charset="utf-8" name="viewport"
+    content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
   <!-- <<<<<<<<<<<<< 设置页面默认参数 -->
 
   <!-- 加载第三方库样式 >>>>>>>>>>>>> -->
@@ -22,9 +25,10 @@
   <script src="/<$ ctx.app.config.appId $>/public/lib/vuetify/vuetify.min.js"></script>
   <!-- <<<<<<<<<<<<< 加载第三方库脚本 -->
 
+  <!-- 加载定制样式 >>>>>>>>>>>>> -->
   {% include 'common/globalCSSFontV4.html' %}
   {% include 'common/globalCSSVuetifyV4.html' %}
-  {% include 'common/globalCSSEditorV4.html' %}
+  <!-- <<<<<<<<<<<<< 加载定制样式 -->
 
   {% block htmlHead %}
   {% endblock %}
