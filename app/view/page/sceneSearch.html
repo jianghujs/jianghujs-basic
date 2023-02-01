@@ -19,11 +19,18 @@
           <!-- 服务端搜索 -->
           <div v-if="isMobile" class="d-flex flex-column pt-3 text-right">
             <!--搜索条件启动按钮-->
-            <v-btn class="elevation-0 ml-2" color="success" dark small @click="doUiAction('getTableData')">
-              查询
-            </v-btn>
+            <div>
+              <span class="appTitle success--text" style="font-size: 18px; font-weight: 700;" @click="doUiAction('startBackendSearch')">
+                <v-icon size="22" color="success" style="transform: translateY(-1px)" >mdi-magnify</v-icon>搜索条件
+              </span>
+            </div>
+            <!--搜索条件展示-->
+            <div  style="color: #999999; font-size: 12px">
+              <span v-if="serverSearchInput.level">年级：{{serverSearchInput.level}}</span>
+              <span v-if="serverSearchInput.gender">性别：{{serverSearchInput.gender}}</span>
+            </div>
           </div>
-          <div style="flex: 1" class="serverSearchContainer pt-4" :class="{'pb-4': isMobile}">
+          <div v-else style="flex: 1" class="serverSearchContainer pt-2">
             <!--pc端的搜索条件表单 >>>>>>>> -->
             <v-row class="ma-0 align-center" style="justify-content: end">
               <v-col cols="12" xs="6" sm="3" md="3" xl="2" class="pb-0 pr-0 pt-0">
@@ -32,12 +39,85 @@
               <v-col cols="12" xs="6" sm="3" md="3" xl="2" class="pb-0 pr-0 pt-0">
                 <v-select v-model="serverSearchInput.gender" color="success" prefix="性别：" class="cus-v-input" :items="constantCollection.gender" dense filled single-line></v-select>
               </v-col>
-              <v-btn v-if="!isMobile"  class="elevation-0 ml-2" color="success" dark small @click="doUiAction('getTableData')">
+              <v-btn class="elevation-0 ml-2" color="success" dark small @click="doUiAction('doBackendSearch')">
                 查询
               </v-btn>
             </v-row>
             <!-- <<<<<<<< pc端的搜索条件表单 -->
+            <!-- 搜索场景展示 >>>>>>>> -->
+            <v-row class="ma-0 align-center" style="justify-content: end">
+              <v-col cols="12" xs="12" sm="12" md="12" xl="12" class="px-0 d-flex align-center serverSearchAction"
+                     style="max-width: max-content;"
+              >
+                <span>搜索场景：</span>
+                <jhScene :initFormData="serverSearchInput" :currentSceneId="currentSceneId"  @useScene="useScene">
+                  <template v-slot:form="{form}">
+                    <v-row class="ma-0 align-center" style="justify-content: end">
+                      <v-col cols="12" class="px-0 pb-0">
+                        <v-select v-model="form.level" color="success" prefix="年级：" class="cus-v-input mr-2" :items="constantCollection.level" dense filled single-line></v-select>
+                      </v-col>
+                      <v-col cols="12" class="px-0 pb-0">
+                        <v-select v-model="form.gender" color="success" prefix="性别：" class="cus-v-input mr-2" :items="constantCollection.gender" dense filled single-line></v-select>
+                      </v-col>
+                    </v-row>
+                  </template>
+                </jhScene>
+              </v-col>
+            </v-row>
+            <!-- <<<<<<<<<< 搜索场景展示 -->
           </div>
+          <!-- 手机服务端搜索弹窗 >>>>>>>>>>>>> -->
+          <v-dialog
+              v-model="isBackendSearchDialogShow"
+              persistent
+              width="800px"
+          >
+            <v-card>
+              <v-card-title>
+                <div class="d-flex justify-space-between align-center" style="width: 100%;">
+                  <div style="font-size: 16px;">服务端搜索</div>
+                  <div>
+                    <v-btn class="elevation-0" fab x-small @click="doUiAction('closeBackendSearch')">
+                      <v-icon dark>mdi-close</v-icon>
+                    </v-btn>
+                  </div>
+                </div>
+              </v-card-title>
+              <v-card-text class="px-2">
+                <v-col cols="12" xs="6" sm="4" md="3" xl="2" class="pb-3">
+                  <span class="inputLabel">年级：</span>
+                  <v-select v-model="serverSearchInput.level" color="success" class="cus-v-input" :items="constantCollection.level" dense filled single-line></v-select>
+                </v-col>
+                <v-col cols="12" xs="6" sm="4" md="3" xl="2" class="pb-3">
+                  <span class="inputLabel">性别：</span>
+                  <v-select v-model="serverSearchInput.gender" color="success" class="cus-v-input" :items="constantCollection.gender" dense filled single-line></v-select>
+                </v-col>
+                <v-col cols="12" xs="6" sm="4" md="3" xl="2" class="pb-3">
+                  <span class="inputLabel">搜索场景：</span>
+                </v-col>
+                <jhScene :initFormData="serverSearchInput" :currentSceneId="currentSceneId" @useScene="useScene">
+                  <template v-slot:form="{form}">
+                    <v-row class="ma-0 align-center" style="justify-content: end">
+                      <v-col cols="12" class="px-0 pb-0">
+                        <v-text-field v-model="form.level" color="success" prefix="年级：" class="cus-v-input mr-2" dense filled single-line></v-text-field>
+                      </v-col>
+                      <v-col cols="12" class="px-0 pb-0">
+                        <v-text-field v-model="form.gender" color="success" prefix="性别：" class="cus-v-input mr-2" dense filled single-line></v-text-field>
+                      </v-col>
+                    </v-row>
+                  </template>
+                </jhScene>
+              </v-card-text>
+              <!--弹窗操作按钮 >>>>>>>>>>>>> -->
+              <v-card-actions class="py-4">
+                <v-spacer></v-spacer>
+                <v-btn color="success" small @click="doUiAction('doBackendSearch')"> 搜索</v-btn>
+                <v-btn color="success" small @click="doUiAction('closeBackendSearch')"> 取消</v-btn>
+              </v-card-actions>
+              <!-- <<<<<<<<<<< 弹窗操作按钮 -->
+            </v-card>
+          </v-dialog>
+          <!-- <<<<<<<<<<< 手机服务端搜索弹窗-->
         </div>
         <!-- <<<<<<<<<<<<< 头部内容 -->
 
@@ -68,7 +148,7 @@
                   checkbox-color="success"
                   :class="{'zebraLine': showTableZebraLine }"
                   fixed-header
-                  :data-bottom="isMobile ? 50 : 0"
+                  :data-bottom="20"
                   class="fixed-table-height elevation-0 mt-0 mb-xs-4 flex-fill d-flex flex-column">
                 <!--性别-->
                 <template v-slot:item.gender="{ item }">
@@ -245,7 +325,7 @@
 
         <!-- 帮助页抽屉 >>>>>>>>>>>>> -->
         <v-navigation-drawer v-model="isHelpPageDrawerShow" fixed temporary right width="80%" hide-overlay class="elevation-24">
-          <iframe style="border: 0" :src="`/${appInfo.appId}/pageDoc#7.backendSearchDemo.md`" width="100%" height="100%"></iframe>
+          <iframe style="border: 0" :src="`/${appInfo.appId}/pageDoc#4.4.backendSearchDemo.md`" width="100%" height="100%"></iframe>
           <v-btn elevation="0" color="success" fab absolute top left small tile class="drawer-close-float-btn" @click="isHelpPageDrawerShow = false">
             <v-icon>mdi-close</v-icon>
           </v-btn>
@@ -270,6 +350,7 @@
 {% block vueScript %}
 
 {% include 'common/fixedTableHeightV4.html' %}
+{% include 'component/jhSceneV4.html' %}
 <script type="module">
 new Vue({
   el: '#app',
@@ -338,6 +419,7 @@ new Vue({
     }
   },
   async created() {
+    this.doUiAction("setDefaultSceneData");
   },
   mounted() {
     this.doUiAction('getTableData');
@@ -349,6 +431,9 @@ new Vue({
           await this.getTableData();
           await this.computedTableData();
           break;
+        case 'setDefaultSceneData':
+          await this.setDefaultSceneData();
+          break;
         case 'startBackendSearch':
           await this.openBackendSearchDialog();
           break;
@@ -357,6 +442,7 @@ new Vue({
           break;
         case 'doBackendSearch':
           await this.closeBackendSearchDialog();
+          await this.cleanCurrentScene();
           await this.getTableData();
           await this.computedTableData();
           break;
@@ -399,6 +485,15 @@ new Vue({
           break;
       }
     },
+    setDefaultSceneData() {
+      const defaultSceneData = {
+        "sceneSearch":[
+          {"form":{"level":"02","gender":"male"},"name":"二年级的男生","default":null,"show":true,"id":"scene-7bf92fac3148"},
+          {"form":{"level":"02","gender":"female"},"name":"二年级的女生","default":null,"show":true,"id":"scene-c43465913948"}
+        ]
+      };
+      localStorage.setItem("sceneData", JSON.stringify(defaultSceneData))
+    },
     /**
      * 获取表格数据
      */
@@ -408,7 +503,7 @@ new Vue({
       const rows = (await window.jianghuAxios({
         data: {
           appData: {
-            pageId: 'backendSearchDemo',
+            pageId: 'sceneSearch',
             actionId: 'selectItemList',
             actionData: {},
             where: {},
@@ -474,7 +569,7 @@ new Vue({
       await window.jianghuAxios({
         data: {
           appData: {
-            pageId: 'backendSearchDemo',
+            pageId: 'sceneSearch',
             actionId: 'insertItem',
             actionData: data
           }
@@ -511,7 +606,7 @@ new Vue({
       await window.jianghuAxios({
         data: {
           appData: {
-            pageId: 'backendSearchDemo',
+            pageId: 'sceneSearch',
             actionId: 'updateItem',
             actionData: data,
             where: {id: id}
@@ -533,7 +628,7 @@ new Vue({
       await window.jianghuAxios({
         data: {
           appData: {
-            pageId: 'backendSearchDemo',
+            pageId: 'sceneSearch',
             actionId: 'deleteItem',
             actionData: {},
             where: { id: id }
@@ -549,6 +644,24 @@ new Vue({
         return constantCollectionItemFind.text;
       }
       return _value;
+    },
+    cleanCurrentScene() {
+      this.currentSceneId = null;
+    },
+    useScene(scene) {
+      console.log("哈哈", scene)
+      if(this.currentSceneId === scene.id) {
+        this.currentSceneId = null;
+        this.serverSearchInput = { };
+      } else {
+        this.currentSceneId = scene.id;
+        this.serverSearchInput = {
+          ...this.serverSearchInput,
+          ...scene.form
+        };
+      }
+      this.doUiAction('closeBackendSearch');
+      this.doUiAction('getTableData');
     }
   }
 })

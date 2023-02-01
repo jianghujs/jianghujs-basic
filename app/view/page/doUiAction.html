@@ -303,13 +303,13 @@
     },
     watch: {},
     mounted() {
-      this.doUiAction('refreshTableData');
+      this.doUiAction('getTableData');
     },
     methods: {
       async doUiAction(uiActionId, uiActionData) {
         switch (uiActionId) {
-          case 'refreshTableData':
-            await this.refreshTableData();
+          case 'getTableData':
+            await this.getTableData();
             break;
           case 'startInsertItem':
             await this.clearCreateForm();
@@ -320,7 +320,7 @@
             await this.prepareCreateItem();
             await this.doCreateItem();
             await this.closeCreateDrawer();
-            await this.refreshTableData();
+            await this.getTableData();
             break;
           case 'startUpdateItem':
             await this.fillUpdateForm(uiActionData);
@@ -329,13 +329,13 @@
           case 'updateItem':
             await this.prepareValidate();
             await this.doUpdateItem();
-            await this.refreshTableData();
+            await this.getTableData();
             await this.closeUpdateDrawer();
             break;
           case 'deleteItem':
             await this.confirmDeleteItemDialog(uiActionData);
             await this.doDeleteItem(uiActionData);
-            await this.refreshTableData();
+            await this.getTableData();
             break;
           default:
             console.error("[doUiAction] uiActionId not find", { uiActionId });
@@ -343,7 +343,7 @@
         }
       },
 
-      async refreshTableData() {
+      async getTableData() {
         this.isTableLoading = true;
         const result = await window.jianghuAxios({
           data: {

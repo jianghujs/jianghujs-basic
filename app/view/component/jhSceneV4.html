@@ -190,6 +190,10 @@ Vue.component('jhScene', {
     sceneId: {
       type: String,
       default: location.href.split('/').pop()
+    },
+    currentSceneId: {
+      type: String,
+      default: null
     }
   },
   data() {
@@ -222,6 +226,15 @@ Vue.component('jhScene', {
         selectedHideScene: [],
       }
     };
+  },
+  watch: {
+    currentSceneId(newId, oldId) {
+      if(newId != null) {
+        this.selectedScene = this.sceneList.findIndex(item => item.id === newId);
+      } else {
+        this.selectedScene = null;
+      }
+    }
   },
   created() {
     this.doUiAction('getSceneList');

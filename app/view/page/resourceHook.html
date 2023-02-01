@@ -328,13 +328,13 @@ new Vue({
   async created() {
   },
   mounted() {
-    this.doUiAction('refreshTableData');
+    this.doUiAction('getTableData');
   },
   methods: {
     async doUiAction(uiActionId, uiActionData) {
       switch (uiActionId) {
-        case 'refreshTableData':
-          await this.refreshTableData();
+        case 'getTableData':
+          await this.getTableData();
           await this.computedTableData();
           break;
         case 'startCreateItem':
@@ -345,7 +345,7 @@ new Vue({
           await this.prepareValidate();
           await this.confirmCreateItemDialog();
           await this.doCreateItem();
-          await this.refreshTableData();
+          await this.getTableData();
           await this.computedTableData();
           await this.closeDrawerShow();
           break;
@@ -357,7 +357,7 @@ new Vue({
           await this.prepareValidate();
           await this.confirmUpdateItemDialog();
           await this.doUpdateItem();
-          await this.refreshTableData();
+          await this.getTableData();
           await this.computedTableData();
           await this.closeDrawerShow();
           break;
@@ -365,7 +365,7 @@ new Vue({
           await this.confirmDeleteItemDialog();
           await this.prepareUpdateFormData(uiActionData);
           await this.doDeleteItem();
-          await this.refreshTableData();
+          await this.getTableData();
           await this.computedTableData();
           break;
         case 'computedTableData':
@@ -379,7 +379,7 @@ new Vue({
     /**
      * 获取表格数据
      */
-    async refreshTableData() {
+    async getTableData() {
       this.isTableLoading = true;
       const result = await window.jianghuAxios({
         data: {
