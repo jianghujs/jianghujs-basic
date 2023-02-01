@@ -66,7 +66,7 @@
             </template>
           </v-tabs>
           <v-spacer />
-        
+
         </v-app-bar>
 
         <v-main class="d-flex flex-column">
@@ -81,7 +81,7 @@
             </div>
           </div>
           <!-- <<<<<<<<<<<<< 头部内容 -->
-    
+
           <div class="pageBodyContainer px-8" style="flex: 1;">
             <!-- 页面内容 >>>>>>>>>>>>> -->
             <v-container class="fullScreen d-flex flex-column pa-0">
@@ -114,7 +114,7 @@
                   class="fixed-table-height elevation-0 mt-0 mb-xs-4 flex-fill d-flex flex-column">
                   <!--表格行操作按钮-->
                   <template v-slot:item.action="{ item }">
-                    <span role="button" class="success--text font-weight-medium font-size-3"
+                    <span role="button" class="success--text font-weight-medium font-size-3 pr-2"
                       @click="doUiAction('startUpdateItem', item)">
                       <v-icon size="14" class="success--text">mdi-note-edit-outline</v-icon>修改
                     </span>
@@ -125,7 +125,7 @@
                   </template>
                   <!--表格底部右侧功能按钮-->
                   <template v-slot:footer.prepend>
-    
+
                     <v-menu top offset-y :close-on-content-click="false">
                       <template v-slot:activator="{ on, attrs }">
                         <v-btn v-bind="attrs" v-on="on" icon>
@@ -281,7 +281,7 @@
                   </v-btn>
                 </v-row>
               </v-form>
-    
+
               <!--抽屉关闭按钮-->
               <v-btn elevation="0" color="success" fab absolute top left small tile class="drawer-close-float-btn"
                 @click="isUpdateDrawerShow = false">
@@ -290,27 +290,27 @@
             </v-navigation-drawer>
             <!-- <<<<<<<<<<<<< 页面内容 -->
           </div>
-    
+
           <!-- 帮助页抽屉 >>>>>>>>>>>>> -->
           <v-navigation-drawer v-model="isHelpPageDrawerShow" fixed temporary right width="80%" hide-overlay
             class="elevation-24">
             <iframe style="border: 0" :src="`/${appInfo.appId}/pageDoc#3.doUiAction.md`" width="100%"
               height="100%"></iframe>
-    
+
             <v-btn elevation="0" color="success" fab absolute top left small tile class="drawer-close-float-btn"
               @click="isHelpPageDrawerShow = false">
               <v-icon>mdi-close</v-icon>
             </v-btn>
           </v-navigation-drawer>
           <!-- <<<<<<<<<<<<< 帮助页抽屉 -->
-    
+
         </v-main>
       </v-app>
-    
+
       <jhToast />
       <jhMask />
       <jhConfirmDialog />
-    
+
     </div>
   </script>
 
@@ -354,7 +354,7 @@
             "title": "返回",
           },
           {
-            "path": `/<$ ctx.app.config.appId $>/page/frontendDemo01`,
+            "path": `/<$ ctx.app.config.appId $>/page/frontendDemo`,
             "title": "前端对接",
           }
         ],
@@ -372,7 +372,7 @@
         isTableLoading: true,
         tableDataFromBackend: [],
         headers: [
-          { text: '操作', value: 'action', align: 'center', sortable: false, width: 105, class: 'fixed', cellClass: 'fixed' },
+          { text: '操作', value: 'action', align: 'center', sortable: false, width: 120, class: 'fixed', cellClass: 'fixed' },
           { text: "学生ID", value: "studentId", width: 120 },
           { text: "班级ID", value: "classId", width: 140 },
           { text: "学生名字", value: "name", width: 120 },
