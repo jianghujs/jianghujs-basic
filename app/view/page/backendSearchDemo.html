@@ -26,19 +26,17 @@
           </div>
           <div v-else style="flex: 1" class="serverSearchContainer pt-2">
             <v-row class="ma-0 align-center" style="justify-content: end">
-              <v-col cols="12" xs="6" sm="3" md="3" xl="2" class="pb-0 pr-0">
+              <v-col cols="12" xs="6" sm="3" md="2" xl="2" class="pb-0 pt-0 pr-0">
                 <v-select v-model="serverSearchInput.level" color="success" prefix="年级：" class="cus-v-input" :items="constantCollection.level" dense filled single-line></v-select>
               </v-col>
-              <v-col cols="12" xs="6" sm="3" md="3" xl="2" class="pb-0 pr-0">
+              <v-col cols="12" xs="6" sm="3" md="2" xl="2" class="pb-0 pt-0 pr-0">
                 <v-select v-model="serverSearchInput.gender" color="success" prefix="性别：" class="cus-v-input" :items="constantCollection.gender" dense filled single-line></v-select>
               </v-col>
-            </v-row>
-            <v-row class="ma-0 align-center" style="justify-content: end">
               <v-col cols="12" xs="12" sm="12" md="12" xl="12" class="px-0 d-flex align-center serverSearchAction"
                      style="max-width: max-content;"
               >
                 <v-btn
-                    class="elevation-0"
+                    class="elevation-0 ml-2"
                     color="success"
                     dark
                     @click="doUiAction('refreshTableData')"
