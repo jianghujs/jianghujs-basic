@@ -87,17 +87,15 @@ CREATE TABLE `_page` (
 
 
 
-INSERT INTO `_page` (`id`,`pageId`,`pageFile`,`pageName`,`pageType`,`sort`,`operation`,`operationByUserId`,`operationByUser`,`operationAt`) VALUES (2,'help','helpV3','帮助','dynamicInMenu','11','insert',NULL,NULL,NULL);
-INSERT INTO `_page` (`id`,`pageId`,`pageFile`,`pageName`,`pageType`,`sort`,`operation`,`operationByUserId`,`operationByUser`,`operationAt`) VALUES (3,'login','loginV3','登陆','','','insert',NULL,NULL,NULL);
-INSERT INTO `_page` (`id`,`pageId`,`pageFile`,`pageName`,`pageType`,`sort`,`operation`,`operationByUserId`,`operationByUser`,`operationAt`) VALUES (4,'manual',NULL,'操作手册','showInMenu','1','insert',NULL,NULL,NULL);
-INSERT INTO `_page` (`id`,`pageId`,`pageFile`,`pageName`,`pageType`,`sort`,`operation`,`operationByUserId`,`operationByUser`,`operationAt`) VALUES (25,'protocolDemo',NULL,'接口协议','showInMenu','2','insert',NULL,NULL,NULL);
-INSERT INTO `_page` (`id`,`pageId`,`pageFile`,`pageName`,`pageType`,`sort`,`operation`,`operationByUserId`,`operationByUser`,`operationAt`) VALUES (27,'frontendDemo01',NULL,'前端对接','showInMenu','3','insert',NULL,NULL,NULL);
-INSERT INTO `_page` (`id`,`pageId`,`pageFile`,`pageName`,`pageType`,`sort`,`operation`,`operationByUserId`,`operationByUser`,`operationAt`) VALUES (28,'frontendDemo02',NULL,'jianghuAxios','showInMenu','4','insert',NULL,NULL,NULL);
-INSERT INTO `_page` (`id`,`pageId`,`pageFile`,`pageName`,`pageType`,`sort`,`operation`,`operationByUserId`,`operationByUser`,`operationAt`) VALUES (29,'resourceHook',NULL,'resouceHook','showInMenu','8','insert',NULL,NULL,NULL);
-INSERT INTO `_page` (`id`,`pageId`,`pageFile`,`pageName`,`pageType`,`sort`,`operation`,`operationByUserId`,`operationByUser`,`operationAt`) VALUES (31,'backendSearchDemo',NULL,'服务端搜索','showInMenu','6','insert',NULL,NULL,NULL);
-INSERT INTO `_page` (`id`,`pageId`,`pageFile`,`pageName`,`pageType`,`sort`,`operation`,`operationByUserId`,`operationByUser`,`operationAt`) VALUES (32,'dataAccessRight',NULL,'数据权限','showInMenu','7','insert',NULL,NULL,NULL);
-INSERT INTO `_page` (`id`,`pageId`,`pageFile`,`pageName`,`pageType`,`sort`,`operation`,`operationByUserId`,`operationByUser`,`operationAt`) VALUES (34,'doUiAction',NULL,'doUiAction','showInMenu','5','insert',NULL,NULL,NULL);
-
+INSERT INTO `jianghujs_basic`.`_page` (`id`, `pageId`, `pageFile`, `pageName`, `pageType`, `sort`, `operation`, `operationByUserId`, `operationByUser`, `operationAt`) VALUES (2, 'help', 'helpV3', '帮助', 'dynamicInMenu', '11', 'insert', NULL, NULL, NULL);
+INSERT INTO `jianghujs_basic`.`_page` (`id`, `pageId`, `pageFile`, `pageName`, `pageType`, `sort`, `operation`, `operationByUserId`, `operationByUser`, `operationAt`) VALUES (3, 'login', 'loginV3', '登陆', '', '', 'insert', NULL, NULL, NULL);
+INSERT INTO `jianghujs_basic`.`_page` (`id`, `pageId`, `pageFile`, `pageName`, `pageType`, `sort`, `operation`, `operationByUserId`, `operationByUser`, `operationAt`) VALUES (4, 'manual', NULL, '操作手册', 'showInMenu', '0', 'insert', NULL, NULL, NULL);
+INSERT INTO `jianghujs_basic`.`_page` (`id`, `pageId`, `pageFile`, `pageName`, `pageType`, `sort`, `operation`, `operationByUserId`, `operationByUser`, `operationAt`) VALUES (25, 'protocolDemo', NULL, '接口协议', 'showInMenu', '1', 'insert', NULL, NULL, NULL);
+INSERT INTO `jianghujs_basic`.`_page` (`id`, `pageId`, `pageFile`, `pageName`, `pageType`, `sort`, `operation`, `operationByUserId`, `operationByUser`, `operationAt`) VALUES (27, 'frontendDemo', NULL, '前端对接', 'showInMenu', '2', 'insert', NULL, NULL, NULL);
+INSERT INTO `jianghujs_basic`.`_page` (`id`, `pageId`, `pageFile`, `pageName`, `pageType`, `sort`, `operation`, `operationByUserId`, `operationByUser`, `operationAt`) VALUES (28, 'doUiAction', NULL, 'doUiAction', 'showInMenu', '3', 'insert', NULL, NULL, NULL);
+INSERT INTO `jianghujs_basic`.`_page` (`id`, `pageId`, `pageFile`, `pageName`, `pageType`, `sort`, `operation`, `operationByUserId`, `operationByUser`, `operationAt`) VALUES (29, 'backendSearchDemo', NULL, '服务端搜索', 'showInMenu', '4', 'insert', NULL, NULL, NULL);
+INSERT INTO `jianghujs_basic`.`_page` (`id`, `pageId`, `pageFile`, `pageName`, `pageType`, `sort`, `operation`, `operationByUserId`, `operationByUser`, `operationAt`) VALUES (30, 'dataAccessRight', NULL, '数据权限', 'showInMenu', '5', 'insert', NULL, NULL, NULL);
+INSERT INTO `jianghujs_basic`.`_page` (`id`, `pageId`, `pageFile`, `pageName`, `pageType`, `sort`, `operation`, `operationByUserId`, `operationByUser`, `operationAt`) VALUES (31, 'resourceHook', NULL, 'resouceHook', 'showInMenu', '6', 'insert', NULL, NULL, NULL);
 
 
 # ------------------------------------------------------------
