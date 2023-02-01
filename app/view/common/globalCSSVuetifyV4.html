@@ -510,7 +510,7 @@ body span.inputLabel{
 .v-data-table.zebraLine tr:nth-child(even) td.fixed,
 .v-data-table.zebraLine.fixed-first-column tr:nth-child(even) td:nth-child(1)
 {
-    background-color: #F9FAFA;
+  background-color: #F9FAFA;
 }
 /* table行hover浅绿色背景色 */
 .theme--light.v-data-table>.v-data-table__wrapper>table>tbody>tr:hover:not(.v-data-table__expanded__content):not(.v-data-table__empty-wrapper),
@@ -557,6 +557,10 @@ body span.inputLabel{
   background: white;
   border-right: none;
 }
+/* table 高度撑满*/
+.table-height-full{
+  height: 100%;
+}
 /* drawer */
 .v-navigation-drawer{
   overflow: revert;
@@ -564,6 +568,12 @@ body span.inputLabel{
 .drawer-close-float-btn{
   top: 120px !important;
   left: -40px !important;
+}
+/* dialog */
+.v-dialog{
+  min-height: 60%;
+  max-height: 80%;
+  background-color: #fff;
 }
 /* 自适应 */
 @media (min-width: 1264px) {
