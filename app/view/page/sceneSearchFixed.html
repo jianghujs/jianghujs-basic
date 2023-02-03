@@ -15,42 +15,15 @@
             </div>
             <v-breadcrumbs class="pb-3 pt-0 pl-0" :items="breadcrumbs" divider="-"></v-breadcrumbs>
           </div>
-          <v-spacer v-if="isMobile"></v-spacer>
           <!-- 服务端搜索 -->
-          <div v-if="isMobile" class="d-flex flex-column pt-3 text-right">
-            <!--搜索条件启动按钮-->
-            <div>
-              <span class="appTitle success--text" style="font-size: 18px; font-weight: 700;" @click="doUiAction('startBackendSearch')">
-                <v-icon size="22" color="success" style="transform: translateY(-1px)" >mdi-magnify</v-icon>搜索条件
-              </span>
-            </div>
-            <!--搜索条件展示-->
-            <div  style="color: #999999; font-size: 12px">
-              <span v-if="serverSearchInput.level">年级：{{serverSearchInput.level}}</span>
-              <span v-if="serverSearchInput.gender">性别：{{serverSearchInput.gender}}</span>
-            </div>
-          </div>
-          <div v-else style="flex: 1" class="serverSearchContainer pt-2">
-            <!--pc端的搜索条件表单 >>>>>>>> -->
-            <v-row class="ma-0 align-center" style="justify-content: end">
-              <v-col cols="12" xs="6" sm="3" md="3" xl="2" class="pb-0 pr-0 pt-0">
-                <v-select v-model="serverSearchInput.level" color="success" prefix="年级：" class="cus-v-input" :items="constantCollection.level" dense filled single-line></v-select>
-              </v-col>
-              <v-col cols="12" xs="6" sm="3" md="3" xl="2" class="pb-0 pr-0 pt-0">
-                <v-select v-model="serverSearchInput.gender" color="success" prefix="性别：" class="cus-v-input" :items="constantCollection.gender" dense filled single-line></v-select>
-              </v-col>
-              <v-btn class="elevation-0 ml-2" color="success" dark small @click="doUiAction('doBackendSearch')">
-                查询
-              </v-btn>
-            </v-row>
-            <!-- <<<<<<<< pc端的搜索条件表单 -->
+          <div style="flex: 1" class="serverSearchContainer pt-1">
             <!-- 搜索场景展示 >>>>>>>> -->
             <v-row class="ma-0 align-center" style="justify-content: end">
-              <v-col cols="12" xs="12" sm="12" md="12" xl="12" class="px-0 d-flex align-center serverSearchAction"
+              <v-col cols="12" xs="12" sm="12" md="12" xl="12" class="px-0 d-flex align-start serverSearchAction"
                      style="max-width: max-content;"
               >
-                <span>搜索场景：</span>
-                <jhScene :initFormData="serverSearchInput" :currentSceneId="currentSceneId"  @useScene="useScene">
+                <span style="white-space: nowrap; line-height: 28px;" class="mb-2; ml-4">搜索场景：</span>
+                <jhScene :initFormData="serverSearchInput" pageId="sceneSearchFixed" :currentSceneId="currentSceneId"  @useScene="useScene">
                   <template v-slot:form="{form}">
                     <v-row class="ma-0 align-center" style="justify-content: end">
                       <v-col cols="12" class="px-0 pb-0">
@@ -66,64 +39,12 @@
             </v-row>
             <!-- <<<<<<<<<< 搜索场景展示 -->
           </div>
-          <!-- 手机服务端搜索弹窗 >>>>>>>>>>>>> -->
-          <v-dialog
-              v-model="isBackendSearchDialogShow"
-              persistent
-              width="800px"
-          >
-            <v-card>
-              <v-card-title>
-                <div class="d-flex justify-space-between align-center" style="width: 100%;">
-                  <div style="font-size: 16px;">服务端搜索</div>
-                  <div>
-                    <v-btn class="elevation-0" fab x-small @click="doUiAction('closeBackendSearch')">
-                      <v-icon dark>mdi-close</v-icon>
-                    </v-btn>
-                  </div>
-                </div>
-              </v-card-title>
-              <v-card-text class="px-2">
-                <v-col cols="12" xs="6" sm="4" md="3" xl="2" class="pb-3">
-                  <span class="inputLabel">年级：</span>
-                  <v-select v-model="serverSearchInput.level" color="success" class="cus-v-input" :items="constantCollection.level" dense filled single-line></v-select>
-                </v-col>
-                <v-col cols="12" xs="6" sm="4" md="3" xl="2" class="pb-3">
-                  <span class="inputLabel">性别：</span>
-                  <v-select v-model="serverSearchInput.gender" color="success" class="cus-v-input" :items="constantCollection.gender" dense filled single-line></v-select>
-                </v-col>
-                <v-col cols="12" xs="6" sm="4" md="3" xl="2" class="pb-3">
-                  <span class="inputLabel">搜索场景：</span>
-                </v-col>
-                <jhScene :initFormData="serverSearchInput" :currentSceneId="currentSceneId" @useScene="useScene">
-                  <template v-slot:form="{form}">
-                    <v-row class="ma-0 align-center" style="justify-content: end">
-                      <v-col cols="12" class="px-0 pb-0">
-                        <v-text-field v-model="form.level" color="success" prefix="年级：" class="cus-v-input mr-2" dense filled single-line></v-text-field>
-                      </v-col>
-                      <v-col cols="12" class="px-0 pb-0">
-                        <v-text-field v-model="form.gender" color="success" prefix="性别：" class="cus-v-input mr-2" dense filled single-line></v-text-field>
-                      </v-col>
-                    </v-row>
-                  </template>
-                </jhScene>
-              </v-card-text>
-              <!--弹窗操作按钮 >>>>>>>>>>>>> -->
-              <v-card-actions class="py-4">
-                <v-spacer></v-spacer>
-                <v-btn color="success" small @click="doUiAction('doBackendSearch')"> 搜索</v-btn>
-                <v-btn color="success" small @click="doUiAction('closeBackendSearch')"> 取消</v-btn>
-              </v-card-actions>
-              <!-- <<<<<<<<<<< 弹窗操作按钮 -->
-            </v-card>
-          </v-dialog>
-          <!-- <<<<<<<<<<< 手机服务端搜索弹窗-->
         </div>
         <!-- <<<<<<<<<<<<< 头部内容 -->
 
         <div class="pageBodyContainer px-8" style="flex: 1;">
           <!-- 页面内容 >>>>>>>>>>>>> -->
-          <v-container class="fullScreen d-flex flex-column pa-0">
+          <v-container class="d-flex flex-column pa-0">
             <v-card class="rounded-lg">
               <v-row class="ma-0 align-center flex-none pt-0 pa-4 pb-0">
                 <!--新增按钮-->
@@ -148,7 +69,6 @@
                   checkbox-color="success"
                   :class="{'zebraLine': showTableZebraLine }"
                   fixed-header
-                  :data-bottom="20"
                   class="fixed-table-height elevation-0 mt-0 mb-xs-4 flex-fill d-flex flex-column">
                 <!--性别-->
                 <template v-slot:item.gender="{ item }">
@@ -486,13 +406,18 @@ new Vue({
       }
     },
     setDefaultSceneData() {
-      const defaultSceneData = {
-        "sceneSearch":[
-          {"form":{"level":"02","gender":"male"},"name":"二年级的男生","default":null,"show":true,"id":"scene-7bf92fac3148"},
-          {"form":{"level":"02","gender":"female"},"name":"二年级的女生","default":null,"show":true,"id":"scene-c43465913948"}
-        ]
+      let sceneData = JSON.parse(localStorage.getItem('sceneData') || '{}');
+      let sceneList = sceneData['sceneSearchFixed'] || [];
+      sceneList = _.filter(sceneList, function(o) { return o.id !== 'scene-fixed-7bf92fac3148' && o.id !== 'scene-fixed-c43465913948'; });
+      sceneData = {
+        ...sceneData,
+        "sceneSearchFixed":[
+          {"form":{"level":"02","gender":"male"},"name":"二年级的男生","default":null,"show":true,"id":"scene-fixed-7bf92fac3148"},
+          {"form":{"level":"02","gender":"female"},"name":"二年级的女生","default":null,"show":true,"id":"scene-fixed-c43465913948"},
+          ...sceneList
+        ],
       };
-      localStorage.setItem("sceneData", JSON.stringify(defaultSceneData))
+      localStorage.setItem("sceneData", JSON.stringify(sceneData))
     },
     /**
      * 获取表格数据

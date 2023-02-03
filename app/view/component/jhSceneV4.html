@@ -1,16 +1,18 @@
 <!--jhScene.html >>>>>>>>>>>>> -->
 <script type="text/html" id="jhScene">
 <div class="jh-scene">
-<v-btn-toggle v-model="selectedScene" class="ml-3">
-  <v-btn small v-for="(scene, index) in sceneShowList" :key="index" @click="doUiAction('useScene', scene)">
+<v-btn-toggle v-model="selectedScene" class="ml-3" style="flex-wrap: wrap; background-color: transparent">
+  <v-btn small v-for="(scene, index) in sceneShowList" :key="index" @click="doUiAction('useScene', scene)" color="white" class="mb-2 rounded-0">
     {{ scene.name }}
   </v-btn>
-  <v-menu offset-y>
+  <v-menu offset-y v-if="!fixed">
     <template v-slot:activator="{ on, attrs }">
       <v-btn
           v-bind="attrs"
           v-on="on"
           small
+          color="white"
+          class="rounded-0"
           :class="{'empty-scene-menu': sceneShowList.length == 0}"
       >
         <v-icon right small class="ml-0">mdi-chevron-down</v-icon>
@@ -42,6 +44,7 @@
 
 <!-- 新建场景 -->
 <v-dialog
+    v-if="!fixed"
     v-model="isAddSceneShow"
     persistent
     width="70%"
@@ -187,7 +190,7 @@ Vue.component('jhScene', {
         return {};
       }
     },
-    sceneId: {
+    pageId: {
       type: String,
       default: location.href.split('/').pop()
     },
@@ -226,6 +229,11 @@ Vue.component('jhScene', {
         selectedHideScene: [],
       }
     };
+  },
+  computed: {
+    fixed() {
+      return this.pageId === 'sceneSearchFixed';
+    }
   },
   watch: {
     currentSceneId(newId, oldId) {
@@ -325,7 +333,7 @@ Vue.component('jhScene', {
     // 场景列表
     async getSceneList() {
       let sceneData = JSON.parse(localStorage.getItem('sceneData') || '{}');
-      this.sceneList = sceneData[this.sceneId] || [];
+      this.sceneList = sceneData[this.pageId] || [];
       this.sceneHideList = this.sceneList.filter(item => !item.show);
       this.sceneShowList = this.sceneList.filter(item => item.show);
     },
@@ -360,16 +368,18 @@ Vue.component('jhScene', {
     // 添加场景
     async doAddScene() {
       let sceneData = JSON.parse(localStorage.getItem('sceneData') || '{}');
-      let sceneList = sceneData[this.sceneId] || [];
+      let sceneList = sceneData[this.pageId] || [];
       // 清空默认场景
       if (this.editScene.default) {
         sceneList.forEach(item => {
           item.default = false;
         });
       }
+      const newScene = {...this.editScene, show: true, id: this.getUUID('scene')};
       sceneList.push({...this.editScene, show: true, id: this.getUUID('scene')});
-      sceneData[this.sceneId] = sceneList;
+      sceneData[this.pageId] = sceneList;
       localStorage.setItem('sceneData', JSON.stringify(sceneData));
+      this.doUiAction('useScene', newScene)
     },
 
     // 关闭场景添加弹框
@@ -413,7 +423,7 @@ Vue.component('jhScene', {
     // 提交场景管理
     async doManageScene() {
       let sceneData = JSON.parse(localStorage.getItem('sceneData') || '{}');
-      sceneData[this.sceneId] = [
+      sceneData[this.pageId] = [
         ...this.manageScene.sceneShowList.map(item => ({...item, show: true})),
         ...this.manageScene.sceneHideList.map(item => ({...item, show: false}))
       ];
@@ -482,7 +492,10 @@ Vue.component('jhScene', {
 .jh-scene {
   display: inline-block;
 }
-
+.v-application--is-ltr .jh-scene .v-btn-toggle>.v-btn.v-btn {
+  border-left-width: 1px!important;
+  margin-left: 2px;
+}
 .jh-scene .empty-scene-menu {
   border-radius: 4px !important;
   border: 1px solid !important;

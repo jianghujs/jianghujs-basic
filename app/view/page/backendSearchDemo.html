@@ -17,7 +17,7 @@
           </div>
           <v-spacer v-if="isMobile"></v-spacer>
           <!-- 服务端搜索 -->
-          <div v-if="isMobile" class="d-flex flex-column pt-3 text-right">
+          <div v-if="isMobile" class="d-flex flex-column pt-4 text-right">
             <!--搜索条件启动按钮-->
             <v-btn class="elevation-0 ml-2" color="success" dark small @click="doUiAction('getTableData')">
               查询
@@ -43,7 +43,7 @@
 
         <div class="pageBodyContainer px-8" style="flex: 1;">
           <!-- 页面内容 >>>>>>>>>>>>> -->
-          <v-container class="fullScreen d-flex flex-column pa-0">
+          <v-container class="d-flex flex-column pa-0">
             <v-card class="rounded-lg">
               <v-row class="ma-0 align-center flex-none pt-0 pa-4 pb-0">
                 <!--新增按钮-->
@@ -68,7 +68,6 @@
                   checkbox-color="success"
                   :class="{'zebraLine': showTableZebraLine }"
                   fixed-header
-                  :data-bottom="isMobile ? 50 : 0"
                   class="fixed-table-height elevation-0 mt-0 mb-xs-4 flex-fill d-flex flex-column">
                 <!--性别-->
                 <template v-slot:item.gender="{ item }">

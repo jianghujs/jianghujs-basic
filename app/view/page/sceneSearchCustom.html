@@ -16,10 +16,28 @@
             <v-breadcrumbs class="pb-3 pt-0 pl-0" :items="breadcrumbs" divider="-"></v-breadcrumbs>
           </div>
           <!-- 服务端搜索 -->
-          <div style="flex: 1" class="serverSearchContainer pt-2">
-            <div v-if="!isMobile" style="text-align: right; line-height: 64px; font-size: 14px;">
-              <span class="red lighten-1 pa-2 font-size-2" style="border-radius: 4px; color: #ffffff">备注: 当前登录用户只能看到自己所在班级的数据</span>
-            </div>
+          <div style="flex: 1" class="serverSearchContainer pt-1">
+            <!-- 搜索场景展示 >>>>>>>> -->
+            <v-row class="ma-0 align-center" style="justify-content: end">
+              <v-col cols="12" xs="12" sm="12" md="12" xl="12" class="px-0 d-flex align-start serverSearchAction"
+                     style="max-width: max-content;"
+              >
+                <span style="white-space: nowrap; line-height: 28px;" class="mb-2; ml-4">搜索场景：</span>
+                <jhScene :initFormData="serverSearchInput" pageId="sceneSearchCustom" :currentSceneId="currentSceneId"  @useScene="useScene">
+                  <template v-slot:form="{form}">
+                    <v-row class="ma-0 align-center" style="justify-content: end">
+                      <v-col cols="12" class="px-0 pb-0">
+                        <v-select v-model="form.level" color="success" prefix="年级：" class="cus-v-input mr-2" :items="constantCollection.level" dense filled single-line></v-select>
+                      </v-col>
+                      <v-col cols="12" class="px-0 pb-0">
+                        <v-select v-model="form.gender" color="success" prefix="性别：" class="cus-v-input mr-2" :items="constantCollection.gender" dense filled single-line></v-select>
+                      </v-col>
+                    </v-row>
+                  </template>
+                </jhScene>
+              </v-col>
+            </v-row>
+            <!-- <<<<<<<<<< 搜索场景展示 -->
           </div>
         </div>
         <!-- <<<<<<<<<<<<< 头部内容 -->
@@ -60,6 +78,11 @@
                 <template v-slot:item.level="{ item }">
                   {{ getConstantCollectionItemText('level', item.level) }}
                 </template>
+                <!--表格操作按钮-->
+                <template v-slot:item.action="{ item }">
+                  <v-btn color="success" outlined x-small class="elevation-0 mr-2" @click="doUiAction('startUpdateItem', item)">修改</v-btn>
+                  <v-btn color="error" outlined x-small class="elevation-0 mr-2" @click="doUiAction('deleteItem', item)">删除</v-btn>
+                </template>
                 <!--表格底部右侧功能按钮-->
                 <template v-slot:footer.prepend>
 
@@ -78,12 +101,8 @@
                 </template>
                 <!--表格操作-->
                 <template v-slot:item.action="{ item }">
-                  <span role="button" class="success--text font-weight-medium font-size-3 pr-2" @click="doUiAction('startUpdateItem', item)">
-                      <v-icon size="14" class="success--text">mdi-note-edit-outline</v-icon>修改
-                  </span>
-                    <span role="button" class="success--text font-weight-medium font-size-3" @click="doUiAction('deleteItem', item)">
-                      <v-icon size="14" class="success--text">mdi-trash-can-outline</v-icon>删除
-                  </span>
+                  <v-btn color="success" outlined x-small class="elevation-0 mr-2" @click="doUiAction('startUpdateItem', item)">修改</v-btn>
+                  <v-btn color="error" outlined x-small class="elevation-0 mr-2" @click="doUiAction('deleteItem', item)">删除</v-btn>
                 </template>
                 <!--表格分页-->
                 <template v-slot:footer.page-text="pagination">
@@ -160,7 +179,7 @@
           </v-navigation-drawer>
           <!-- 编辑抽屉 -->
           <v-navigation-drawer v-model="isUpdateDrawerShow" fixed temporary right width="80%" hide-overlay
-                              class="elevation-24">
+                               class="elevation-24">
             <v-form v-model="isFormValid" ref="form" lazy-validation>
               <!--抽屉标题-->
               <v-row>
@@ -226,12 +245,13 @@
 
         <!-- 帮助页抽屉 >>>>>>>>>>>>> -->
         <v-navigation-drawer v-model="isHelpPageDrawerShow" fixed temporary right width="80%" hide-overlay class="elevation-24">
-          <iframe style="border: 0" :src="`/${appInfo.appId}/pageDoc#8.dataAccessRight.md`" width="100%" height="100%"></iframe>
+          <iframe style="border: 0" :src="`/${appInfo.appId}/pageDoc#4.4.backendSearchDemo.md`" width="100%" height="100%"></iframe>
           <v-btn elevation="0" color="success" fab absolute top left small tile class="drawer-close-float-btn" @click="isHelpPageDrawerShow = false">
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-navigation-drawer>
         <!-- <<<<<<<<<<<<< 帮助页抽屉 -->
+
 
       </v-main>
     </v-app>
@@ -248,29 +268,28 @@
 {% endblock %}
 
 {% block vueScript %}
-{% include 'common/fixedTableHeightV4.html' %}
-{% include 'layout/jhLayout.html' %}
 
+{% include 'common/fixedTableHeightV4.html' %}
+{% include 'component/jhSceneV4.html' %}
 <script type="module">
 new Vue({
   el: '#app',
   template: '#app-template',
-  vueComponent: 'page',
   vuetify: new Vuetify(),
   data: () => ({
     breadcrumbs: window.breadcrumbs,
     isHelpPageDrawerShow: false,
+    isMobile: window.innerWidth < 500,
 
     // 表格相关数据
-    isMobile: window.innerWidth < 600,
-    showTableZebraLine: true,
     isFormValid: true,
+    showTableZebraLine: true,
     requireRules: [
       v => !!v || 'This is required',
     ],
     // 下拉选项
     constantCollection: {
-      gender: [{"value": "male", "text": "男"}, {"value": "female", "text": "女"}],
+      gender: [{"value": "null", "text": "全部"}, {"value": "male", "text": "男"}, {"value": "female", "text": "女"}],
       classId: [
         {"value": "2021-01级-01班", "text": "2021-01级-01班"}, {"value": "2021-01级-02班", "text": "2021-01级-02班"},
         {"value": "2021-02级-01班", "text": "2021-02级-01班"}, {"value": "2021-02级-02班", "text": "2021-02级-02班"},
@@ -281,13 +300,19 @@ new Vue({
       enrollmentType: [{"value": "正常升学", "text": "正常升学"}, {"value": "借读", "text": "借读"}],
       studentStatus: [{"value": "正常", "text": "正常"}, {"value": "退学", "text": "退学"}]
     },
+    currentSceneId: null,
+    serverSearchInput: {
+      studentId: null,
+      classId: null,
+      gender: null
+    },
     currentTableGenderType: 'all',
     searchInput: null,
     isTableLoading: true,
     tableData: [],
     tableDataFromBackend: [],
     headers: [
-      {text: '操作', value: 'action', type: 'button', align: 'center', sortable: false, width: 120, class: 'fixed', cellClass: 'fixed'},
+      {text: '操作', value: 'action', type: 'button', align: 'center', sortable: false, width: 150, class: 'fixed', cellClass: 'fixed'},
       {text: "学生ID", value: "studentId", type: "input", width: 120},
       {text: "班级ID", value: "classId", type: "select", width: 140},
       {text: "学生名字", value: "name", type: "input", width: 120},
@@ -301,10 +326,12 @@ new Vue({
       {text: "操作时间", value: "operationAt", type: "input", width: 250},
     ],
 
+    isBackendSearchDialogShow: false,
     isCreateDrawerShow: false,
     createItem: {},
     isUpdateDrawerShow: false,
     updateItem: {},
+
   }),
   watch: {
     currentTableGenderType(value) {
@@ -312,6 +339,7 @@ new Vue({
     }
   },
   async created() {
+    this.doUiAction("setDefaultSceneData");
   },
   mounted() {
     this.doUiAction('getTableData');
@@ -320,6 +348,21 @@ new Vue({
     async doUiAction(uiActionId, uiActionData) {
       switch (uiActionId) {
         case 'getTableData':
+          await this.getTableData();
+          await this.computedTableData();
+          break;
+        case 'setDefaultSceneData':
+          await this.setDefaultSceneData();
+          break;
+        case 'startBackendSearch':
+          await this.openBackendSearchDialog();
+          break;
+        case 'closeBackendSearch':
+          await this.closeBackendSearchDialog();
+          break;
+        case 'doBackendSearch':
+          await this.closeBackendSearchDialog();
+          await this.cleanCurrentScene();
           await this.getTableData();
           await this.computedTableData();
           break;
@@ -362,33 +405,65 @@ new Vue({
           break;
       }
     },
+    setDefaultSceneData() {
+      let sceneData = JSON.parse(localStorage.getItem('sceneData') || '{}');
+      let sceneList = sceneData['sceneSearchCustom'] || [];
+      sceneList = _.filter(sceneList, function(o) { return o.id !== 'scene-custom-7bf92fac3148' && o.id !== 'scene-custom-c43465913948'; });
+      sceneData = {
+        ...sceneData,
+        "sceneSearchCustom":[
+          {"form":{"level":"02","gender":"male"},"name":"二年级的男生","default":null,"show":true,"id":"scene-custom-7bf92fac3148"},
+          {"form":{"level":"02","gender":"female"},"name":"二年级的女生","default":null,"show":true,"id":"scene-custom-c43465913948"},
+          ...sceneList
+        ],
+      };
+      localStorage.setItem("sceneData", JSON.stringify(sceneData))
+    },
     /**
      * 获取表格数据
      */
     async getTableData() {
       this.isTableLoading = true;
-      const result = await window.jianghuAxios({
+      const serverSearchInput = _.pickBy(this.serverSearchInput, value => !!value);
+      const rows = (await window.jianghuAxios({
         data: {
           appData: {
-            pageId: 'dataAccessRight',
-            actionId: 'selectItemListByDynamicData',// 'selectItemListByService', 'selectItemListBySql'
+            pageId: 'sceneSearch',
+            actionId: 'selectItemList',
             actionData: {},
             where: {},
+            whereLike: serverSearchInput,
             orderBy: [{column: 'operationAt', order: 'desc'}]
           }
         }
-      });
-
-      this.tableDataFromBackend = result.data.appData.resultData.rows;
+      })).data.appData.resultData.rows;
+      await window.jianghuAxios({
+        data: {
+          appData: {
+            pageId: 'allPage',
+            actionId: 'getConstantList',
+            actionData: {},
+            where: {},
+          }
+        }
+      })
+      this.tableDataFromBackend = rows;
       this.isTableLoading = false;
     },
-
     computedTableData() {
       if (!this.currentTableGenderType || this.currentTableGenderType === 'all') {
         this.tableData = this.tableDataFromBackend.slice();
       } else {
         this.tableData = this.tableDataFromBackend.filter(({gender}) => gender === this.currentTableGenderType);
       }
+    },
+
+    async openBackendSearchDialog() {
+      this.isBackendSearchDialogShow = true;
+    },
+
+    async closeBackendSearchDialog() {
+      this.isBackendSearchDialogShow = false;
     },
 
     async prepareCreateFormData() {
@@ -419,7 +494,7 @@ new Vue({
       await window.jianghuAxios({
         data: {
           appData: {
-            pageId: 'dataAccessRight',
+            pageId: 'sceneSearch',
             actionId: 'insertItem',
             actionData: data
           }
@@ -456,7 +531,7 @@ new Vue({
       await window.jianghuAxios({
         data: {
           appData: {
-            pageId: 'dataAccessRight',
+            pageId: 'sceneSearch',
             actionId: 'updateItem',
             actionData: data,
             where: {id: id}
@@ -478,7 +553,7 @@ new Vue({
       await window.jianghuAxios({
         data: {
           appData: {
-            pageId: 'backendSearchDemo',
+            pageId: 'sceneSearch',
             actionId: 'deleteItem',
             actionData: {},
             where: { id: id }
@@ -494,6 +569,24 @@ new Vue({
         return constantCollectionItemFind.text;
       }
       return _value;
+    },
+    cleanCurrentScene() {
+      this.currentSceneId = null;
+    },
+    useScene(scene) {
+      console.log("哈哈", scene)
+      if(this.currentSceneId === scene.id) {
+        this.currentSceneId = null;
+        this.serverSearchInput = { };
+      } else {
+        this.currentSceneId = scene.id;
+        this.serverSearchInput = {
+          ...this.serverSearchInput,
+          ...scene.form
+        };
+      }
+      this.doUiAction('closeBackendSearch');
+      this.doUiAction('getTableData');
     }
   }
 })
