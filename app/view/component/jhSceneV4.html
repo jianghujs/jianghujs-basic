@@ -1,7 +1,7 @@
 <!--jhScene.html >>>>>>>>>>>>> -->
 <script type="text/html" id="jhScene">
 <div class="jh-scene">
-<v-btn-toggle v-model="selectedScene" class="ml-3" style="flex-wrap: wrap; background-color: transparent">
+<v-btn-toggle v-model="selectedScene" :class="{'ml-3': !isMobile}" style="flex-wrap: wrap; background-color: transparent">
   <v-btn small v-for="(scene, index) in sceneShowList" :key="index" @click="doUiAction('useScene', scene)" color="white" class="mb-2 rounded-0">
     {{ scene.name }}
   </v-btn>
