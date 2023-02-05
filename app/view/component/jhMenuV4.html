@@ -1,5 +1,5 @@
 <!--jhMenu.html >>>>>>>>>>>>> -->
-<script type="text/html" id="jhMenu">
+<script type="text/html" id="jh-menu">
 <div>
 <!-- 手机端左边抽屉菜单 >>>>>>>>>>>>> -->
 <v-navigation-drawer
@@ -8,9 +8,9 @@
     clipped
     v-if="isMobile"
     style="z-index: 99999"
-    class="pageNavBar"
+    class="jh-page-nav-bar"
 >
-  <v-btn fab color="success" class="elevation-0" x-small dark style="position: absolute; right: 15px; top: 15px; z-index: 10" @click="mobileMenuDrawer = !mobileMenuDrawer">
+  <v-btn fab color="success" class="elevation-0" x-small style="position: absolute; right: 15px; top: 15px; z-index: 10" @click="mobileMenuDrawer = !mobileMenuDrawer">
     <v-icon>mdi-arrow-left</v-icon>
   </v-btn>
   <v-list>
@@ -137,9 +137,9 @@
 </script>
 
 <script>
-Vue.component('jhMenu', {
-  template: "#jhMenu",
-  vueComponent: 'jhMenu',
+Vue.component('jh-menu', {
+  template: "#jh-menu",
+  vueComponent: 'jh-menu',
   vuetify: new Vuetify(),
   data() {
     return {

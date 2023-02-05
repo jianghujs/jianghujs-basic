@@ -5,11 +5,11 @@
 
 <script type="text/html" id="app-template">
   <div>
-    <v-app id="inspire" mobile-breakpoint="sm">
-      <jhMenu />
+    <v-app mobile-breakpoint="sm">
+      <jh-menu />
       <v-main class="d-flex flex-column" style="margin-top: 80px">
 
-        <div class="pageBodyContainer px-8" style="flex: 1;">
+        <div class="jh-page-body-container px-8">
           <!-- 页面内容 >>>>>>>>>>>>> -->
           <iframe style="border: 0" :src="`/${appInfo.appId}/pageDoc`" width="100%" height="100%"></iframe>
           <!-- <<<<<<<<<<<<< 页面内容 -->
@@ -18,9 +18,9 @@
       </v-main>
     </v-app>
 
-    <jhToast />
-    <jhMask />
-    <jhConfirmDialog />
+    <jh-toast />
+    <jh-mask />
+    <jh-confirm-dialog />
   </div>
 </script>
 
@@ -47,8 +47,18 @@ new Vue({
   template: '#app-template',
   vuetify: new Vuetify(),
   data: () => ({
-    breadcrumbs: window.breadcrumbs,
-    isHelpPageDrawerShow: false,
+    // 面包屑
+    breadcrumbs: [
+      {
+        text: '首页',
+        disabled: true,
+      },
+      {
+        text: 'manual',
+        disabled: true,
+      }
+    ],
+    isHelpPageDrawerShown: false,
 
     appInfo: window.appInfo,
   }),

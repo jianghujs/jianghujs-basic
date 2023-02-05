@@ -1,5 +1,5 @@
 <!--jhToast.html >>>>>>>>>>>>> -->
-<script type="text/html" id="jhToast">
+<script type="text/html" id="jh-toast">
   <v-snackbar
   :color="color"
   :timeout="timer"
@@ -34,9 +34,9 @@
     window.tabActive = true;
   };
 
-  Vue.component('jhToast', {
-    template: "#jhToast",
-    vueComponent: 'jhToast',
+  Vue.component('jh-toast', {
+    template: "#jh-toast",
+    vueComponent: 'jh-toast',
     mixins: [ window.jianghuUiActionMixins || {} ],
     vuetify: new Vuetify(),
     data() {
