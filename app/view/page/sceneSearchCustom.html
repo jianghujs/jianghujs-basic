@@ -24,7 +24,7 @@
             <!--pc端的搜索条件表单 >>>>>>>> -->
             <v-col cols="12" xs="12" sm="12" md="8" xl="9">
               <v-row class="justify-end ma-0 py-4 pb-xs-2 pt-xs-0">
-                <jh-scene :initFormData="serverSearchInput" pageId="sceneSearchCustom" :currentSceneId="currentSceneId"  @useScene="useScene">
+                <jh-scene :initFormData="serverSearchInput" pageId="sceneSearchCustom" :currentSceneId="currentSceneId"  @useScene="doUiAction('useScene', $event)">
                   <template v-slot:form="{form}">
                     <v-row class="ma-0 align-center justify-end">
                       <v-col cols="12" class="px-0 pb-0">
@@ -295,21 +295,21 @@ new Vue({
     },
     // 下拉选项
     constantCollection: {
+      classId: ['2021-01级-01班', '2021-01级-02班', '2021-01级-03班', '2021-02级-01班', '2021-02级-02班', '2021-02级-03班'],
       gender: ['全部', '男', '女'],
-      level: ['一年级', '二年级', '三年级'],
+      level: ['全部', '一年级', '二年级', '三年级'],
       studentStatus: ['正常', '退学']
     },
     currentSceneId: null,
     serverSearchInput: {
-      studentId: null,
-      classId: null,
-      gender: null
+      level: '全部',
+      gender: '全部'
     },
     currentTableGenderType: 'all',
     searchInput: null,
     isTableLoading: true,
+    backendSearchData: null,
     tableData: [],
-    tableDataFromBackend: [],
     headers: [
       {text: '操作', value: 'action', type: 'button', align: 'center', sortable: false, width: 120, class: 'fixed', cellClass: 'fixed'},
       {text: "学生ID", value: "studentId", type: "input", width: 120},
@@ -325,18 +325,17 @@ new Vue({
       {text: "操作时间", value: "operationAt", type: "input", width: 250},
     ],
 
-    isBackendSearchDialogShow: false,
     isCreateDrawerShown: false,
     createItem: {},
+    createActionData: {},
     isUpdateDrawerShown: false,
     updateItem: {},
+    updateItemId: null,
+    updateActionData: {},
+    deleteItem: {},
+    deleteItemId: null
 
   }),
-  watch: {
-    currentTableGenderType(value) {
-      this.doUiAction('computedTableData');
-    }
-  },
   async created() {
     this.doUiAction("setDefaultSceneData");
   },
@@ -346,85 +345,69 @@ new Vue({
   methods: {
     async doUiAction(uiActionId, uiActionData) {
       switch (uiActionId) {
-        case 'getTableData':
-          await this.getTableData();
-          await this.computedTableData();
-          break;
         case 'setDefaultSceneData':
           await this.setDefaultSceneData();
           break;
-        case 'startBackendSearch':
-          await this.openBackendSearchDialog();
-          break;
-        case 'closeBackendSearch':
-          await this.closeBackendSearchDialog();
-          break;
-        case 'doBackendSearch':
-          await this.closeBackendSearchDialog();
-          await this.cleanCurrentScene();
+        case 'useScene':
+          await this.useScene(uiActionData);
+          await this.prepareGetTableData();
           await this.getTableData();
-          await this.computedTableData();
+          break;
+        case 'getTableData':
+          await this.prepareGetTableData();
+          await this.getTableData();
           break;
         case 'startCreateItem':
           await this.prepareCreateFormData();
-          await this.openCreateDialog();
+          await this.openCreateDrawer();
           break;
         case 'createItem':
-          await this.prepareValidate();
+          await this.prepareCreateValidate();
           await this.confirmCreateItemDialog();
+          await this.prepareDoCreateItem();
           await this.doCreateItem();
-          await this.closeDrawerShow();
+          await this.closeCreateDrawer();
+          await this.clearCreateItemData();
+          await this.prepareGetTableData();
           await this.getTableData();
-          await this.computedTableData();
           break;
         case 'startUpdateItem':
           await this.prepareUpdateFormData(uiActionData);
-          await this.openUpdateDialog();
+          await this.openUpdateDrawer();
           break;
         case 'updateItem':
-          await this.prepareValidate();
+          await this.prepareUpdateValidate();
           await this.confirmUpdateItemDialog();
+          await this.prepareDoUpdateItem();
           await this.doUpdateItem();
-          await this.closeDrawerShow();
+          await this.closeUpdateDrawer();
+          await this.clearUpdateItemData();
+          await this.prepareGetTableData();
           await this.getTableData();
-          await this.computedTableData();
           break;
         case 'deleteItem':
+          await this.prepareDeleteFormData(uiActionData);
           await this.confirmDeleteItemDialog();
-          await this.prepareUpdateFormData(uiActionData);
+          await this.prepareDoDeleteItem();
           await this.doDeleteItem();
+          await this.clearDeleteItem();
+          await this.prepareGetTableData();
           await this.getTableData();
-          await this.computedTableData();
-          break;
-        case 'computedTableData':
-          await this.computedTableData();
           break;
         default:
           console.error("[doUiAction] uiActionId not find", { uiActionId });
           break;
       }
     },
-    setDefaultSceneData() {
-      let sceneData = JSON.parse(localStorage.getItem('sceneData') || '{}');
-      let sceneList = sceneData['sceneSearchCustom'] || [];
-      sceneList = _.filter(sceneList, function(o) { return o.id !== 'scene-custom-7bf92fac3148' && o.id !== 'scene-custom-c43465913948' && o.id !== 'scene-custom-all'; });
-      sceneData = {
-        ...sceneData,
-        "sceneSearchCustom":[
-          {"form":{},"name":"全部","default":true,"id":"scene-custom-all", 'system': true},
-          {"form":{"level":"02","gender":"male"},"name":"二年级的男生","default":null,"id":"scene-custom-7bf92fac3148", 'system': true},
-          {"form":{"level":"02","gender":"female"},"name":"二年级的女生","default":null,"id":"scene-custom-c43465913948", 'system': true},
-          ...sceneList
-        ],
-      };
-      localStorage.setItem("sceneData", JSON.stringify(sceneData))
-    },
+
     /**
      * 获取表格数据
      */
+    async prepareGetTableData() {
+      this.backendSearchData = _.pickBy(this.serverSearchInput, value => !!value && value !== '全部');
+    },
     async getTableData() {
       this.isTableLoading = true;
-      const serverSearchInput = _.pickBy(this.serverSearchInput, value => !!value);
       const rows = (await window.jianghuAxios({
         data: {
           appData: {
@@ -432,51 +415,48 @@ new Vue({
             actionId: 'selectItemList',
             actionData: {},
             where: {},
-            whereLike: serverSearchInput,
+            whereLike: this.backendSearchData,
             orderBy: [{column: 'operationAt', order: 'desc'}]
           }
         }
       })).data.appData.resultData.rows;
-      await window.jianghuAxios({
-        data: {
-          appData: {
-            pageId: 'allPage',
-            actionId: 'getConstantList',
-            actionData: {},
-            where: {},
-          }
-        }
-      })
-      this.tableDataFromBackend = rows;
+      this.tableData = rows;
       this.isTableLoading = false;
     },
-    computedTableData() {
-      if (!this.currentTableGenderType || this.currentTableGenderType === 'all') {
-        this.tableData = this.tableDataFromBackend.slice();
-      } else {
-        this.tableData = this.tableDataFromBackend.filter(({gender}) => gender === this.currentTableGenderType);
-      }
+    // ---------- 场景 uiAction >>>>>>>>>> --------
+    setDefaultSceneData() {
+      let sceneData = JSON.parse(localStorage.getItem('sceneData') || '{}');
+      let sceneList = sceneData["sceneSearchCustom_" + window.userInfo.userId] || [];
+      sceneList = _.filter(sceneList, function(o) { return o.id !== 'scene-custom-7bf92fac3148' && o.id !== 'scene-custom-c43465913948' && o.id !== 'scene-custom-all'; });
+      sceneData = {
+        ...sceneData,
+        ["sceneSearchCustom_" + window.userInfo.userId]:[
+          {"form":{},"name":"全部","default":true,"id":"scene-custom-all", 'system': true},
+          {"form":{"level":"二年级","gender":"男"},"name":"二年级的男生","default":null,"id":"scene-custom-7bf92fac3148", 'system': true},
+          {"form":{"level":"二年级","gender":"女"},"name":"二年级的女生","default":null,"id":"scene-custom-c43465913948", 'system': true},
+          ...sceneList
+        ],
+      };
+      localStorage.setItem("sceneData", JSON.stringify(sceneData))
     },
 
-    async openBackendSearchDialog() {
-      this.isBackendSearchDialogShow = true;
+    useScene(scene) {
+      console.log("哈哈", scene)
+      this.currentSceneId = scene.id;
+      this.serverSearchInput = _.cloneDeep(scene.form);
     },
-
-    async closeBackendSearchDialog() {
-      this.isBackendSearchDialogShow = false;
-    },
-
+    // ---------- <<<<<<<<<<< 场景 uiAction --------
+    // ---------- 新增数据 uiAction >>>>>>>>>> --------
     async prepareCreateFormData() {
       this.createItem = {};
     },
 
-    async openCreateDialog() {
+    async openCreateDrawer() {
       this.isCreateDrawerShown = true;
     },
 
-    // validate
-    prepareValidate() {
-      return this.$refs.form.validate();
+    prepareCreateValidate() {
+      return this.$refs.createForm.validate();
     },
 
     async confirmCreateItemDialog() {
@@ -485,11 +465,12 @@ new Vue({
       }
     },
 
-    /**
-     * 新增学生
-     */
-    async doCreateItem() {
+    prepareDoCreateItem() {
       const {id, ...data} = this.createItem;
+      this.createActionData = data;
+    },
+
+    async doCreateItem() {
       await window.jhMask.show();
       await window.vtoast.loading("新增学生");
       await window.jianghuAxios({
@@ -497,25 +478,38 @@ new Vue({
           appData: {
             pageId: 'sceneSearch',
             actionId: 'insertItem',
-            actionData: data
+            actionData: this.createActionData
           }
         }
       })
       await window.jhMask.hide();
       await window.vtoast.success("新增学生成功");
     },
-
-    async closeDrawerShow() {
+    async closeCreateDrawer() {
       this.isCreateDrawerShown = false;
+    },
+    async clearCreateItemData() {
+      this.createItem = {};
+      this.createActionData = null;
+    },
+    // ---------- <<<<<<<<<<< 新增数据 uiAction  --------
+    // ---------- 修改数据 uiAction >>>>>>>>>>>> --------
+    async prepareUpdateFormData(item) {
+      this.updateItem = _.cloneDeep(item);
+    },
+
+    async closeUpdateDrawer() {
       this.isUpdateDrawerShown = false;
     },
 
-    async prepareUpdateFormData(item) {
-      this.updateItem = {...item};
+
+    async openUpdateDrawer() {
+      this.isUpdateDrawerShown = true;
     },
 
-    async openUpdateDialog() {
-      this.isUpdateDrawerShown = true;
+    // validate
+    prepareUpdateValidate() {
+      return this.$refs.updateForm.validate();
     },
 
     async confirmUpdateItemDialog() {
@@ -524,11 +518,13 @@ new Vue({
       }
     },
 
-    /**
-     * 保存学生
-     */
-    async doUpdateItem() {
+    async prepareDoUpdateItem() {
       const {id, ...data} = this.updateItem;
+      this.updateItemId = id;
+      this.updateActionData = data;
+    },
+
+    async doUpdateItem() {
       await window.jhMask.show();
       await window.vtoast.loading("修改学生");
       await window.jianghuAxios({
@@ -536,23 +532,36 @@ new Vue({
           appData: {
             pageId: 'sceneSearch',
             actionId: 'updateItem',
-            actionData: data,
-            where: {id: id}
+            actionData: this.updateActionData,
+            where: {id: this.updateItemId}
           }
         }
       })
+
       await window.jhMask.hide();
       await window.vtoast.success("修改学生成功");
     },
 
+    async clearUpdateItemData() {
+      this.updateItem = {};
+      this.updateActionData = null;
+      this.updateItemId = null;
+    },
+    // ---------- <<<<<<<<<<< 修改数据 uiAction  --------
+    // ---------- 删除数据 uiAction >>>>>>>>>>>> --------
+    async prepareDeleteFormData(item) {
+      this.deleteItem = _.cloneDeep(item);
+    },
     async confirmDeleteItemDialog() {
       if (await window.confirmDialog({title: "删除", content: "确定删除吗？"}) === false) {
         throw new Error("[confirmDeleteItemDialog] 否");
       }
     },
-
+    async prepareDoDeleteItem() {
+      const { id } = this.deleteItem;
+      this.deleteItemId = id;
+    },
     async doDeleteItem() {
-      const { id } = this.updateItem;
       await window.vtoast.loading("删除学生");
       await window.jianghuAxios({
         data: {
@@ -560,22 +569,17 @@ new Vue({
             pageId: 'sceneSearch',
             actionId: 'deleteItem',
             actionData: {},
-            where: { id: id }
+            where: { id: this.deleteItemId }
           }
         }
       });
       await window.vtoast.success("删除学生成功");
     },
-    cleanCurrentScene() {
-      this.currentSceneId = null;
+    async clearDeleteItem() {
+      this.deleteItem = {};
+      this.deleteItemId = null;
     },
-    useScene(scene) {
-      console.log("哈哈", scene)
-      this.currentSceneId = scene.id;
-      this.serverSearchInput = _.cloneDeep(scene.form);
-      this.doUiAction('closeBackendSearch');
-      this.doUiAction('getTableData');
-    }
+    // ---------- <<<<<<<<<<< 删除数据 uiAction  --------
   }
 })
 </script>
