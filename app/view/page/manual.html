@@ -52,6 +52,7 @@ new Vue({
   vuetify: new Vuetify(),
   data: () => ({
     // 面包屑
+    isMobile: window.innerWidth < 500,
     breadcrumbs: [
       {
         text: '首页',
@@ -66,11 +67,7 @@ new Vue({
 
     appInfo: window.appInfo,
   }),
-  computed: {
-    isMobile() {
-      return window.innerWidth < 600;
-    }
-  },
+  computed: {},
   watch: {},
   created() {},
   mounted() {},

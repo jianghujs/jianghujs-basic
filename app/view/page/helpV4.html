@@ -68,6 +68,7 @@
         errorReason: null,
         errorReasonSupplement: null,
       },
+      isMobile: window.innerWidth < 500,
       // 面包屑
       breadcrumbs: [
         {
@@ -81,11 +82,7 @@
       ],
       isHelpPageDrawerShown: false,
     }),
-    computed: {
-      isMobile() {
-        return window.innerWidth < 600;
-      }
-    },
+    computed: {},
     async created() {
       const urlParams = new URLSearchParams(location.search);
       if (urlParams.get('errorCode')) {
