@@ -43,7 +43,7 @@
           app
           clipped-left
           height="60"
-          class="pageHeader px-8"
+          class="jh-page-header px-8"
           style="z-index: 50;"
           flat>
           <v-toolbar-title ref="toolbarTitle" class="mr-8 pa-0 align-center" style="font-size: 14px; flex: none">
@@ -57,8 +57,8 @@
             style="max-width: calc(100vw - 280px)">
             <template v-for="item in inMenuList">
               <v-tab
-                class="px-5 headerTab"
-                active-class="headerTabActive"
+                class="px-5 jh-header-tab"
+                active-class="jh-header-tab-active"
                 :key="item.path"
                 @click="jump({ path: item.path })">
                 {{ item.title }}
