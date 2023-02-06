@@ -87,20 +87,19 @@
   </v-tabs>
   <!--<<<<<<<<<<<<<pc端菜单-->
   <div style="white-space: nowrap">
-    <v-menu offset-y>
-      <template v-slot:activator="{ on }">
-        <template v-if="!isMobile">
-          <v-btn disabled text class="ml-1 mr-0 pr-0 text-none" v-on="on">
-                      <span style="font-size: 13px;
+    <template v-if="!isMobile">
+      <div @click="openAvatarMenu($event)">
+        <v-btn disabled text class="ml-1 mr-0 pr-0 text-none">
+          <span style="font-size: 13px;
                       font-weight: 400;
                       color: #1F272E;">{{ userInfo.user.username }}</span>
-          </v-btn>
-        </template>
-        <v-btn icon small class="ml-1" color="#1F272E" v-on="on">
+        </v-btn>
+        <v-btn icon small class="ml-1" color="#1F272E">
           <v-icon>mdi-account-circle</v-icon>
         </v-btn>
-      </template>
-
+      </div>
+    </template>
+    <v-menu offset-y v-model="isAvatarMenuShown" :position-x="menuPosition.x" :position-y="menuPosition.y">
       <v-list nav dense>
         <v-list-item class="mt-2">
           <v-list-item-icon class="mr-1 mt-1">
@@ -145,6 +144,8 @@ Vue.component('jh-menu', {
     return {
       isMobile: window.innerWidth < 600,
       mobileMenuDrawer: false,
+      isAvatarMenuShown: false,
+      menuPosition: {x: null, y: null},
       selectedItem: -1,
       selectItemTitle: '',
       userInfo: window.userInfo,
@@ -164,6 +165,11 @@ Vue.component('jh-menu', {
     this.getTabsMaxWidth();
   },
   methods: {
+    openAvatarMenu(funObj) {
+      this.menuPosition.x = funObj.pageX;
+      this.menuPosition.y = funObj.pageY + 20;
+      this.isAvatarMenuShown = !this.isAvatarMenuShown;
+    },
     // 动态计算菜单栏目的最大宽度，按照实际的标题宽度计算
     getTabsMaxWidth() {
       this.$nextTick(() => {

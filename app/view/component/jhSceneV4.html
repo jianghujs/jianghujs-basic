@@ -2,26 +2,22 @@
 <script type="text/html" id="jh-scene">
 <div class="jh-scene">
 <v-row class="ma-0 ml-xs-n1">
-  <v-btn small outlined
-         :class="{'jh-btn--active': selectedScene === index}"
+  <v-btn small :outlined="selectedScene !== index"
          v-for="(scene, index) in sceneList"
          :key="index"
          @click="doUiAction('useScene', scene)"
-         color="grey lighten-1" class="mb-2 ml-1">
+         :color="selectedScene !== index ? 'grey darken-1' : 'success'" class="mb-2 ml-1">
     {{ scene.name }}
   </v-btn>
-  <v-menu offset-y v-if="!fixed">
-    <template v-slot:activator="{ on, attrs }">
-      <v-btn
-          v-bind="attrs"
-          v-on="on"
-          small outlined
-          color="grey lighten-1"
-          class="mb-2 ml-1 pa-1"
-      >
-        <v-icon right small class="mx-0">mdi-chevron-down</v-icon>
-      </v-btn>
-    </template>
+  <v-btn
+      @click="doUiAction('openSceneMenu', $event)"
+      small outlined
+      color="grey darken-1"
+      class="mb-2 ml-1 pa-1"
+  >
+    <v-icon right small class="mx-0">mdi-chevron-down</v-icon>
+  </v-btn>
+  <v-menu offset-y v-model="isSceneOperationShown" :position-x="menuPosition.x" :position-y="menuPosition.y">
     <v-list dense class="pb-0">
       <v-list-item @click="doUiAction('openCreateSceneDialog')">
         <v-list-item-title class="success--text">
@@ -42,7 +38,7 @@
 <!-- 新建场景 -->
 <v-dialog
     v-if="!fixed"
-    v-model="isAddSceneShown"
+    v-model="isCreateSceneDialogShown"
     persistent
     width="360px"
 >
@@ -85,7 +81,7 @@
 
 <!-- 场景设置 -->
 <v-dialog
-    v-model="isSceneManageShown"
+    v-model="isSceneListShown"
     persistent
     width="360px"
 >
@@ -171,8 +167,10 @@ Vue.component('jh-scene', {
       // 自定义场景
       sceneCustomList: [],
       selectedScene: -1,
+      isSceneOperationShown: false,
+      menuPosition: {x: null, y: null},
       // 新建场景
-      isAddSceneShown: false,
+      isCreateSceneDialogShown: false,
       deleteItem: {
         form: {}
       },
@@ -181,7 +179,7 @@ Vue.component('jh-scene', {
       },
 
       // 场景管理
-      isSceneManageShown: false,
+      isSceneListShown: false,
     };
   },
   computed: {
@@ -210,6 +208,9 @@ Vue.component('jh-scene', {
         case 'getSceneList':
           await this.getSceneList();
           await this.useDefaultScene();
+          break;
+        case 'openSceneMenu':
+          await this.openSceneMenu(uiActionData);
           break;
         case 'useScene':
           await this.useScene(uiActionData);
@@ -267,6 +268,12 @@ Vue.component('jh-scene', {
       return prefix + '-' + uuid;
     },
 
+    async openSceneMenu(funObj) {
+      this.menuPosition.x = funObj.pageX;
+      this.menuPosition.y = funObj.pageY + 20;
+      this.isSceneOperationShown = !this.isSceneOperationShown;
+    },
+
     // 场景列表
     async getSceneList() {
       let sceneData = JSON.parse(localStorage.getItem('sceneData') || '{}');
@@ -284,8 +291,8 @@ Vue.component('jh-scene', {
     },
 
     // 使用场景
-    async useScene(scene) {
-      this.$emit('useScene', scene);
+    async useScene(funObj) {
+      this.$emit('useScene', funObj);
     },
 
     // =================================添加场景 start ======================================
@@ -299,7 +306,7 @@ Vue.component('jh-scene', {
 
     // 打开场景添加弹框
     async openCreateSceneDialog() {
-      this.isAddSceneShown = true;
+      this.isCreateSceneDialogShown = true;
     },
 
     // 验证新场景名称
@@ -329,13 +336,13 @@ Vue.component('jh-scene', {
 
     // 关闭场景添加弹框
     async closeCreateSceneDialog() {
-      this.isAddSceneShown = false;
+      this.isCreateSceneDialogShown = false;
     },
 
     // =================================场景删除 >>>>>>>>>> ======================================
     // 准备场景管理数据
-    async prepareDeleteItemData(item) {
-      this.deleteItem = _.cloneDeep(item);
+    async prepareDeleteItemData(funObj) {
+      this.deleteItem = _.cloneDeep(funObj);
     },
     // 检查并重置当前选中scene
     async checkCurrentScene() {
@@ -355,12 +362,12 @@ Vue.component('jh-scene', {
 
     // 打开场景管理弹框
     async openSceneListDialog() {
-      this.isSceneManageShown = true;
+      this.isSceneListShown = true;
     },
 
     // 关闭场景管理弹框
     async closeSceneListDialog() {
-      this.isSceneManageShown = false;
+      this.isSceneListShown = false;
     },
 
     // 删除场景
