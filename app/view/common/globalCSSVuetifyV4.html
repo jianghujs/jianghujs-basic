@@ -226,18 +226,18 @@ th:not(.v-picker th) {
   background: #ffffff!important;
   box-shadow: 0 1px 20px 0 rgb(0 0 0 / 2%)!important;
 }
-.headerTab {
+.jh-header-tab {
   border-radius: 5px;
   margin: 14px 0;
   text-transform: none;
 }
-.headerTabActive {
+.jh-header-tab-active {
   background: rgba(0,0,0,0.03);
 }
-.headerTab::before {
+.jh-header-tab::before {
   border-radius: 5px!important;
 }
-.headerTab:hover::before {
+.jh-header-tab:hover::before {
   border-radius: 5px!important;
   opacity: 0.1!important;
 }
@@ -294,14 +294,8 @@ body .theme--light.v-input--is-disabled, .theme--light.v-input--is-disabled inpu
 body .theme--light.v-text-field--filled>.v-input__control>.v-input__slot {
   background: #f5f8fa;
 }
-body .jh-server-search-container .theme--light.v-text-field--filled>.v-input__control>.v-input__slot {
-  background: #ffffff;
-}
 body .theme--light.v-text-field--filled:not(.v-input--is-focused):not(.v-input--has-state)>.v-input__control>.v-input__slot:hover {
   background: #edeff1 !important;
-}
-body .jh-server-search-container .theme--light.v-text-field--filled:not(.v-input--is-focused):not(.v-input--has-state)>.v-input__control>.v-input__slot:hover {
-  background: #dcdcdc !important;
 }
 body .v-menu__content {
   box-shadow: 0 3px 14px 2px rgb(0 0 0 / 8%);
@@ -427,10 +421,10 @@ body .theme--light.v-text-field--filled>.v-input__control>.v-input__slot{
 body .v-sheet.v-card:not(.v-sheet--outlined){
   /* box-shadow: var(--shadow-sm); */
 }
-body .headerTab{
+body .jh-header-tab{
   font-weight: 400;
 }
-body .headerTabActive {
+body .jh-header-tab-active {
   font-weight: 500;
 }
 .theme--light.v-tabs>.v-tabs-bar .v-tab--disabled, .theme--light.v-tabs>.v-tabs-bar .v-tab:not(.v-tab--active), .theme--light.v-tabs>.v-tabs-bar .v-tab:not(.v-tab--active)>.v-btn, .theme--light.v-tabs>.v-tabs-bar .v-tab:not(.v-tab--active)>.v-icon{
@@ -495,7 +489,7 @@ body span.jh-input-label{
 .v-application--is-ltr .v-data-footer__select{
   margin-left: 30px;
 }
-.font-size-2{
+.jh-font-size-2{
   font-size: 12px;
 }
 .jh-font-size-3{
@@ -580,17 +574,16 @@ body span.jh-input-label{
   vertical-align: middle;
 }
 .v-application .v-btn.jh-btn--active {
-  color: #666666!important;
-}
-/* dense 下拉框的高度 */
-.v-text-field--filled.v-input--dense.v-text-field--single-line>.v-input__control>.v-input__slot {
-  min-height: 28px;
-}
-.v-text-field--enclosed.v-input--dense:not(.v-text-field--solo).v-text-field--single-line .v-input__append-inner {
-  margin-top: 2px;
+  color: #ffffff!important;
+  background-color: var(--cPrimaryColor)!important;
+  border-color: var(--cPrimaryColor)!important;
 }
 .jh-page-doc-container {
-  height: calc(100vh - 80px);
+  height: calc(100vh - 130px);
+}
+
+body .v-application .jh-backend-search-btn {
+  min-height: 32px!important;
 }
 /* 自适应 */
 @media (min-width: 1264px) {
@@ -672,10 +665,7 @@ body span.jh-input-label{
     height: 52px;
   }
 
-  body .jh-server-search-container {
-    min-width: 100%;
-    max-width: 100%;
-  }
+
   body [xs='1'] { flex: 1; }
   body [xs='2'] { flex: 2; }
   body [xs='3'] { flex: 3; }
@@ -716,6 +706,9 @@ body span.jh-input-label{
   body .v-application .jh-page-body-container .v-navigation-drawer .v-navigation-drawer__content > form > .row:nth-child(3) {
     padding-left: 12px!important;
     padding-right: 12px!important;
+  }
+  body .v-application .mt-xs-0 {
+    margin-top: 0!important;
   }
   body .v-application .ml-xs-n1 {
     margin-left: -4px!important;
@@ -789,14 +782,11 @@ body span.jh-input-label{
   body .jh-page-nav-bar .v-navigation-drawer__content .v-list-item--link:before {
     margin: 0!important;
   }
-  body .v-application .pageHeader {
+  body .v-application .jh-page-header {
     padding: 0 16px!important;
   }
-  body .v-application .pageHeader .v-toolbar__title {
+  body .v-application .jh-page-header .v-toolbar__title {
     flex: 1!important;
-  }
-  body .js-server-search-action {
-    justify-content: right!important;
   }
   /* 页面第二个工具栏 */
   body .v-application .jh-page-second-bar {
@@ -804,19 +794,18 @@ body span.jh-input-label{
     padding-left: 16px!important;
     padding-right: 16px!important;
   }
-  body .v-application .jh-page-second-bar .jh-server-search-container {
-    padding-top: 0!important;
+
+  body .v-application .jh-backend-search-btn {
+    position: absolute;
+    top: 6px;
+    right: 16px;
   }
-  body .v-application .jh-page-second-bar .jh-server-search-container > .row {
-    margin: 0 -8px!important;
-  }
-  body .v-application .jh-page-second-bar .jh-server-search-container > .row > div {
-    padding-top: 0!important;
-    padding-left: 8px!important;
-    padding-right: 8px!important;
-  }
-  body .v-application .jh-page-second-bar .jh-server-search-container > .row > div > div {
-    margin-right: 0!important;
+  /* 服务端搜索位置兼容 */
+  body .v-application .jh-backend-form-container {
+    margin-top: -30px!important;
+    margin-bottom: 6px!important;
+    justify-content: start!important;
+    padding-bottom: 6px!important;
   }
 }
 </style>

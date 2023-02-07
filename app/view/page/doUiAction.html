@@ -9,32 +9,24 @@
       <v-main class="mt-15">
         <!-- 头部内容 >>>>>>>>>>>>> -->
         <div class="jh-page-second-bar px-8">
-          <v-row>
-            <v-col cols="12" xs="8" sm="8" md="4" xl="3">
-              <div class="pt-3 text-h7 font-weight-bold">doUiAction
-                <!-- 帮助页按钮 -->
-                <v-icon @click="isHelpPageDrawerShown = true" color="success" small>mdi-help-circle-outline</v-icon>
-              </div>
-              <v-breadcrumbs class="pb-3 pt-0 px-0" :items="breadcrumbs" divider="-"></v-breadcrumbs>
-            </v-col>
-          </v-row>
+          <div class="pt-3 text-h7 font-weight-bold">doUiAction
+            <!-- 帮助页按钮 -->
+            <v-icon @click="isHelpPageDrawerShown = true" color="success" small>mdi-help-circle-outline</v-icon>
+          </div>
+          <v-breadcrumbs class="pb-3 pt-0 px-0" :items="breadcrumbs" divider="-"></v-breadcrumbs>
         </div>
         <!-- <<<<<<<<<<<<< 头部内容 -->
 
         <div class="jh-page-body-container px-8">
           <!-- 页面内容 >>>>>>>>>>>>> -->
           <v-card class="rounded-lg">
-            <v-row class="ma-0 py-0 px-4">
+            <v-row class="ma-0 pa-4">
               <!--新增按钮-->
-              <v-col cols="12" xs="4" sm="4" md="4" xl="4" class="pl-0">
-                <v-btn color="success" small class="elevation-0 mr-2"
-                  @click="doUiAction('startCreateItem')">新增</v-btn>
-              </v-col>
+              <v-btn color="success" class="elevation-0 mr-2" @click="doUiAction('startCreateItem')" small>新增</v-btn>
               <v-spacer></v-spacer>
-              <!--搜索-->
-              <v-col cols="12" xs="8" sm="4" md="3" xl="2" class="px-0">
-                <v-text-field v-model="searchInput" color="success" prefix="搜索：" class="jh-v-input" dense filled
-                  single-line></v-text-field>
+              <!--搜索过滤-->
+              <v-col cols="12" xs="8" sm="4" md="3" xl="2" class="pa-0">
+                <v-text-field color="success" v-model="searchInput" prefix="搜索：" class="jh-v-input" dense filled single-line></v-text-field>
               </v-col>
             </v-row>
             <!--表格-->
@@ -52,29 +44,22 @@
               class="jh-fixed-table-height elevation-0 mt-0 mb-xs-4">
               <!--表格行操作按钮-->
               <template v-slot:item.action="{ item }">
-                <span role="button" class="success--text jh-font-size-3 pr-2"
+                <span role="button" class="success--text font-weight-medium font-size-2"
                   @click="doUiAction('startUpdateItem', item)">
                   <v-icon size="14" class="success--text">mdi-note-edit-outline</v-icon>修改
                 </span>
-                <span role="button" class="success--text jh-font-size-3"
+                <span role="button" class="success--text font-weight-medium font-size-2"
                   @click="doUiAction('deleteItem', item)">
                   <v-icon size="14" class="success--text">mdi-trash-can-outline</v-icon>删除
                 </span>
               </template>
               <!--表格底部右侧功能按钮-->
               <template v-slot:footer.prepend>
-          
-                <v-menu top offset-y :close-on-content-click="false">
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-btn v-bind="attrs" v-on="on" icon>
-                      <v-icon>mdi-menu</v-icon>
-                    </v-btn>
-                  </template>
-                  <v-list>
-                    <v-list-item>
-                      <v-switch v-model="isTableZebraLineShown" label="显示斑马纹" dense flat></v-switch>
-                    </v-list-item>
-                  </v-list>
+                <v-btn icon @click="doUiAction('openTableZebraLineMenu', $event)">
+                  <v-icon>mdi-menu</v-icon>
+                </v-btn>
+                <v-menu top offset-y :close-on-content-click="false" v-model="isTableZebraLineMenuShown" :position-x="tableZebraLineMenuPosition.x" :position-y="tableZebraLineMenuPosition.y">
+                  <v-switch v-model="isTableZebraLineShown" hide-details class="mx-3 my-2" label="显示斑马纹" dense flat></v-switch>
                 </v-menu>
               </template>
               <!--表格底部右侧分页-->
@@ -85,12 +70,10 @@
             </v-data-table>
           </v-card>
           <!-- <<<<<<<<<<<<< 页面内容 -->
-          <!--抽屉遮罩层-->
-          <v-overlay app :value="isCreateDrawerShown || isUpdateDrawerShown || isHelpPageDrawerShown"></v-overlay>
+
           <!--新增抽屉-->
-          <v-navigation-drawer v-model="isCreateDrawerShown" fixed temporary right width="80%" hide-overlay
-            class="elevation-24">
-            <v-form v-model="isFormValid" v-if="isCreateDrawerShown" ref="createForm" lazy-validation>
+          <v-navigation-drawer v-model="isCreateDrawerShown" fixed temporary right width="80%" class="elevation-24">
+            <v-form ref="createForm" lazy-validation>
               <!--抽屉标题-->
               <v-row>
                 <span class="title pa-6 pl-8">添加信息</span>
@@ -124,8 +107,10 @@
                 </v-col>
                 <v-col cols="12" sm="12" md="4">
                   <span class="jh-input-label">出生日期</span>
-                  <v-text-field class="jh-v-input" dense single-line filled label="出生日期"
-                    v-model="createItem.dateOfBirth"></v-text-field>
+                  <v-text-field class="jh-v-input" dense single-line filled readonly @click="doUiAction('openDataPicker', $event)" label="出生日期" v-model="createItem.dateOfBirth"></v-text-field>
+                  <v-menu class="jh-v-input" :close-on-content-click="false" v-model="isDataPickerShown" :position-x="dataPickerPosition.x" :position-y="dataPickerPosition.y" transition="scale-transition" offset-y min-width="auto">
+                    <v-date-picker color="success" elevation="20" @input="isDataPickerShown = false" v-model="createItem.dateOfBirth"></v-date-picker>
+                  </v-menu>
                 </v-col>
                 <v-col cols="12" sm="12" md="4">
                   <span class="jh-input-label">身高</span>
@@ -156,9 +141,8 @@
             </v-btn>
           </v-navigation-drawer>
           <!--编辑抽屉-->
-          <v-navigation-drawer v-model="isUpdateDrawerShown" fixed temporary right hide-overlay width="80%"
-            class="elevation-24">
-            <v-form v-model="isFormValid" v-if="isUpdateDrawerShown" ref="updateForm" lazy-validation>
+          <v-navigation-drawer v-model="isUpdateDrawerShown" fixed temporary right width="80%" class="elevation-24">
+            <v-form ref="updateForm" lazy-validation>
               <!--抽屉标题-->
               <v-row>
                 <span class="title pa-6 pl-8">修改信息</span>
@@ -192,8 +176,10 @@
                 </v-col>
                 <v-col cols="12" sm="12" md="4">
                   <span class="jh-input-label">出生日期</span>
-                  <v-text-field class="jh-v-input" dense single-line filled label="出生日期" v-model="updateItem.dateOfBirth"
-                    :rules="validationRules.requireRules"></v-text-field>
+                  <v-text-field class="jh-v-input" dense single-line filled readonly @click="doUiAction('openDataPicker', $event)" label="出生日期" v-model="updateItem.dateOfBirth"></v-text-field>
+                  <v-menu class="jh-v-input" :close-on-content-click="false" v-model="isDataPickerShown" :position-x="dataPickerPosition.x" :position-y="dataPickerPosition.y" transition="scale-transition" offset-y min-width="auto">
+                    <v-date-picker color="success" elevation="20" @input="isDataPickerShown = false" v-model="updateItem.dateOfBirth"></v-date-picker>
+                  </v-menu>
                 </v-col>
                 <v-col cols="12" sm="12" md="4">
                   <span class="jh-input-label">身高</span>
@@ -229,8 +215,7 @@
         </div>
 
         <!-- 帮助页抽屉 >>>>>>>>>>>>> -->
-        <v-navigation-drawer v-model="isHelpPageDrawerShown" fixed temporary right width="80%" hide-overlay
-          class="elevation-24">
+        <v-navigation-drawer v-model="isHelpPageDrawerShown" fixed temporary right width="80%" class="elevation-24">
           <iframe style="border: 0" :src="`/${appInfo.appId}/pageDoc#3.doUiAction.md`" width="100%"
             height="100%"></iframe>
 
@@ -282,9 +267,13 @@
       ],
       isHelpPageDrawerShown: false,
 
-      isTableZebraLineShown: true,
       // 表格相关数据
-      isFormValid: true,
+      isTableZebraLineMenuShown: false,
+      tableZebraLineMenuPosition: {x: null, y: null},
+      isTableZebraLineShown: true,
+      // 生日日期选择
+      isDataPickerShown: false,
+      dataPickerPosition: {x: null, y: null},
       validationRules: {
         requireRules: [
           v => !!v || 'This is required',
@@ -327,6 +316,12 @@
         switch (uiActionId) {
           case 'getTableData':
             await this.getTableData();
+            break;
+          case 'openDataPicker':
+            await this.openDataPicker(uiActionData);
+            break;
+          case 'openTableZebraLineMenu':
+            await this.openTableZebraLineMenu(uiActionData);
             break;
           case 'startCreateItem':
             await this.prepareCreateFormData();
@@ -385,7 +380,20 @@
         this.tableData = result.data.appData.resultData.rows;
         this.isTableLoading = false;
       },
-
+      // ---------- 生日选择 uiAction >>>>>>>>>> --------
+      async openDataPicker(funObj) {
+        this.dataPickerPosition.x = funObj.x - funObj.offsetX;
+        this.dataPickerPosition.y = funObj.y - funObj.offsetY + 40;
+        this.isDataPickerShown = !this.isDataPickerShown;
+      },
+      // ---------- <<<<<<<<<< 生日选择 uiAction --------
+      // ---------- 斑马纹开关 uiAction >>>>>>>>>> --------
+      async openTableZebraLineMenu(funObj) {
+        this.tableZebraLineMenuPosition.x = funObj.x -funObj.offsetX + 10;
+        this.tableZebraLineMenuPosition.y = window.innerHeight - 50;
+        this.isTableZebraLineMenuShown = !this.isTableZebraLineMenuShown;
+      },
+      // ---------- <<<<<<<<<< 斑马纹开关 uiAction --------
       // ---------- 新增数据 uiAction >>>>>>>>>> --------
       async prepareCreateFormData() {
         this.createItem = {};
@@ -394,9 +402,11 @@
       async openCreateDrawer() {
         this.isCreateDrawerShown = true;
       },
-
-      prepareCreateValidate() {
-        return this.$refs.createForm.validate();
+      async prepareCreateValidate() {
+        if(await this.$refs.createForm.validate()) {
+          return true;
+        }
+        throw new Error("请完善表单信息")
       },
 
       async confirmCreateItemDialog() {
@@ -434,8 +444,8 @@
       },
       // ---------- <<<<<<<<<<< 新增数据 uiAction  --------
       // ---------- 修改数据 uiAction >>>>>>>>>>>> --------
-      async prepareUpdateFormData(item) {
-        this.updateItem = _.cloneDeep(item);
+      async prepareUpdateFormData(funObj) {
+        this.updateItem = _.cloneDeep(funObj);
       },
 
       async closeUpdateDrawer() {
@@ -447,9 +457,11 @@
         this.isUpdateDrawerShown = true;
       },
 
-      // validate
-      prepareUpdateValidate() {
-        return this.$refs.updateForm.validate();
+      async prepareUpdateValidate() {
+        if(await this.$refs.updateForm.validate()) {
+          return true;
+        }
+        throw new Error("请完善表单信息")
       },
 
       async confirmUpdateItemDialog() {
@@ -489,8 +501,8 @@
       },
       // ---------- <<<<<<<<<<< 修改数据 uiAction  --------
       // ---------- 删除数据 uiAction >>>>>>>>>>>> --------
-      async prepareDeleteFormData(item) {
-        this.deleteItem = _.cloneDeep(item);
+      async prepareDeleteFormData(funObj) {
+        this.deleteItem = _.cloneDeep(funObj);
       },
       async confirmDeleteItemDialog() {
         if (await window.confirmDialog({title: "删除", content: "确定删除吗？"}) === false) {
