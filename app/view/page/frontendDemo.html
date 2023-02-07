@@ -144,10 +144,9 @@
                 </template>
               </v-data-table>
             </v-card>
-            <!--抽屉遮罩层-->
-            <v-overlay app :value="isCreateDrawerShown || isUpdateDrawerShown || isHelpPageDrawerShown"></v-overlay>
+
             <!--新增抽屉-->
-            <v-navigation-drawer v-model="isCreateDrawerShown" fixed temporary right width="80%" hide-overlay
+            <v-navigation-drawer v-model="isCreateDrawerShown" fixed temporary right width="80%"
               class="elevation-24">
               <v-form v-if="isCreateDrawerShown" ref="createForm" lazy-validation>
                 <!--抽屉标题-->
@@ -217,7 +216,7 @@
               </v-btn>
             </v-navigation-drawer>
             <!--编辑抽屉-->
-            <v-navigation-drawer v-model="isUpdateDrawerShown" fixed temporary right hide-overlay width="80%"
+            <v-navigation-drawer v-model="isUpdateDrawerShown" fixed temporary right width="80%"
               class="elevation-24">
               <v-form v-if="isUpdateDrawerShown" ref="updateForm" lazy-validation>
                 <!--抽屉标题-->
@@ -293,7 +292,7 @@
           </div>
 
           <!-- 帮助页抽屉 >>>>>>>>>>>>> -->
-          <v-navigation-drawer v-model="isHelpPageDrawerShown" fixed temporary right width="80%" hide-overlay
+          <v-navigation-drawer v-model="isHelpPageDrawerShown" fixed temporary right width="80%"
             class="elevation-24">
             <iframe style="border: 0" :src="`/${appInfo.appId}/pageDoc#3.doUiAction.md`" width="100%"
               height="100%"></iframe>
