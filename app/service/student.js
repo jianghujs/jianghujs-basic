@@ -3,7 +3,7 @@
 
 // ========================================常用 require start===========================================
 const Service = require('egg').Service;
-const validateUtil = require("@jianghujs/jianghu/app/common/vaidateUtil");
+const validateUtil = require("@jianghujs/jianghu/app/common/validateUtil");
 const dayjs = require("dayjs");
 const { nanoid } = require("nanoid");
 
