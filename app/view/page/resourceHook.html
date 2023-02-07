@@ -69,11 +69,9 @@
           </template>
         </v-data-table>
       </v-card>
-      <!--抽屉遮罩层-->
-      <v-overlay app :value="isCreateDrawerShown || isUpdateDrawerShown || isHelpPageDrawerShown"></v-overlay>
+
       <!-- 新增抽屉 -->
-      <v-navigation-drawer v-model="isCreateDrawerShown" fixed temporary right width="80%" hide-overlay
-                           class="elevation-24">
+      <v-navigation-drawer v-model="isCreateDrawerShown" fixed temporary right width="80%" class="elevation-24">
         <v-form ref="forcreateFormm" lazy-validation>
           <!--抽屉标题-->
           <v-row>
@@ -142,8 +140,7 @@
         </v-btn>
       </v-navigation-drawer>
       <!-- 编辑抽屉 -->
-      <v-navigation-drawer v-model="isUpdateDrawerShown" fixed temporary right width="80%" hide-overlay
-                           class="elevation-24">
+      <v-navigation-drawer v-model="isUpdateDrawerShown" fixed temporary right width="80%" class="elevation-24">
         <v-form ref="updateForm" lazy-validation>
           <!--抽屉标题-->
           <v-row>
