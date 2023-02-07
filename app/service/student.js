@@ -3,32 +3,18 @@
 
 // ========================================常用 require start===========================================
 const Service = require('egg').Service;
-const validateUtil = require("@jianghujs/jianghu/app/common/validateUtil");
-const idGenerateUtil = require("@jianghujs/jianghu/app/common/idGenerateUtil");
 const dayjs = require("dayjs");
-const actionDataScheme = Object.freeze({
-  beforHookForGenerateStudentId: {
-    type: "object",
-    additionalProperties: true,
-    required: ["dateOfBirth"],
-    properties: {
-      dateOfBirth: { type: "string", format: "date" },
-    },
-  },
-});
+const nanoid = require("nanoid");
 
 class StudentService extends Service {
   async beforHookForGenerateStudentId() {
+    // 验证请求参数
     const { actionData } = this.ctx.request.body.appData;
-    validateUtil.validate(
-      actionDataScheme.beforHookForGenerateStudentId,
-      actionData
-    );
+    // 逻辑处理
     const { dateOfBirth } = actionData;
     const dateOfBirthObj = dayjs(dateOfBirth);
-    const studentId = `S_${idGenerateUtil.uuid(
-      8
-    )}_${dateOfBirthObj.month()}_${dateOfBirthObj.day()}`;
+    const studentId = `S_${nanoid.nanoid(8)}_${dateOfBirthObj.month()}_${dateOfBirthObj.day()}`;
+    console.log('student_id----', studentId)
     this.ctx.request.body.appData.actionData.studentId = studentId;
   }
 
