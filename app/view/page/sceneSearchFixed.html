@@ -22,8 +22,8 @@
                     <v-col cols="12" xs="12" sm="12" md="8" xl="9">
                         <v-row class="jh-backend-form-container justify-end ma-0 py-4 pt-xs-0">
                             <v-btn small :outlined="selectedScene !== index" v-for="(scene, index) in sceneList"
-                                :key="index" @click="doUiAction('useScene', {scene, index})"
-                                :color="selectedScene !== index ? 'grey darken-1' : 'success'" class="mb-2 ml-1">
+                                :key="index" :dark="selectedScene === index"
+                                @click="doUiAction('useScene', {scene, index})" color="grey darken-1" class="mb-2 ml-1">
                                 {{ scene.name }}
                             </v-btn>
                         </v-row>
@@ -31,20 +31,18 @@
                     <!-- <<<<<<<< pc端的搜索条件表单 -->
                 </v-row>
             </div>
-            <!-- <<<<<<<<<<<<< 头部内容 -->
+
 
             <div class="jh-page-body-container px-8">
                 <!-- 页面内容 >>>>>>>>>>>>> -->
                 <v-card class="rounded-lg">
-                    <v-row class="ma-0 py-0 px-4">
+                    <v-row class="ma-0 pa-4">
                         <!--新增按钮-->
-                        <v-col cols="12" xs="4" sm="4" md="4" xl="4" class="pl-0">
-                            <v-btn color="success" class="elevation-0 mr-2" @click="doUiAction('startCreateItem')"
-                                small>新增</v-btn>
-                        </v-col>
+                        <v-btn color="success" class="elevation-0 mr-2" @click="doUiAction('startCreateItem')"
+                            small>新增</v-btn>
                         <v-spacer></v-spacer>
                         <!--搜索过滤-->
-                        <v-col cols="12" xs="8" sm="4" md="3" xl="2" class="px-0">
+                        <v-col cols="12" xs="8" sm="4" md="3" xl="2" class="pa-0">
                             <v-text-field color="success" v-model="searchInput" prefix="搜索：" class="jh-v-input" dense
                                 filled single-line></v-text-field>
                         </v-col>
@@ -57,11 +55,11 @@
                         class="jh-fixed-table-height elevation-0 mt-0 mb-xs-4">
                         <!--表格操作按钮-->
                         <template v-slot:item.action="{ item }">
-                            <span role="button" class="success--text jh-font-size-3 pr-2"
+                            <span role="button" class="success--text font-weight-medium font-size-2"
                                 @click="doUiAction('startUpdateItem', item)">
                                 <v-icon size="14" class="success--text">mdi-note-edit-outline</v-icon>修改
                             </span>
-                            <span role="button" class="success--text jh-font-size-3"
+                            <span role="button" class="success--text font-weight-medium font-size-2"
                                 @click="doUiAction('deleteItem', item)">
                                 <v-icon size="14" class="success--text">mdi-trash-can-outline</v-icon>删除
                             </span>
@@ -73,12 +71,8 @@
                             </v-btn>
                             <v-menu top offset-y :close-on-content-click="false" v-model="isTableZebraLineMenuShown"
                                 :position-x="tableZebraLineMenuPosition.x" :position-y="tableZebraLineMenuPosition.y">
-                                <v-list>
-                                    <v-list-item>
-                                        <v-switch v-model="isTableZebraLineShown" hide-details class="ma-0"
-                                            label="显示斑马纹" dense flat></v-switch>
-                                    </v-list-item>
-                                </v-list>
+                                <v-switch v-model="isTableZebraLineShown" hide-details class="mx-3 my-2" label="显示斑马纹"
+                                    dense flat></v-switch>
                             </v-menu>
                         </template>
                         <!--表格分页-->

@@ -3,35 +3,31 @@
 
 // ========================================常用 require start===========================================
 const Service = require('egg').Service;
-const validateUtil = require("@jianghujs/jianghu/app/common/validateUtil");
-const idGenerateUtil = require("@jianghujs/jianghu/app/common/idGenerateUtil");
+const validateUtil = require("@jianghujs/jianghu/app/common/vaidateUtil");
 const dayjs = require("dayjs");
+const { nanoid } = require("nanoid");
+
 const actionDataScheme = Object.freeze({
-  beforHookForGenerateStudentId: {
+  selectStudentList: {
     type: "object",
     additionalProperties: true,
-    required: ["dateOfBirth"],
-    properties: {
-      dateOfBirth: { type: "string", format: "date" },
-    },
+    required: [],
+    properties: {}
   },
 });
 
 class StudentService extends Service {
+  // 生成学生 studentId
   async beforHookForGenerateStudentId() {
     const { actionData } = this.ctx.request.body.appData;
-    validateUtil.validate(
-      actionDataScheme.beforHookForGenerateStudentId,
-      actionData
-    );
     const { dateOfBirth } = actionData;
     const dateOfBirthObj = dayjs(dateOfBirth);
-    const studentId = `S_${idGenerateUtil.uuid(
-      8
-    )}_${dateOfBirthObj.month()}_${dateOfBirthObj.day()}`;
+    const studentId = `S_${nanoid.nanoid(8)}_${dateOfBirthObj.month()}_${dateOfBirthObj.day()}`;
+    console.log('student_id----', studentId)
     this.ctx.request.body.appData.actionData.studentId = studentId;
   }
 
+  // beforeHook：将学生信息加到 ctx.userInfo 中
   async appendStudentInfoToUserInfo() {
     const studentInfo = await this.app
       .jianghuKnex("student")
@@ -40,7 +36,14 @@ class StudentService extends Service {
     this.ctx.userInfo.studentInfo = studentInfo || { classId: null };
   }
 
+  // 获取同班学生列表
   async selectStudentList() {
+
+    validateUtil.validate(
+      actionDataScheme.selectStudentList,
+      actionData
+    );
+
     const studentInfo = await this.app
       .jianghuKnex("student")
       .where({ studentId: this.ctx.userInfo.user.userId })
@@ -51,7 +54,7 @@ class StudentService extends Service {
       .select();
 
     return {
-      rows: studentList,
+      rows: studentList
     };
   }
 }

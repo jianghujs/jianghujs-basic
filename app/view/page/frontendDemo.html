@@ -87,17 +87,13 @@
           <div class="jh-page-body-container px-8">
             <!-- 页面内容 >>>>>>>>>>>>> -->
             <v-card class="rounded-lg">
-              <v-row class="ma-0 py-0 px-4">
+              <v-row class="ma-0 pa-4">
                 <!--新增按钮-->
-                <v-col cols="12" xs="4" sm="4" md="4" xl="4" class="pl-0">
-                  <v-btn color="success" small class="elevation-0 mr-2"
-                         @click="doUiAction('startCreateItem')">新增</v-btn>
-                </v-col>
+                <v-btn color="success" class="elevation-0 mr-2" @click="doUiAction('startCreateItem')" small>新增</v-btn>
                 <v-spacer></v-spacer>
-                <!--搜索-->
-                <v-col cols="12" xs="8" sm="4" md="3" xl="2" class="px-0">
-                  <v-text-field v-model="searchInput" color="success" prefix="搜索：" class="jh-v-input" dense filled
-                                single-line></v-text-field>
+                <!--搜索过滤-->
+                <v-col cols="12" xs="8" sm="4" md="3" xl="2" class="pa-0">
+                  <v-text-field color="success" v-model="searchInput" prefix="搜索：" class="jh-v-input" dense filled single-line></v-text-field>
                 </v-col>
               </v-row>
               <!--表格-->
@@ -115,11 +111,11 @@
                   class="jh-fixed-table-height elevation-0 mt-0 mb-xs-4">
                 <!--表格行操作按钮-->
                 <template v-slot:item.action="{ item }">
-                    <span role="button" class="success--text jh-font-size-3 pr-2"
+                    <span role="button" class="success--text font-weight-medium font-size-2"
                           @click="doUiAction('startUpdateItem', item)">
                       <v-icon size="14" class="success--text">mdi-note-edit-outline</v-icon>修改
                     </span>
-                  <span role="button" class="success--text jh-font-size-3"
+                  <span role="button" class="success--text font-weight-medium font-size-2"
                         @click="doUiAction('deleteItem', item)">
                       <v-icon size="14" class="success--text">mdi-trash-can-outline</v-icon>删除
                     </span>
@@ -130,11 +126,7 @@
                     <v-icon>mdi-menu</v-icon>
                   </v-btn>
                   <v-menu top offset-y :close-on-content-click="false" v-model="isTableZebraLineMenuShown" :position-x="tableZebraLineMenuPosition.x" :position-y="tableZebraLineMenuPosition.y">
-                    <v-list>
-                      <v-list-item>
-                        <v-switch v-model="isTableZebraLineShown" hide-details class="ma-0" label="显示斑马纹" dense flat></v-switch>
-                      </v-list-item>
-                    </v-list>
+                    <v-switch v-model="isTableZebraLineShown" hide-details class="mx-3 my-2" label="显示斑马纹" dense flat></v-switch>
                   </v-menu>
                 </template>
                 <!--表格底部右侧分页-->
@@ -144,11 +136,21 @@
                 </template>
               </v-data-table>
             </v-card>
+<<<<<<< HEAD
 
             <!--新增抽屉-->
             <v-navigation-drawer v-model="isCreateDrawerShown" fixed temporary right width="80%"
+=======
+            <!--新增抽屉-->
+<<<<<<< HEAD
+            <v-navigation-drawer v-model="isCreateDrawerShown" fixed temporary right width="80%" hide-overlay
+>>>>>>> 96f514043250cff6e8e2fbe87198ec672740e80b
               class="elevation-24">
-              <v-form v-if="isCreateDrawerShown" ref="createForm" lazy-validation>
+              <v-form v-model="isFormValid" v-if="isCreateDrawerShown" ref="createForm" lazy-validation>
+=======
+            <v-navigation-drawer v-model="isCreateDrawerShown" fixed temporary right width="80%" class="elevation-24">
+              <v-form ref="createForm" lazy-validation>
+>>>>>>> 2be9928cba48d3ffcfa6c6f7f0c6f9b8cc0bb066
                 <!--抽屉标题-->
                 <v-row>
                   <span class="title pa-6 pl-8">添加信息</span>
@@ -216,9 +218,18 @@
               </v-btn>
             </v-navigation-drawer>
             <!--编辑抽屉-->
+<<<<<<< HEAD
             <v-navigation-drawer v-model="isUpdateDrawerShown" fixed temporary right width="80%"
+=======
+<<<<<<< HEAD
+            <v-navigation-drawer v-model="isUpdateDrawerShown" fixed temporary right hide-overlay width="80%"
+>>>>>>> 96f514043250cff6e8e2fbe87198ec672740e80b
               class="elevation-24">
-              <v-form v-if="isUpdateDrawerShown" ref="updateForm" lazy-validation>
+              <v-form v-model="isFormValid" v-if="isUpdateDrawerShown" ref="updateForm" lazy-validation>
+=======
+            <v-navigation-drawer v-model="isUpdateDrawerShown" fixed temporary right width="80%" class="elevation-24">
+              <v-form ref="updateForm" lazy-validation>
+>>>>>>> 2be9928cba48d3ffcfa6c6f7f0c6f9b8cc0bb066
                 <!--抽屉标题-->
                 <v-row>
                   <span class="title pa-6 pl-8">修改信息</span>
@@ -292,8 +303,12 @@
           </div>
 
           <!-- 帮助页抽屉 >>>>>>>>>>>>> -->
+<<<<<<< HEAD
           <v-navigation-drawer v-model="isHelpPageDrawerShown" fixed temporary right width="80%"
             class="elevation-24">
+=======
+          <v-navigation-drawer v-model="isHelpPageDrawerShown" fixed temporary right width="80%" class="elevation-24">
+>>>>>>> 96f514043250cff6e8e2fbe87198ec672740e80b
             <iframe style="border: 0" :src="`/${appInfo.appId}/pageDoc#3.doUiAction.md`" width="100%"
               height="100%"></iframe>
 

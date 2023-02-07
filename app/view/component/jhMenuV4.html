@@ -120,7 +120,7 @@
         <v-menu offset-y v-model="inMenuShownStatusList[index]" :min-width="menuPosition.w"  :position-x="menuPosition.x" :position-y="menuPosition.y">
           <v-list nav dense>
             <v-list-item @click="openUrl(child.path, child.query)"
-                         v-for="(child, childIndex) in item.children"
+                         v-for="child in item.children"
                          :class="{'second-active': currentSecondMenuPageId === child.pageId && currentMenuTabIndex === index}"
             >
               <v-list-item-content>
