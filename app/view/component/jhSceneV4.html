@@ -7,7 +7,8 @@
          v-for="(scene, index) in sceneList"
          :key="index"
          @click="doUiAction('useScene', scene)"
-         :color="currentSceneIndex !== index ? 'grey darken-1' : 'success'" class="mb-2 ml-1">
+         :dark="currentSceneIndex === index"
+         color="grey darken-1" class="mb-2 ml-1">
     {{ scene.name }}
   </v-btn>
   <!--新增场景按钮-->
