@@ -47,14 +47,15 @@
 >
   <v-card>
     <v-card-title>
-      <div class="d-flex justify-space-between align-center" style="width: 100%;">
+      <v-row class="ma-0">
         <div style="font-size: 16px;">新建场景</div>
+        <v-spacer></v-spacer>
         <div>
           <v-btn class="elevation-0" fab x-small @click="doUiAction('closeCreateSceneDialog')">
             <v-icon dark>mdi-close</v-icon>
           </v-btn>
         </div>
-      </div>
+      </v-row>
     </v-card-title>
     <v-card-text>
       <v-container class="px-0">
