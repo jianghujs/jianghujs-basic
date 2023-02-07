@@ -136,8 +136,6 @@
                 </template>
               </v-data-table>
             </v-card>
-            <!--抽屉遮罩层-->
-            <v-overlay app :value="isCreateDrawerShown || isUpdateDrawerShown || isHelpPageDrawerShown"></v-overlay>
             <!--新增抽屉-->
             <v-navigation-drawer v-model="isCreateDrawerShown" fixed temporary right width="80%" class="elevation-24">
               <v-form ref="createForm" lazy-validation>
