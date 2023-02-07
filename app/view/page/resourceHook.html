@@ -74,7 +74,7 @@
       <!-- 新增抽屉 -->
       <v-navigation-drawer v-model="isCreateDrawerShown" fixed temporary right width="80%" hide-overlay
                            class="elevation-24">
-        <v-form v-if="isCreateDrawerShown" ref="forcreateFormm" lazy-validation>
+        <v-form ref="forcreateFormm" lazy-validation>
           <!--抽屉标题-->
           <v-row>
             <span class="title pa-6 pl-8">新增信息</span>
@@ -144,7 +144,7 @@
       <!-- 编辑抽屉 -->
       <v-navigation-drawer v-model="isUpdateDrawerShown" fixed temporary right width="80%" hide-overlay
                            class="elevation-24">
-        <v-form v-if="isUpdateDrawerShown" ref="updateForm" lazy-validation>
+        <v-form ref="updateForm" lazy-validation>
           <!--抽屉标题-->
           <v-row>
             <span class="title pa-6 pl-8">新增信息</span>
