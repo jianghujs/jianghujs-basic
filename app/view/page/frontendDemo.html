@@ -31,6 +31,7 @@
   {% include 'common/jianghuJs/globalCSSJHV4.html' %}
   {% include 'common/jianghuJs/globalCSSMediaV4.html' %}
   <!-- <<<<<<<<<<<<< 加载定制样式 -->
+
 </head>
 
 <body>
@@ -64,7 +65,7 @@
           <v-spacer />
         </v-app-bar>
         <!-- <<<<<<<<<<<<< 菜单栏 -->
-        
+
         <v-main>
           <!-- 头部内容 >>>>>>>>>>>>> -->
           <div class="jh-page-second-bar px-8">
@@ -75,7 +76,7 @@
             <v-breadcrumbs class="pb-3 pt-0 px-0" :items="breadcrumbs" divider="-"></v-breadcrumbs>
           </div>
           <!-- <<<<<<<<<<<<< 头部内容 -->
-      
+
           <div class="jh-page-body-container px-8">
             <!-- 页面内容 >>>>>>>>>>>>> -->
             <v-card class="rounded-lg">
@@ -116,11 +117,11 @@
                 </template>
                 <!--性别-->
                 <template v-slot:item.gender="{ item }">
-                  {{ getDisplayText(constantObj.gender, item.gender) }}
+                  {{ getDisplayText({displayObj: constantObj.gender, displayValue: item.gender}) }}
                 </template>
                 <!--年级-->
                 <template v-slot:item.level="{ item }">
-                  {{ getDisplayText(constantObj.level, item.level) }}
+                  {{ getDisplayText({displayObj: constantObj.level, displayValue: item.level}) }}
                 </template>
                 <!--表格底部右侧分页-->
                 <template v-slot:footer.page-text="pagination">
@@ -130,7 +131,7 @@
               </v-data-table>
             </v-card>
             <!-- <<<<<<<<<<<<< 页面内容 -->
-      
+
             <!--新增抽屉-->
             <v-navigation-drawer v-model="isCreateDrawerShown" v-click-outside="drawerClickOutside" fixed temporary right width="80%" class="elevation-24">
               <v-form ref="createForm" lazy-validation>
@@ -254,7 +255,7 @@
                   </v-btn>
                 </v-row>
               </v-form>
-      
+
               <!--抽屉关闭按钮-->
               <v-btn
                 elevation="0" color="success" fab absolute top left small tile class="drawer-close-float-btn"
@@ -263,13 +264,13 @@
               </v-btn>
             </v-navigation-drawer>
           </div>
-      
+
           <!-- 帮助页抽屉 >>>>>>>>>>>>> -->
           <v-navigation-drawer v-model="isHelpPageDrawerShown" v-click-outside="drawerClickOutside" fixed temporary right width="80%" class="elevation-24">
             <iframe
               style="border: 0" :src="`/${appInfo.appId}/pageDoc#2.frontendDemo.md`" width="100%"
               height="100%"></iframe>
-      
+
             <v-btn
               elevation="0" color="success" fab absolute top left small tile class="drawer-close-float-btn"
               @click="isHelpPageDrawerShown = false">
@@ -277,17 +278,17 @@
             </v-btn>
           </v-navigation-drawer>
           <!-- <<<<<<<<<<<<< 帮助页抽屉 -->
-      
+
         </v-main>
       </v-app>
-      
+
       <jh-toast />
       <jh-mask />
       <jh-confirm-dialog />
-      
+
       </div>
   </script>
-    
+
   <div id="app">
   </div>
   <!-- <<<<<<<<<<<<< vue template -->
@@ -337,7 +338,7 @@
             "title": "前端对接",
           }
         ],
-        
+
         // 面包屑
         breadcrumbs: [
           {
@@ -387,7 +388,7 @@
           {text: "操作者", value: "operationByUser", width: 120},
           {text: "操作时间", value: "operationAt", width: 250}
         ],
-        
+
         // 操作相关
         isCreateDrawerShown: false,
         createItem: {},
@@ -466,7 +467,7 @@
               }
             }
           });
-    
+
           this.tableData = result.data.appData.resultData.rows;
           this.isTableLoading = false;
         },
@@ -476,7 +477,7 @@
         async prepareCreateFormData() {
           this.createItem = {};
         },
-    
+
         async openCreateDrawer() {
           this.isCreateDrawerShown = true;
         },
@@ -486,18 +487,18 @@
           }
           throw new Error("请完善表单信息")
         },
-    
+
         async confirmCreateItemDialog() {
           if (await window.confirmDialog({title: "新增", content: "确定新增吗？"}) === false) {
             throw new Error("[confirmCreateFormDialog] 否");
           }
         },
-    
+
         prepareDoCreateItem() {
           const {id, ...data} = this.createItem;
           this.createActionData = data;
         },
-    
+
         async doCreateItem() {
           await window.jhMask.show();
           await window.vtoast.loading("新增学生");
@@ -524,30 +525,30 @@
         async prepareUpdateFormData(funObj) {
           this.updateItem = _.cloneDeep(funObj);
         },
-    
+
         async openUpdateDrawer() {
           this.isUpdateDrawerShown = true;
         },
-    
+
         async prepareUpdateValidate() {
           if (await this.$refs.updateForm.validate()) {
             return true;
           }
           throw new Error("请完善表单信息")
         },
-    
+
         async confirmUpdateItemDialog() {
           if (await window.confirmDialog({title: "修改", content: "确定修改吗？"}) === false) {
             throw new Error("[confirmUpdateItemDialog] 否");
           }
         },
-    
+
         async prepareDoUpdateItem() {
           const {id, ...data} = this.updateItem;
           this.updateItemId = id;
           this.updateActionData = data;
         },
-    
+
         async doUpdateItem() {
           await window.jhMask.show();
           await window.vtoast.loading("修改学生");
@@ -561,11 +562,11 @@
               }
             }
           })
-    
+
           await window.jhMask.hide();
           await window.vtoast.success("修改学生成功");
         },
-    
+
         async closeUpdateDrawer() {
           this.isUpdateDrawerShown = false;
           this.updateItem = {};
@@ -615,7 +616,7 @@
       }
     })
   </script>
-    
+
   <style scoped>
   </style>
   <!-- <<<<<<<<<<<<< vue script -->

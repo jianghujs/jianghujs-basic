@@ -57,11 +57,11 @@
           </template>
           <!--性别-->
           <template v-slot:item.gender="{ item }">
-            {{ getDisplayText(constantObj.gender, item.gender) }}
+            {{ getDisplayText({displayObj: constantObj.gender, displayValue: item.gender}) }}
           </template>
           <!--年级-->
           <template v-slot:item.level="{ item }">
-            {{ getDisplayText(constantObj.level, item.level) }}
+            {{ getDisplayText({displayObj: constantObj.level, displayValue: item.level}) }}
           </template>
           <!--表格底部右侧分页-->
           <template v-slot:footer.page-text="pagination">
