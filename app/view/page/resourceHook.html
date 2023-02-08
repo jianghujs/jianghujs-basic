@@ -325,7 +325,6 @@ new Vue({
           await this.prepareDoCreateItem();
           await this.doCreateItem();
           await this.closeCreateDrawer();
-          await this.clearCreateItemData();
           await this.getTableData();
           break;
         case 'startUpdateItem':
@@ -337,8 +336,6 @@ new Vue({
           await this.confirmUpdateItemDialog();
           await this.prepareDoUpdateItem();
           await this.doUpdateItem();
-          await this.closeUpdateDrawer();
-          await this.clearUpdateItemData();
           await this.getTableData();
           break;
         case 'deleteItem':
@@ -418,8 +415,6 @@ new Vue({
     },
     async closeCreateDrawer() {
       this.isCreateDrawerShown = false;
-    },
-    async clearCreateItemData() {
       this.createItem = {};
       this.createActionData = null;
     },
@@ -428,11 +423,6 @@ new Vue({
     async prepareUpdateFormData(funObj) {
       this.updateItem = _.cloneDeep(funObj);
     },
-
-    async closeUpdateDrawer() {
-      this.isUpdateDrawerShown = false;
-    },
-
 
     async openUpdateDrawer() {
       this.isUpdateDrawerShown = true;
