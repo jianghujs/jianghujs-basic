@@ -15,7 +15,8 @@ window.getDisplayText = (metadata, value, key) => {
     return value;
   }
   if(metadata instanceof Array) {
-    labelText = metadata.find(item => item.value === value).text;
+    const findItem = metadata.find(item => item.value === value);
+    labelText = findItem && findItem.text;
   } else {
     labelText = key && metadata[key].text;
   }
