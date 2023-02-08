@@ -9,8 +9,10 @@ resetTableMaxHeight = (param) => {
     })
   } else {
     for (const table of tables) {
-      const height = document.querySelector('.jh-page-body-container').offsetTop;
-      const tableHeight = window.innerHeight - table.offsetTop - height - 60;
+      const bottom = parseInt(table.dataset.bottom || 0);
+      const top = parseInt(table.dataset.top || 0);
+      const offsetTop = parseInt(table.getBoundingClientRect().top || 0); 
+      const tableHeight = window.innerHeight - (table.dataset.top ? top : offsetTop) - bottom;
       table.style.height = tableHeight + 'px';
     }
   }
