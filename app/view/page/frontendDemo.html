@@ -41,7 +41,7 @@
         <!-- 菜单栏 >>>>>>>>>>>>> -->
         <v-app-bar app clipped-left height="60" class="jh-page-header px-8" style="z-index: 50;" flat>
           <!--页面标题-->
-          <v-toolbar-title ref="toolbarTitle" class="mr-8">
+          <v-toolbar-title ref="toolbarTitle" class="mr-2 mr-sm-8">
             <span class="text-h7 font-weight-bold">江湖演示-初级</span>
           </v-toolbar-title>
           <!--菜单-->
@@ -50,10 +50,10 @@
             show-arrows
             slider-size="0"
             color="success"
-            style="max-width: calc(100vw - 280px)">
+            style="max-width: calc(100vw - 120px)">
             <template v-for="item in inMenuList">
               <v-tab
-                class="px-5 jh-header-tab"
+                class="px-sm-5 jh-header-tab"
                 active-class="jh-header-tab-active"
                 :key="item.path"
                 @click="openUrl({ path: item.path })">
