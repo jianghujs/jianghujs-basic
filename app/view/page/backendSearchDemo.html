@@ -41,7 +41,7 @@
                     </v-row>
                 </div>
                 <!-- <<<<<<<<<<<<< 头部内容 -->
-    
+
                 <div class="jh-page-body-container px-8">
                     <!-- 页面内容 >>>>>>>>>>>>> -->
                     <v-card class="rounded-lg">
@@ -73,17 +73,6 @@
                                     <v-icon size="14" class="success--text">mdi-trash-can-outline</v-icon>删除
                                 </span>
                             </template>
-                            <!--表格底部右侧功能按钮-->
-                            <template v-slot:footer.prepend>
-                                <v-btn icon @click="doUiAction('openTableZebraLineMenu', $event)">
-                                    <v-icon>mdi-menu</v-icon>
-                                </v-btn>
-                                <v-menu top offset-y :close-on-content-click="false" v-model="isTableZebraLineMenuShown"
-                                    :position-x="tableZebraLineMenuPosition.x" :position-y="tableZebraLineMenuPosition.y">
-                                    <v-switch v-model="isTableZebraLineShown" hide-details class="mx-3 my-2" label="显示斑马纹"
-                                        dense flat></v-switch>
-                                </v-menu>
-                            </template>
                             <!--表格分页-->
                             <template v-slot:footer.page-text="pagination">
                                 <span>{{pagination.pageStart}}-{{pagination.pageStop}}</span>
@@ -92,7 +81,7 @@
                         </v-data-table>
                     </v-card>
                     <!-- 新增抽屉 -->
-                    <v-navigation-drawer v-model="isCreateDrawerShown" fixed temporary right width="80%"
+                    <v-navigation-drawer v-model="isCreateDrawerShown" v-click-outside="drawerClickOutside" fixed temporary right width="80%"
                         class="elevation-24">
                         <v-form ref="createForm" lazy-validation>
                             <!--抽屉标题-->
@@ -127,16 +116,13 @@
                                         v-model="createItem.gender" :items="constantObj.gender"></v-select>
                                 </v-col>
                                 <v-col cols="12" sm="12" md="4">
-                                    <span class="jh-input-label">出生日期</span>
-                                    <v-text-field class="jh-v-input" dense single-line filled readonly
-                                        @click="doUiAction('openDataPicker', $event)" label="出生日期"
-                                        v-model="createItem.dateOfBirth"></v-text-field>
-                                    <v-menu class="jh-v-input" :close-on-content-click="false" v-model="isDataPickerShown"
-                                        :position-x="dataPickerPosition.x" :position-y="dataPickerPosition.y"
-                                        transition="scale-transition" offset-y min-width="auto">
-                                        <v-date-picker color="success" elevation="20" @input="isDataPickerShown = false"
-                                            v-model="createItem.dateOfBirth"></v-date-picker>
-                                    </v-menu>
+                                  <span class="jh-input-label">出生日期</span>
+                                  <v-menu class="jh-v-input" transition="scale-transition" offset-y min-width="auto">
+                                    <template v-slot:activator="{on, attrs}">
+                                      <v-text-field v-bind="attrs" v-on="on" v-model="createItem.dateOfBirth" class="jh-v-input"  dense single-line filled readonly label="出生日期" ></v-text-field>
+                                    </template>
+                                    <v-date-picker color="success" elevation="20" v-model="createItem.dateOfBirth"></v-date-picker>
+                                  </v-menu>
                                 </v-col>
                                 <v-col cols="12" sm="12" md="4">
                                     <span class="jh-input-label">身高</span>
@@ -167,7 +153,7 @@
                         </v-btn>
                     </v-navigation-drawer>
                     <!-- 编辑抽屉 -->
-                    <v-navigation-drawer v-model="isUpdateDrawerShown" fixed temporary right width="80%"
+                    <v-navigation-drawer v-model="isUpdateDrawerShown" v-click-outside="drawerClickOutside" fixed temporary right width="80%"
                         class="elevation-24">
                         <v-form ref="updateForm" lazy-validation>
                             <!--抽屉标题-->
@@ -202,16 +188,13 @@
                                         v-model="updateItem.gender" :items="constantObj.gender"></v-select>
                                 </v-col>
                                 <v-col cols="12" sm="12" md="4">
-                                    <span class="jh-input-label">出生日期</span>
-                                    <v-text-field class="jh-v-input" dense single-line filled readonly
-                                        @click="doUiAction('openDataPicker', $event)" label="出生日期"
-                                        v-model="updateItem.dateOfBirth"></v-text-field>
-                                    <v-menu class="jh-v-input" :close-on-content-click="false" v-model="isDataPickerShown"
-                                        :position-x="dataPickerPosition.x" :position-y="dataPickerPosition.y"
-                                        transition="scale-transition" offset-y min-width="auto">
-                                        <v-date-picker color="success" elevation="20" @input="isDataPickerShown = false"
-                                            v-model="updateItem.dateOfBirth"></v-date-picker>
-                                    </v-menu>
+                                  <span class="jh-input-label">出生日期</span>
+                                  <v-menu class="jh-v-input" transition="scale-transition" offset-y min-width="auto">
+                                    <template v-slot:activator="{on, attrs}">
+                                      <v-text-field v-bind="attrs" v-on="on" v-model="updateItem.dateOfBirth" class="jh-v-input" dense single-line filled readonly label="出生日期"></v-text-field>
+                                    </template>
+                                    <v-date-picker color="success" elevation="20" v-model="updateItem.dateOfBirth"></v-date-picker>
+                                  </v-menu>
                                 </v-col>
                                 <v-col cols="12" sm="12" md="4">
                                     <span class="jh-input-label">身高</span>
@@ -243,9 +226,9 @@
                     </v-navigation-drawer>
                     <!-- <<<<<<<<<<<<< 页面内容 -->
                 </div>
-    
+
                 <!-- 帮助页抽屉 >>>>>>>>>>>>> -->
-                <v-navigation-drawer v-model="isHelpPageDrawerShown" fixed temporary right width="80%" class="elevation-24">
+                <v-navigation-drawer v-model="isHelpPageDrawerShown" v-click-outside="drawerClickOutside" fixed temporary right width="80%" class="elevation-24">
                     <iframe style="border: 0" :src="`/${appInfo.appId}/pageDoc#7.backendSearchDemo.md`" width="100%"
                         height="100%"></iframe>
                     <v-btn elevation="0" color="success" fab absolute top left small tile class="drawer-close-float-btn"
@@ -254,10 +237,10 @@
                     </v-btn>
                 </v-navigation-drawer>
                 <!-- <<<<<<<<<<<<< 帮助页抽屉 -->
-    
+
             </v-main>
         </v-app>
-    
+
         <jh-toast />
         <jh-mask />
         <jh-confirm-dialog />
@@ -291,13 +274,9 @@ new Vue({
     ],
     isHelpPageDrawerShown: false,
     isMobile: window.innerWidth < 500,
+    drawerClickOutside: window.drawerClickOutside,
     // 表格相关数据
-    isTableZebraLineMenuShown: false,
-    tableZebraLineMenuPosition: {x: null, y: null},
     isTableZebraLineShown: true,
-    // 生日日期选择
-    isDataPickerShown: false,
-    dataPickerPosition: {x: null, y: null},
     validationRules: {
       requireRules: [
         v => !!v || 'This is required',
@@ -317,7 +296,6 @@ new Vue({
     },
     searchInput: null,
     isTableLoading: true,
-    backendSearchData: {},
     tableData: [],
     headers: [
       {text: '操作', value: 'action', type: 'button', align: 'center', sortable: false, width: 120, class: 'fixed', cellClass: 'fixed'},
@@ -354,14 +332,7 @@ new Vue({
     async doUiAction(uiActionId, uiActionData) {
       switch (uiActionId) {
         case 'getTableData':
-          await this.prepareGetTableData();
           await this.getTableData();
-          break;
-        case 'openDataPicker':
-          await this.openDataPicker(uiActionData);
-          break;
-        case 'openTableZebraLineMenu':
-          await this.openTableZebraLineMenu(uiActionData);
           break;
         case 'startCreateItem':
           await this.prepareCreateFormData();
@@ -374,7 +345,6 @@ new Vue({
           await this.doCreateItem();
           await this.closeCreateDrawer();
           await this.clearCreateItemData();
-          await this.prepareGetTableData();
           await this.getTableData();
           break;
         case 'startUpdateItem':
@@ -388,7 +358,6 @@ new Vue({
           await this.doUpdateItem();
           await this.closeUpdateDrawer();
           await this.clearUpdateItemData();
-          await this.prepareGetTableData();
           await this.getTableData();
           break;
         case 'deleteItem':
@@ -397,7 +366,6 @@ new Vue({
           await this.prepareDoDeleteItem();
           await this.doDeleteItem();
           await this.clearDeleteItem();
-          await this.prepareGetTableData();
           await this.getTableData();
           break;
         default:
@@ -408,11 +376,9 @@ new Vue({
     /**
      * 获取表格数据
      */
-    async prepareGetTableData() {
-      this.backendSearchData = _.pickBy(this.serverSearchInput, value => !!value && value !== '全部');
-    },
     async getTableData() {
       this.isTableLoading = true;
+      const backendSearchData = _.pickBy(this.serverSearchInput, value => !!value && value !== '全部');
       const rows = (await window.jianghuAxios({
         data: {
           appData: {
@@ -420,7 +386,7 @@ new Vue({
             actionId: 'selectItemList',
             actionData: {},
             where: {},
-            whereLike: this.backendSearchData,
+            whereLike: backendSearchData,
             orderBy: [{column: 'operationAt', order: 'desc'}]
           }
         }
@@ -428,20 +394,6 @@ new Vue({
       this.tableData = rows;
       this.isTableLoading = false;
     },
-    // ---------- 生日选择 uiAction >>>>>>>>>> --------
-    async openDataPicker(funObj) {
-      this.dataPickerPosition.x = funObj.x - funObj.offsetX;
-      this.dataPickerPosition.y = funObj.y - funObj.offsetY + 40;
-      this.isDataPickerShown = !this.isDataPickerShown;
-    },
-    // ---------- <<<<<<<<<< 生日选择 uiAction --------
-    // ---------- 斑马纹开关 uiAction >>>>>>>>>> --------
-    async openTableZebraLineMenu(funObj) {
-      this.tableZebraLineMenuPosition.x = funObj.x - funObj.offsetX + 10;
-      this.tableZebraLineMenuPosition.y = window.innerHeight - 50;
-      this.isTableZebraLineMenuShown = !this.isTableZebraLineMenuShown;
-    },
-    // ---------- <<<<<<<<<< 斑马纹开关 uiAction --------
     // ---------- 新增数据 uiAction >>>>>>>>>> --------
     async prepareCreateFormData() {
       this.createItem = {};
