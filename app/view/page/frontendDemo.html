@@ -307,7 +307,7 @@
         <!-- 帮助页抽屉 >>>>>>>>>>>>> -->
         <v-navigation-drawer v-model="isHelpPageDrawerShown" v-click-outside="drawerClickOutside" fixed temporary right width="80%" class="elevation-24">
           <iframe
-            style="border: 0" :src="`/${appInfo.appId}/pageDoc#3.doUiAction.md`" width="100%"
+            style="border: 0" :src="`/${appInfo.appId}/pageDoc#2.frontendDemo.md`" width="100%"
             height="100%"></iframe>
 
           <v-btn
@@ -332,16 +332,27 @@
 </div>
 <!-- <<<<<<<<<<<<< vue template -->
 
+<!-- 加载定制样式 >>>>>>>>>>>>> -->
+{% include 'common/jianghuJs/globalCSSFontV4.html' %}
+{% include 'common/jianghuJs/globalCSSVuetifyV4.html' %}
+{% include 'common/jianghuJs/globalCSSJHV4.html' %}
+{% include 'common/jianghuJs/globalCSSMediaV4.html' %}
+<!-- <<<<<<<<<<<<< 加载定制样式 -->
+
 <!-- 加载工具脚本 >>>>>>>>>>>>> -->
 {% include 'utility/jianghuJs/prepareAppInfoV4.html' %}
 {% include 'utility/jianghuJs/prepareUserInfoV4.html' %}
 {% include 'utility/jianghuJs/jianghuAxiosV4.html' %}
 {% include 'utility/jianghuJs/htmlErrorCollectionV4.html' %}
+{% include 'utility/jianghuJs/jianghuDisplayTextV4.html' %}
+{% include 'common/jianghuJs/bugfixTableWheelEvent.html' %}
+{% include 'common/jianghuJs/globalDrawerOutsideClick.html' %}
 <!-- <<<<<<<<<<<<< 加载工具脚本 -->
 
 <!-- 加载全局组件 >>>>>>>>>>>>> -->
 {% include 'component/jianghuJs/jhToastV4.html' %}
 {% include 'component/jianghuJs/jhMaskV4.html' %}
+{% include 'component/jianghuJs/jhMenuV4.html' %}
 {% include 'component/jianghuJs/jhConfirmDialogV4.html' %}
 <!-- <<<<<<<<<<<<< 加载全局组件 -->
 
