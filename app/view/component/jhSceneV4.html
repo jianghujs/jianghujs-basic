@@ -12,16 +12,19 @@
     {{ scene.name }}
   </v-btn>
   <!--新增场景按钮-->
-  <v-btn
-      @click="doUiAction('openSceneMenu', $event)"
-      small outlined
-      color="grey darken-1"
-      class="mb-2 ml-1 pa-1"
-  >
-    <v-icon right small class="mx-0">mdi-chevron-down</v-icon>
-  </v-btn>
+
   <!--场景操作菜单-->
-  <v-menu offset-y v-model="isSceneOperationShown" :position-x="menuPosition.x" :position-y="menuPosition.y">
+  <v-menu offset-y v-model="isSceneOperationShown">
+    <template v-slot:activator="{on, attrs}">
+      <v-btn
+          v-bind="attrs" v-on="on"
+          small outlined
+          color="grey darken-1"
+          class="mb-2 ml-1 pa-1"
+      >
+        <v-icon right small class="mx-0">mdi-chevron-down</v-icon>
+      </v-btn>
+    </template>
     <v-list dense class="pb-0">
       <v-list-item @click="doUiAction('openCreateSceneDialog')">
         <v-list-item-title class="success--text">
@@ -164,9 +167,6 @@ Vue.component('jh-scene', {
       sceneCustomList: [],
       // 当前场景索引
       currentSceneIndex: -1,
-      // 菜单位置
-      menuPosition: {x: null, y: null},
-
       // 场景操作数据
       deleteItem: {
         form: {}
@@ -208,9 +208,6 @@ Vue.component('jh-scene', {
         case 'getSceneList':
           await this.getSceneList();
           await this.useDefaultScene();
-          break;
-        case 'openSceneMenu':
-          await this.openSceneMenu(uiActionData);
           break;
         case 'useScene':
           await this.useScene(uiActionData);
@@ -266,12 +263,6 @@ Vue.component('jh-scene', {
       s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1); // bits 6-7 of the clock_seq_hi_and_reserved to 01
       var uuid = s.join("");
       return prefix + '-' + uuid;
-    },
-    // 打开操作菜单
-    async openSceneMenu(funObj) {
-      this.menuPosition.x = funObj.pageX;
-      this.menuPosition.y = funObj.pageY + 20;
-      this.isSceneOperationShown = !this.isSceneOperationShown;
     },
 
     // 场景列表
