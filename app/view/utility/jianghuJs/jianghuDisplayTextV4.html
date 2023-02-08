@@ -1,13 +1,6 @@
-<script>
-// 抽屉防误关闭
-window.drawerClickOutside = {
-  include: () => {
-    if(document.querySelector('.v-dialog.v-dialog--active')) {
-      return [document.querySelector('.v-overlay.v-overlay--active'), document.querySelector('.v-dialog.v-dialog--active')]
-    }
-    return [];
-  },
-};
+<!--jianghuDisplayTextV4.html >>>>>>>>>>> -->
+<!--设置 常量数据值转换文字 数据 -->
+<script type="text/javascript">
 // 数据字段文本
 window.getDisplayText = (metadata, value, key) => {
   let labelText;
@@ -23,3 +16,4 @@ window.getDisplayText = (metadata, value, key) => {
   return labelText || value;
 }
 </script>
+<!--jianghuDisplayTextV4.html <<<<<<<<<<<<-->
