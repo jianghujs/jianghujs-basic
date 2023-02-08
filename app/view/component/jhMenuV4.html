@@ -107,17 +107,19 @@
       <!--<<<<<<<<<<<<<一级菜单-->
       <!--二级菜单>>>>>>>>>>>>-->
       <template v-else>
-        <v-tab
-            class="px-5 jh-header-tab"
-            :class="{'parent-tab-active': currentMenuTabIndex === index, 'jh-header-tab-active': currentMenuTabIndex === index}"
-            :key="item.path"
-            @click="openChildMenu($event, index)"
-        >
-          {{ item.title }}
-          <v-icon disabled v-if="inMenuShownStatusList[index]" size="12">mdi-chevron-up</v-icon>
-          <v-icon disabled v-else size="12">mdi-chevron-down</v-icon>
-        </v-tab>
-        <v-menu offset-y v-model="inMenuShownStatusList[index]" :min-width="menuPosition.w"  :position-x="menuPosition.x" :position-y="menuPosition.y">
+        <v-menu offset-y v-model="inMenuShownStatusList[index]">
+          <template v-slot:activator="{on, attrs}">
+            <v-tab
+                v-bind="attrs" v-on="on"
+                class="px-5 jh-header-tab"
+                :class="{'parent-tab-active': currentMenuTabIndex === index, 'jh-header-tab-active': currentMenuTabIndex === index}"
+                :key="item.path"
+            >
+              {{ item.title }}
+              <v-icon disabled v-if="inMenuShownStatusList[index]" size="12">mdi-chevron-up</v-icon>
+              <v-icon disabled v-else size="12">mdi-chevron-down</v-icon>
+            </v-tab>
+          </template>
           <v-list nav dense>
             <v-list-item @click="openUrl(child.path, child.query)"
                          v-for="child in item.children"
@@ -141,13 +143,14 @@
   </v-tabs>
   <!--<<<<<<<<<<<<<pc端菜单-->
   <div style="white-space: nowrap">
-    <template v-if="!isMobile">
-      <div text class="jh-avatar-menu-btn px-1" @click="openAvatarMenu($event)">
-        <span class="jh-font-size-3 black--text">{{ userInfo.user.username }}</span>
-        <v-icon>mdi-account-circle</v-icon>
-      </div>
-    </template>
-    <v-menu offset-y v-model="isAvatarMenuShown" :position-x="menuPosition.x" :position-y="menuPosition.y">
+
+    <v-menu v-if="!isMobile" offset-y v-model="isAvatarMenuShown">
+      <template v-slot:activator="{on, attrs}">
+        <div text v-bind="attrs" v-on="on" class="jh-avatar-menu-btn px-1">
+          <span class="jh-font-size-3 black--text">{{ userInfo.user.username }}</span>
+          <v-icon>mdi-account-circle</v-icon>
+        </div>
+      </template>
       <v-list nav dense>
         <v-list-item class="mt-2">
           <v-list-item-icon class="mr-1 mt-1">
@@ -200,7 +203,6 @@ Vue.component('jh-menu', {
       // 弹出菜单数据
       isMobileMenuDrawerShown: false,
       isAvatarMenuShown: false,
-      menuPosition: {x: null, y: null},
       // 用户菜单
       menuSort: null,
       menuGroup: null,
@@ -240,22 +242,6 @@ Vue.component('jh-menu', {
     computedPageId() {
       const urlPathList = window.location.pathname.split('/');
       this.currentPageId = urlPathList && urlPathList[urlPathList.length - 1];
-    },
-    // 打开二级菜单
-    openChildMenu(funObj, index) {
-      this.currentMenuTabIndex = index;
-      this.inMenuShownStatusList[index] = true;
-      this.isAvatarMenuShown = false;
-      this.menuPosition.x = funObj.x - funObj.offsetX;
-      this.menuPosition.y = funObj.y + 20;
-      this.menuPosition.w = funObj.target.clientWidth;
-    },
-    // 打开头像菜单
-    openAvatarMenu(funObj) {
-      this.menuPosition.x = funObj.x;
-      this.menuPosition.y = funObj.y + 20;
-      this.isAvatarMenuShown = !this.isAvatarMenuShown;
-      this.inMenuShownStatusList = this.inMenuShownStatusList.map(item => false);
     },
     // 动态计算菜单栏目的最大宽度，按照实际的标题宽度计算
     getTabsMaxWidth() {
