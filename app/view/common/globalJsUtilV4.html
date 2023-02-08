@@ -1,0 +1,24 @@
+<script>
+// 抽屉防误关闭
+window.drawerClickOutside = {
+  include: () => {
+    if(document.querySelector('.v-dialog.v-dialog--active')) {
+      return [document.querySelector('.v-overlay.v-overlay--active'), document.querySelector('.v-dialog.v-dialog--active')]
+    }
+    return [];
+  },
+};
+// 数据字段文本
+window.getDisplayText = (metadata, value, key) => {
+  let labelText;
+  if(typeof metadata !== 'object') {
+    return value;
+  }
+  if(metadata instanceof Array) {
+    labelText = metadata.find(item => item.value === value).text;
+  } else {
+    labelText = key && metadata[key].text;
+  }
+  return labelText || value;
+}
+</script>

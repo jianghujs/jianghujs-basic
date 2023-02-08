@@ -50,6 +50,14 @@
                                     <v-icon size="14" class="success--text">mdi-trash-can-outline</v-icon>删除
                                 </span>
           </template>
+          <!--性别-->
+          <template v-slot:item.gender="{ item }">
+            {{ getDisplayText(constantObj.gender, item.gender) }}
+          </template>
+          <!--年级-->
+          <template v-slot:item.level="{ item }">
+            {{ getDisplayText(constantObj.level, item.level) }}
+          </template>
           <!--表格分页-->
           <template v-slot:footer.page-text="pagination">
             <span>{{pagination.pageStart}}-{{pagination.pageStop}}</span>
@@ -265,10 +273,14 @@ new Vue({
     },
     // 下拉选项
     constantObj: {
-      classId: ['2021-01级-01班', '2021-01级-02班', '2021-01级-03班', '2021-02级-01班', '2021-02级-02班', '2021-02级-03班'],
-      gender: ['全部', '男', '女'],
-      level: ['全部', '一年级', '二年级', '三年级'],
-      studentStatus: ['正常', '退学']
+      gender: [{"value": "male", "text": "男"}, {"value": "female", "text": "女"}],
+      classId: [
+        {"value": "2021-01级-01班", "text": "2021-01级-01班"}, {"value": "2021-01级-02班", "text": "2021-01级-02班"},
+        {"value": "2021-02级-01班", "text": "2021-02级-01班"}, {"value": "2021-02级-02班", "text": "2021-02级-02班"},
+        {"value": "2021-03级-01班", "text": "2021-03级-01班"}, {"value": "2021-03级-02班", "text": "2021-03级-02班"}
+      ],
+      level: [{"value": "01", "text": "一年级"}, {"value": "02", "text": "二年级"}, {"value": "03", "text": "三年级"}],
+      studentStatus: [{"value": "正常", "text": "正常"}, {"value": "退学", "text": "退学"}]
     },
     searchInput: null,
     isTableLoading: true,
@@ -346,6 +358,7 @@ new Vue({
           break;
       }
     },
+    getDisplayText: window.getDisplayText,
     /**
      * 获取表格数据
      */

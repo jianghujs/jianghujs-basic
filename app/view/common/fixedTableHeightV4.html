@@ -11,7 +11,7 @@ resetTableMaxHeight = (param) => {
     for (const table of tables) {
       const bottom = parseInt(table.dataset.bottom || 0);
       const top = parseInt(table.dataset.top || 0);
-      const offsetTop = parseInt(table.getBoundingClientRect().top || 0); 
+      const offsetTop = parseInt(table.getBoundingClientRect().top || 0);
       const tableHeight = window.innerHeight - (table.dataset.top ? top : offsetTop) - bottom;
       table.style.height = tableHeight + 'px';
     }
@@ -22,13 +22,6 @@ window.onresize = () => {
   resetTableMaxHeight();
 }
 resetTableMaxHeight();
-window.drawerClickOutside = {
-  include: () => {
-    if(document.querySelector('.v-dialog.v-dialog--active')) {
-      return [document.querySelector('.v-overlay.v-overlay--active'), document.querySelector('.v-dialog.v-dialog--active')]
-    }
-    return [];
-  },
-};
+
 </script>
 <!-- <<<<<<<<<<<<< resetTableMaxHeight.html -->
