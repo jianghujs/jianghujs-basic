@@ -81,6 +81,9 @@
             {{ getDisplayText({displayObj: constantObj.level, displayValue: item.level}) }}
           </template>
           <!--没有数据-->
+          <template v-slot:loading>
+            <div class="jh-no-data">数据加载中</div>
+          </template>
           <template v-slot:no-data>
             <div class="jh-no-data">暂无数据</div>
           </template>
