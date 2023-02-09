@@ -268,7 +268,6 @@ new Vue({
       }
     ],
     isHelpPageDrawerShown: false,
-    drawerClickOutside: window.drawerClickOutside,
     // 表格相关数据
     isTableZebraLineShown: true,
     validationRules: {
@@ -362,7 +361,6 @@ new Vue({
           break;
       }
     },
-    getDisplayText: window.getDisplayText,
     async getTableData() {
       this.isTableLoading = true;
       const result = await window.jianghuAxios({

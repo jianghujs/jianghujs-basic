@@ -334,8 +334,6 @@
       vueComponent: 'page',
       vuetify: new Vuetify(),
       data: {
-        drawerClickOutside: window.drawerClickOutside,
-
         // 菜单相关数据
         menuSelectedIndex: 1,
         inMenuList: [
@@ -415,8 +413,6 @@
         this.doUiAction('getTableData');
       },
       methods: {
-        getDisplayText: window.getDisplayText,
-
         async doUiAction(uiActionId, uiActionData) {
           switch (uiActionId) {
             case 'getTableData':
