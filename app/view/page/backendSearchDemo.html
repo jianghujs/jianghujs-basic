@@ -278,19 +278,19 @@ new Vue({
     },
     // 下拉选项
     constantObj: {
-      gender: [{"value": "male", "text": "男"}, {"value": "female", "text": "女"}],
+      gender: [{"value": null, "text": "全部"}, {"value": "male", "text": "男"}, {"value": "female", "text": "女"}],
       classId: [
         {"value": "2021-01级-01班", "text": "2021-01级-01班"}, {"value": "2021-01级-02班", "text": "2021-01级-02班"},
         {"value": "2021-02级-01班", "text": "2021-02级-01班"}, {"value": "2021-02级-02班", "text": "2021-02级-02班"},
         {"value": "2021-03级-01班", "text": "2021-03级-01班"}, {"value": "2021-03级-02班", "text": "2021-03级-02班"}
       ],
-      level: [{"value": "01", "text": "一年级"}, {"value": "02", "text": "二年级"}, {"value": "03", "text": "三年级"}],
+      level: [{"value": null, "text": "全部"}, {"value": "01", "text": "一年级"}, {"value": "02", "text": "二年级"}, {"value": "03", "text": "三年级"}],
       studentStatus: [{"value": "正常", "text": "正常"}, {"value": "退学", "text": "退学"}]
     },
     currentSceneId: null,
     serverSearchInput: {
-      level: '全部',
-      gender: '全部'
+      level: null,
+      gender: null
     },
     searchInput: null,
     isTableLoading: true,
