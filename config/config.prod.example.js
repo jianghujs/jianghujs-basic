@@ -5,12 +5,6 @@ const path = require('path');
 module.exports = appInfo => {
 
   return {
-    static: {
-      maxAge: 0,
-      buffer: false,
-      preload: false,
-      maxFiles: 0,
-    },
     logger: {
       outputJSON: true,
       level: 'INFO',

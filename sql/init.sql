@@ -608,7 +608,6 @@ INSERT INTO `student` (`id`, `studentId`, `name`, `gender`, `dateOfBirth`, `clas
 INSERT INTO `student` (`id`, `studentId`, `name`, `gender`, `dateOfBirth`, `classId`, `level`, `bodyHeight`, `studentStatus`, `remarks`, `operation`, `operationByUserId`, `operationByUser`, `operationAt`) VALUES (187, 'admin', '管理员', 'male', '2022-09-15', '2021-02级-02班', '02', '182', '正常', NULL, 'jhUpdate', 'admin', '系统管理员', '2023-02-06T20:12:26+08:00');
 INSERT INTO `student` (`id`, `studentId`, `name`, `gender`, `dateOfBirth`, `classId`, `level`, `bodyHeight`, `studentStatus`, `remarks`, `operation`, `operationByUserId`, `operationByUser`, `operationAt`) VALUES (188, 'S10006', '无涯子', 'female', '2022-09-15', '2021-02级-02班', '02', '145', '正常', '转学', 'insert', 'admin', '系统管理员', '2022-11-05T15:44:06+08:00');
 INSERT INTO `student` (`id`, `studentId`, `name`, `gender`, `dateOfBirth`, `classId`, `level`, `bodyHeight`, `studentStatus`, `remarks`, `operation`, `operationByUserId`, `operationByUser`, `operationAt`) VALUES (197, 'S10007', 'louis', 'male', '2022-12-12', '2021-02级-02班', '02', '111', '正常', NULL, 'jhInsert', 'admin', '系统管理员', '2023-02-07T21:34:44+08:00');
-INSERT INTO `student` (`id`, `studentId`, `name`, `gender`, `dateOfBirth`, `classId`, `level`, `bodyHeight`, `studentStatus`, `remarks`, `operation`, `operationByUserId`, `operationByUser`, `operationAt`) VALUES (199, 'S_Kqygc7ww_1_2', 'louis11', 'male', '2023-02-07', '2021-01级-03班', '02', '123', '正常', NULL, 'jhUpdate', 'admin', '系统管理员', '2023-02-08T10:31:20+08:00');
 COMMIT;
 
 -- ----------------------------

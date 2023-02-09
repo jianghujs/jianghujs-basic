@@ -5,10 +5,8 @@
 const Service = require('egg').Service;
 const validateUtil = require("@jianghujs/jianghu/app/common/validateUtil");
 const idGenerateUtil = require("@jianghujs/jianghu/app/common/idGenerateUtil");
-const dayjs = require("dayjs");
-const { nanoid } = require("nanoid");
 
-const appDataScheme = Object.freeze({
+const appDataSchema = Object.freeze({
   selectStudentList: {
     type: "object",
     additionalProperties: true,
@@ -46,7 +44,7 @@ class StudentService extends Service {
   async selectStudentList() {
 
     validateUtil.validate(
-      appDataScheme.selectStudentList,
+      appDataSchema.selectStudentList,
       actionData
     );
 

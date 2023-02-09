@@ -4,8 +4,8 @@ const path = require('path');
 
 const { middleware, middlewareMatch } = require('@jianghujs/jianghu/config/middlewareConfig');
 
-const eggJianghuPathResolve = require.resolve('@jianghujs/jianghu');
-const eggJianghuPath = path.join(eggJianghuPathResolve, '../');
+const eggJianghuDirResolve = require.resolve('@jianghujs/jianghu');
+const eggJianghuDir = path.join(eggJianghuDirResolve, '../');
 
 module.exports = appInfo => {
 
@@ -33,7 +33,7 @@ module.exports = appInfo => {
       buffer: true,
       dir: [
         { prefix: `/${appId}/public/`, dir: path.join(appInfo.baseDir, 'app/public') },
-        { prefix: `/${appId}/public/`, dir: path.join(eggJianghuPath, 'app/public') },
+        { prefix: `/${appId}/public/`, dir: path.join(eggJianghuDir, 'app/public') },
       ],
     },
 
@@ -42,7 +42,7 @@ module.exports = appInfo => {
       mapping: { '.html': 'nunjucks' },
       root: [
         path.join(appInfo.baseDir, 'app/view'),
-        path.join(eggJianghuPath, 'app/view'),
+        path.join(eggJianghuDir, 'app/view'),
       ].join(','),
     },
 
