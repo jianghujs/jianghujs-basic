@@ -9,7 +9,7 @@
     <$ ctx.app.config.appTitle $>
   </title>
   <meta charset="utf-8" name="viewport"
-    content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+        content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
   <!-- <<<<<<<<<<<<< 设置页面默认参数 -->
 
   <!-- 加载第三方库CSS >>>>>>>>>>>>> -->
@@ -123,10 +123,17 @@
                 <template v-slot:item.level="{ item }">
                   {{ getDisplayText({displayObj: constantObj.level, displayValue: item.level}) }}
                 </template>
-                <!--表格底部右侧分页-->
+                <!--没有数据-->
+                <template v-slot:no-data>
+                  <div class="jh-no-data">暂无数据</div>
+                </template>
+                <template v-slot:no-results>
+                  <div class="jh-no-data">暂无数据</div>
+                </template>
+                <!--表格分页-->
                 <template v-slot:footer.page-text="pagination">
-                  <span>{{pagination.pageStart}}-{{pagination.pageStop}}</span>
-                  <span class="ml-1">共{{pagination.itemsLength}}条</span>
+                  <span>{{ pagination.pageStart }}-{{ pagination.pageStop }}</span>
+                  <span class="ml-1">共{{ pagination.itemsLength }}条</span>
                 </template>
               </v-data-table>
             </v-card>
@@ -301,7 +308,7 @@
   {% include 'utility/jianghuJs/jianghuDisplayTextV4.html' %}
   {% include 'utility/jianghuJs/uiActionV4.html' %}
   {% include 'common/jianghuJs/bugfixTableWheelEvent.html' %}
-  {% include 'common/jianghuJs/globalDrawerOutsideClick.html' %}
+  {% include 'common/jianghuJs/bugfixDrawerOutsideClick.html' %}
   {% include 'common/jianghuJs/fixedTableColV4.html' %}
   <!-- <<<<<<<<<<<<< 加载工具脚本 -->
 

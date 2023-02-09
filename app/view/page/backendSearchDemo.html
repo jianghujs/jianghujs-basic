@@ -80,6 +80,13 @@
           <template v-slot:item.level="{ item }">
             {{ getDisplayText({displayObj: constantObj.level, displayValue: item.level}) }}
           </template>
+          <!--没有数据-->
+          <template v-slot:no-data>
+            <div class="jh-no-data">暂无数据</div>
+          </template>
+          <template v-slot:no-results>
+            <div class="jh-no-data">暂无数据</div>
+          </template>
           <!--表格分页-->
           <template v-slot:footer.page-text="pagination">
             <span>{{pagination.pageStart}}-{{pagination.pageStop}}</span>
