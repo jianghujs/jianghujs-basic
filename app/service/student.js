@@ -4,10 +4,11 @@
 // ========================================常用 require start===========================================
 const Service = require('egg').Service;
 const validateUtil = require("@jianghujs/jianghu/app/common/validateUtil");
+const idGenerateUtil = require("@jianghujs/jianghu/app/common/idGenerateUtil");
 const dayjs = require("dayjs");
 const { nanoid } = require("nanoid");
 
-const actionDataScheme = Object.freeze({
+const appDataScheme = Object.freeze({
   selectStudentList: {
     type: "object",
     additionalProperties: true,
@@ -17,16 +18,20 @@ const actionDataScheme = Object.freeze({
 });
 
 class StudentService extends Service {
-  // 生成学生 studentId
-  async beforHookForGenerateStudentId() {
-    const { actionData } = this.ctx.request.body.appData;
-    const { dateOfBirth } = actionData;
-    const dateOfBirthObj = dayjs(dateOfBirth);
-    const studentId = `S_${nanoid.nanoid(8)}_${dateOfBirthObj.month()}_${dateOfBirthObj.day()}`;
+  // beforeHook: 生成学生 studentId
+  async generateStudentId() {
+    const tableName = "student";
+    const columnName = "studentId";
+    const studentId = await idGenerateUtil.idPlus({
+      knex: this.app.jianghuKnex,
+      tableName,
+      columnName,
+    });
     console.log('student_id----', studentId)
     this.ctx.request.body.appData.actionData.studentId = studentId;
   }
 
+  // 数据权限方式一，beforeHook 配合 sql 动态数据进行查询
   // beforeHook：将学生信息加到 ctx.userInfo 中
   async appendStudentInfoToUserInfo() {
     const studentInfo = await this.app
@@ -36,11 +41,12 @@ class StudentService extends Service {
     this.ctx.userInfo.studentInfo = studentInfo || { classId: null };
   }
 
+  // 数据权限方式二，直接使用 service 实现
   // 获取同班学生列表
   async selectStudentList() {
 
     validateUtil.validate(
-      actionDataScheme.selectStudentList,
+      appDataScheme.selectStudentList,
       actionData
     );
 
