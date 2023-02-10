@@ -24,9 +24,9 @@
         <v-col cols="12" xs="12" sm="12" md="8" xl="9">
           <v-row class="jh-backend-form-container justify-end ma-0 py-4 pt-xs-0">
             <v-btn
-              small :outlined="selectedSceneIndex !== index" v-for="(scene, index) in sceneList"
-              :key="index" :dark="selectedSceneIndex === index"
-              @click="doUiAction('useScene', {scene, index})" color="grey darken-1" class="mb-2 ml-1">
+              small :outlined="currentSceneId !== scene.id" v-for="(scene, index) in sceneList"
+              :key="index" :dark="currentSceneId === scene.id"
+              @click="doUiAction('useScene', scene)" color="grey darken-1" class="mb-2 ml-1">
               {{ scene.name }}
             </v-btn>
           </v-row>
@@ -341,7 +341,7 @@ new Vue({
       level: [{"value": "01", "text": "一年级"}, {"value": "02", "text": "二年级"}, {"value": "03", "text": "三年级"}],
       studentStatus: [{"value": "正常", "text": "正常"}, {"value": "退学", "text": "退学"}]
     },
-    selectedSceneIndex: 0,
+    currentSceneId: 'scene-fixed-all',
     sceneList: [
       {"form": {}, "name": "全部", "id": "scene-fixed-all"},
       {"form": {"level": "01", "gender": "male"}, "name": "二年级的男生", "id": "scene-fixed-1"},
@@ -454,8 +454,8 @@ new Vue({
     },
     // ---------- 场景 uiAction >>>>>>>>>> --------
     useScene(funObj) {
-      this.selectedSceneIndex = funObj.index;
-      this.serverSearchInput = _.cloneDeep(funObj.scene.form);
+      this.currentSceneId = funObj.id;
+      this.serverSearchInput = _.cloneDeep(funObj.form);
     },
     // ---------- <<<<<<<<<<< 场景 uiAction --------
     // ---------- 新增数据 uiAction >>>>>>>>>> --------
