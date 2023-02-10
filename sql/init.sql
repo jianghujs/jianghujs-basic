@@ -117,10 +117,9 @@ INSERT INTO `_page` (`id`, `pageId`, `pageFile`, `pageName`, `pageType`, `sort`,
 INSERT INTO `_page` (`id`, `pageId`, `pageFile`, `pageName`, `pageType`, `sort`, `operation`, `operationByUserId`, `operationByUser`, `operationAt`) VALUES (29, 'resourceHook', NULL, 'resouceHook', 'showInMenu', '6', 'insert', NULL, NULL, NULL);
 INSERT INTO `_page` (`id`, `pageId`, `pageFile`, `pageName`, `pageType`, `sort`, `operation`, `operationByUserId`, `operationByUser`, `operationAt`) VALUES (31, 'backendSearchDemo', NULL, '服务端搜索', 'showInMenu', '7', 'insert', NULL, NULL, NULL);
 INSERT INTO `_page` (`id`, `pageId`, `pageFile`, `pageName`, `pageType`, `sort`, `operation`, `operationByUserId`, `operationByUser`, `operationAt`) VALUES (32, 'dataAccessRight', NULL, '数据权限', 'showInMenu', '8', 'insert', NULL, NULL, NULL);
-INSERT INTO `_page` (`id`, `pageId`, `pageFile`, `pageName`, `pageType`, `sort`, `operation`, `operationByUserId`, `operationByUser`, `operationAt`) VALUES (34, 'doUiAction', NULL, '[doUiAction]doUiAction', 'showInMenu', '5', 'insert', NULL, NULL, NULL);
+INSERT INTO `_page` (`id`, `pageId`, `pageFile`, `pageName`, `pageType`, `sort`, `operation`, `operationByUserId`, `operationByUser`, `operationAt`) VALUES (34, 'doUiAction', NULL, 'doUiAction', 'showInMenu', '5', 'insert', NULL, NULL, NULL);
 INSERT INTO `_page` (`id`, `pageId`, `pageFile`, `pageName`, `pageType`, `sort`, `operation`, `operationByUserId`, `operationByUser`, `operationAt`) VALUES (35, 'sceneSearchFixed', NULL, '场景搜索', 'showInMenu', '7', 'insert', NULL, NULL, NULL);
 INSERT INTO `_page` (`id`, `pageId`, `pageFile`, `pageName`, `pageType`, `sort`, `operation`, `operationByUserId`, `operationByUser`, `operationAt`) VALUES (36, 'sceneSearchCustom', NULL, '定制场景搜索', 'showInMenu', '7', 'insert', NULL, NULL, NULL);
-INSERT INTO `_page` (`id`, `pageId`, `pageFile`, `pageName`, `pageType`, `sort`, `operation`, `operationByUserId`, `operationByUser`, `operationAt`) VALUES (37, 'ceshi1', NULL, '[doUiAction]二级菜单', 'showInMenu', '5', 'insert', NULL, NULL, NULL);
 COMMIT;
 
 -- ----------------------------
