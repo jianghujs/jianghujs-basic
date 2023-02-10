@@ -374,7 +374,11 @@ new Vue({
      */
     async getTableData() {
       this.isTableLoading = true;
-      const backendSearchData = _.pickBy(this.serverSearchInput, value => !!value && value !== '全部');
+      const backendSearchData = _.pickBy(this.serverSearchInput, ( fieldValue, fieldKey ) => {
+        if(fieldValue !== null && fieldValue !== '') {
+          return true;
+        }
+      });
       const rows = (await window.jianghuAxios({
         data: {
           appData: {

@@ -454,7 +454,9 @@ new Vue({
     async getTableData() {
       this.isTableLoading = true;
       const backendSearchData = _.pickBy(this.serverSearchInput, ( fieldValue, fieldKey ) => {
-        if()!!value && value !== '全部'
+        if(fieldValue !== null && fieldValue !== '') {
+          return true;
+        }
       });
       const rows = (await window.jianghuAxios({
         data: {
@@ -472,17 +474,31 @@ new Vue({
     },
     // ---------- 场景 uiAction >>>>>>>>>> --------
     setDefaultSceneData() {
-      let sceneData = JSON.parse(localStorage.getItem('sceneData') ? localStorage.getItem('sceneData') : '{}');
-      let sceneList = sceneData["sceneSearchCustom_" + window.userInfo.userId] || [];
-      sceneList = _.filter(sceneList, function () {
-        return o.id !== 'scene-custom-7bf92fac3148' && o.id !== 'scene-custom-c43465913948' && o.id !== 'scene-custom-all';
+      const sceneDataKey = "sceneSearchCustom_" + window.userInfo.userId;
+      let sceneData = localStorage.getItem('sceneData');
+      if(sceneData == null) sceneData = '{}';
+      sceneData = JSON.parse(sceneData);
+      let sceneList = sceneData[sceneDataKey];
+      if(!sceneList) {
+        sceneList = [];
+      }
+      sceneList = _.filter(sceneList, function (sceneItem) {
+        if(sceneItem.id !== 'scene-custom-1') {
+          return true;
+        }
+        if(sceneItem.id !== 'scene-custom-2') {
+          return true;
+        }
+        if(sceneItem.id !== 'scene-custom-all') {
+          return true;
+        }
       });
       sceneData = {
         ...sceneData,
-        ["sceneSearchCustom_" + window.userInfo.userId]: [
+        [sceneDataKey]: [
           {"form": {}, "name": "全部", "default": true, "id": "scene-custom-all", 'system': true},
-          {"form": {"level": "02", "gender": "male"}, "name": "二年级的男生", "default": null, "id": "scene-custom-7bf92fac3148", 'system': true},
-          {"form": {"level": "02", "gender": "female"}, "name": "二年级的女生", "default": null, "id": "scene-custom-c43465913948", 'system': true},
+          {"form": {"level": "02", "gender": "male"}, "name": "二年级的男生", "default": null, "id": "scene-custom-1", 'system': true},
+          {"form": {"level": "02", "gender": "female"}, "name": "二年级的女生", "default": null, "id": "scene-custom-2", 'system': true},
           ...sceneList
         ],
       };

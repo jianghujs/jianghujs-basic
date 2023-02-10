@@ -341,11 +341,11 @@ new Vue({
       level: [{"value": "01", "text": "一年级"}, {"value": "02", "text": "二年级"}, {"value": "03", "text": "三年级"}],
       studentStatus: [{"value": "正常", "text": "正常"}, {"value": "退学", "text": "退学"}]
     },
-    selectedScene: 0,
+    selectedSceneIndex: 0,
     sceneList: [
       {"form": {}, "name": "全部", "id": "scene-fixed-all"},
-      {"form": {"level": "01", "gender": "male"}, "name": "二年级的男生", "id": "scene-fixed-7bf92fac3148"},
-      {"form": {"level": "02", "gender": "female"}, "name": "二年级的女生", "id": "scene-fixed-c43465913948"},
+      {"form": {"level": "01", "gender": "male"}, "name": "二年级的男生", "id": "scene-fixed-1"},
+      {"form": {"level": "02", "gender": "female"}, "name": "二年级的女生", "id": "scene-fixed-2"},
     ],
     serverSearchInput: {
       level: null,
@@ -433,7 +433,11 @@ new Vue({
      */
     async getTableData() {
       this.isTableLoading = true;
-      const backendSearchData = _.pickBy(this.serverSearchInput, value => !!value && value !== '全部');
+      const backendSearchData = _.pickBy(this.serverSearchInput, ( fieldValue, fieldKey ) => {
+        if(fieldValue !== null && fieldValue !== '') {
+          return true;
+        }
+      });
       const rows = (await window.jianghuAxios({
         data: {
           appData: {
