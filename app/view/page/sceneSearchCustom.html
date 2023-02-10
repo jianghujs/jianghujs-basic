@@ -483,13 +483,7 @@ new Vue({
         sceneList = [];
       }
       sceneList = _.filter(sceneList, function (sceneItem) {
-        if(sceneItem.id !== 'scene-custom-1') {
-          return true;
-        }
-        if(sceneItem.id !== 'scene-custom-2') {
-          return true;
-        }
-        if(sceneItem.id !== 'scene-custom-all') {
+        if(sceneItem.id !== 'scene-custom-1' && sceneItem.id !== 'scene-custom-2' && sceneItem.id !== 'scene-custom-all') {
           return true;
         }
       });
