@@ -6,7 +6,7 @@
   <div>
     <v-app>
       <v-main>
-        <v-row class="justify-center align-center" style="height: 100vh">
+        <v-row class="align-center" style="height: 100vh">
           <v-col cols="12" align="center">
             <div class="mb-10 text-h7 font-weight-bold success--text"><$ ctx.app.config.appTitle $></div>
             <v-card class="login-form-card pa-8">
@@ -126,7 +126,11 @@
               appData: {
                 pageId: 'login',
                 actionId: 'passwordLogin',
-                actionData: { userId: this.userId, password: this.password, deviceId: this.deviceId },
+                actionData: {
+                  userId: this.userId,
+                  password: this.password,
+                  deviceId: this.deviceId
+                },
               }
             }
           })).data.appData.resultData;
@@ -154,7 +158,7 @@
   });
 </script>
 <style scoped>
-  .login-form-card{
+  .login-form-card {
     width: 400px;
   }
 
@@ -169,22 +173,26 @@
     outline: none;
     font-size: 13px !important;
   }
+
   .jh-cus-input:focus,
   .jh-cus-input:focus-visible,
   input:focus-visible {
     border: thin solid #4caf50 !important;
   }
+
   /* ---------- <<<<<<<<<<< 输入框 -------- */
 
   /* ---------- 密码框 >>>>>>>>>> -------- */
-  .password-wrapper{
+  .password-wrapper {
     position: relative;
   }
-  .password-wrapper .mdi-eye{
+
+  .password-wrapper .mdi-eye {
     position: absolute;
     right: 8px;
     top: 8px;
   }
+
   /* ---------- <<<<<<<<<<< 密码框 -------- */
 </style>
 {% endblock %}
