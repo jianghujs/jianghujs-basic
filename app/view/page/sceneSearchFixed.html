@@ -24,8 +24,8 @@
         <v-col cols="12" xs="12" sm="12" md="8" xl="9">
           <v-row class="jh-backend-form-container justify-end ma-0 py-4 pt-xs-0">
             <v-btn
-              small :outlined="selectedScene !== index" v-for="(scene, index) in sceneList"
-              :key="index" :dark="selectedScene === index"
+              small :outlined="selectedSceneIndex !== index" v-for="(scene, index) in sceneList"
+              :key="index" :dark="selectedSceneIndex === index"
               @click="doUiAction('useScene', {scene, index})" color="grey darken-1" class="mb-2 ml-1">
               {{ scene.name }}
             </v-btn>
@@ -347,7 +347,6 @@ new Vue({
       {"form": {"level": "01", "gender": "male"}, "name": "二年级的男生", "id": "scene-fixed-7bf92fac3148"},
       {"form": {"level": "02", "gender": "female"}, "name": "二年级的女生", "id": "scene-fixed-c43465913948"},
     ],
-    currentSceneId: null,
     serverSearchInput: {
       level: null,
       gender: null
@@ -451,9 +450,7 @@ new Vue({
     },
     // ---------- 场景 uiAction >>>>>>>>>> --------
     useScene(funObj) {
-      console.log("哈哈", funObj.scene)
-      this.selectedScene = funObj.index;
-      this.currentSceneId = funObj.scene.id;
+      this.selectedSceneIndex = funObj.index;
       this.serverSearchInput = _.cloneDeep(funObj.scene.form);
     },
     // ---------- <<<<<<<<<<< 场景 uiAction --------

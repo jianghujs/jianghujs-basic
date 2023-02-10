@@ -359,8 +359,8 @@ new Vue({
     },
     currentSceneId: null,
     serverSearchInput: {
-      level: null,
-      gender: null
+      level: '全部',
+      gender: '全部'
     },
     currentTableGenderType: 'all',
     searchInput: null,
@@ -453,7 +453,9 @@ new Vue({
      */
     async getTableData() {
       this.isTableLoading = true;
-      const backendSearchData = _.pickBy(this.serverSearchInput, value => !!value && value !== '全部');
+      const backendSearchData = _.pickBy(this.serverSearchInput, ( fieldValue, fieldKey ) => {
+        if()!!value && value !== '全部'
+      });
       const rows = (await window.jianghuAxios({
         data: {
           appData: {
@@ -470,9 +472,9 @@ new Vue({
     },
     // ---------- 场景 uiAction >>>>>>>>>> --------
     setDefaultSceneData() {
-      let sceneData = JSON.parse(localStorage.getItem('sceneData') || '{}');
+      let sceneData = JSON.parse(localStorage.getItem('sceneData') ? localStorage.getItem('sceneData') : '{}');
       let sceneList = sceneData["sceneSearchCustom_" + window.userInfo.userId] || [];
-      sceneList = _.filter(sceneList, function (o) {
+      sceneList = _.filter(sceneList, function () {
         return o.id !== 'scene-custom-7bf92fac3148' && o.id !== 'scene-custom-c43465913948' && o.id !== 'scene-custom-all';
       });
       sceneData = {
@@ -488,7 +490,6 @@ new Vue({
     },
 
     useScene(funObj) {
-      console.log("哈哈", funObj)
       this.currentSceneId = funObj.id;
       this.serverSearchInput = _.cloneDeep(funObj.form);
     },
