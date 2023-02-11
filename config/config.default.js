@@ -36,6 +36,10 @@ module.exports = appInfo => {
         { prefix: `/${appId}/public/`, dir: path.join(eggJianghuDir, 'app/public') },
       ],
     },
+    jianghuConfig: {
+      enableUploadStaticFileCache: true,
+      enableUploadStaticFileAuthorization: false,
+    },
 
     view: {
       defaultViewEngine: 'nunjucks',

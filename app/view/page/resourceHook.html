@@ -102,8 +102,7 @@
             <v-col cols="12" sm="12" md="4">
               <span class="jh-input-label">学生ID</span>
               <v-text-field
-                class="jh-v-input" dense single-line filled label="学生ID"
-                v-model="createItem.studentId" :rules="validationRules.requireRules"></v-text-field>
+                class="jh-v-input" dense single-line filled label="学生ID（自动生成）" disabled></v-text-field>
             </v-col>
             <v-col cols="12" sm="12" md="4">
               <span class="jh-input-label">班级ID</span>
@@ -188,8 +187,8 @@
             <v-col cols="12" sm="12" md="4">
               <span class="jh-input-label">学生ID</span>
               <v-text-field
-                class="jh-v-input" dense single-line filled label="学生ID"
-                v-model="updateItem.studentId" :rules="validationRules.requireRules"></v-text-field>
+                class="jh-v-input" dense single-line filled label="学生ID" disabled
+                v-model="updateItem.studentId"></v-text-field>
             </v-col>
             <v-col cols="12" sm="12" md="4">
               <span class="jh-input-label">班级ID</span>
@@ -415,7 +414,7 @@ new Vue({
         data: {
           appData: {
             pageId: 'resourceHook',
-            actionId: 'selectItemList',// 'selectItemListByService', 'selectItemListBySql'
+            actionId: 'selectItemList',
             actionData: {},
             where: {},
             orderBy: [{column: 'operationAt', order: 'desc'}]
@@ -456,16 +455,19 @@ new Vue({
     async doCreateItem() {
       await window.jhMask.show();
       await window.vtoast.loading("新增学生");
-      await window.jianghuAxios({
-        data: {
-          appData: {
-            pageId: 'resourceHook',
-            actionId: 'insertItem',
-            actionData: this.createActionData
+      try {
+        await window.jianghuAxios({
+          data: {
+            appData: {
+              pageId: 'resourceHook',
+              actionId: 'insertItem',
+              actionData: this.createActionData
+            }
           }
-        }
-      })
-      await window.jhMask.hide();
+        })
+      } finally {
+        await window.jhMask.hide();
+      }
       await window.vtoast.success("新增学生成功");
     },
     async closeCreateDrawer() {
@@ -505,18 +507,21 @@ new Vue({
     async doUpdateItem() {
       await window.jhMask.show();
       await window.vtoast.loading("修改学生");
-      await window.jianghuAxios({
-        data: {
-          appData: {
-            pageId: 'resourceHook',
-            actionId: 'updateItem',
-            actionData: this.updateActionData,
-            where: {id: this.updateItemId}
+      try {
+        await window.jianghuAxios({
+          data: {
+            appData: {
+              pageId: 'resourceHook',
+              actionId: 'updateItem',
+              actionData: this.updateActionData,
+              where: {id: this.updateItemId}
+            }
           }
-        }
-      })
+        })
+      } finally {
+        await window.jhMask.hide();
+      }
 
-      await window.jhMask.hide();
       await window.vtoast.success("修改学生成功");
     },
 

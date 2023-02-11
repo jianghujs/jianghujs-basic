@@ -1,32 +1,41 @@
-'use strict';
+"use strict";
 
 
 // ========================================常用 require start===========================================
-const Service = require('egg').Service;
+const Service = require("egg").Service;
 const validateUtil = require("@jianghujs/jianghu/app/common/validateUtil");
 const idGenerateUtil = require("@jianghujs/jianghu/app/common/idGenerateUtil");
 
-const appDataSchema = Object.freeze({
+const appDataSchema = {
   selectStudentList: {
     type: "object",
-    additionalProperties: true,
-    required: [],
-    properties: {}
+    required: ["pageId", "actionId"],
+    properties: {
+      pageId: { type: "string" },
+      actionId: { type: "string" },
+      authToken: { anyOf: [{ type: "string" }, { type: "null" }] },
+      actionData: { type: "object" },
+      where: { type: "object" },
+    },
   },
-});
+};
 
 class StudentService extends Service {
   // beforeHook: 生成学生 studentId
   async generateStudentId() {
-    const tableName = "student";
-    const columnName = "studentId";
-    const studentId = await idGenerateUtil.idPlus({
-      knex: this.app.jianghuKnex,
-      tableName,
-      columnName,
-    });
-    console.log('student_id----', studentId)
-    this.ctx.request.body.appData.actionData.studentId = studentId;
+    const maxStudentIdResult = await this.app
+      .jianghuKnex("student")
+      .max("studentId", { as: "maxStudentId" })
+      .first();
+
+    let newStudentId;
+    if (!maxStudentIdResult.maxStudentId) {
+      newStudentId = "S10001";
+    } else {
+      const maxStudentId = parseInt(maxStudentIdResult.maxStudentId.replace("S", ""))
+      newStudentId = `S${maxStudentId + 1}`;
+    }
+    this.ctx.request.body.appData.actionData.studentId = newStudentId;
   }
 
   // 数据权限方式一，beforeHook 配合 sql 动态数据进行查询
@@ -42,10 +51,10 @@ class StudentService extends Service {
   // 数据权限方式二，直接使用 service 实现
   // 获取同班学生列表
   async selectStudentList() {
-
+    const appData = this.ctx.request.body.appData;
     validateUtil.validate(
       appDataSchema.selectStudentList,
-      actionData
+      appData
     );
 
     const studentInfo = await this.app
