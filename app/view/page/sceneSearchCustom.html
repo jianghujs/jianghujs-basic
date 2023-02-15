@@ -75,14 +75,14 @@
             <!--表格操作按钮-->
             <template v-slot:item.action="{ item }">
             <span
-              role="button" class="success--text font-weight-medium font-size-2 mr-1"
+              role="button" class="success--text font-weight-medium font-size-2 mr-2"
               @click="doUiAction('startUpdateItem', item)">
-                <v-icon size="14" class="success--text">mdi-note-edit-outline</v-icon>修改
+                <v-icon size="16" class="success--text">mdi-note-edit-outline</v-icon>修改
             </span>
               <span
                 role="button" class="success--text font-weight-medium font-size-2"
                 @click="doUiAction('deleteItem', item)">
-                <v-icon size="14" class="success--text">mdi-trash-can-outline</v-icon>删除
+                <v-icon size="16" class="success--text">mdi-trash-can-outline</v-icon>删除
             </span>
             </template>
             <!--表格底部右侧功能按钮-->
@@ -129,10 +129,10 @@
           <v-form ref="createForm" lazy-validation>
             <!--抽屉标题-->
             <v-row>
-              <span class="title pa-6 pl-8">新增信息</span>
+              <span class="text-subtitle-1 font-weight-medium pa-6 pl-7">新增信息</span>
             </v-row>
             <!--抽屉表单-->
-            <v-row class="mt-0 px-6">
+            <v-row class="mt-0 px-4">
               <v-col cols="12" sm="12" md="4">
                 <span class="jh-input-label">学生ID</span>
                 <v-text-field
@@ -211,10 +211,10 @@
           <v-form ref="updateForm" lazy-validation>
             <!--抽屉标题-->
             <v-row>
-              <span class="title pa-6 pl-8">新增信息</span>
+              <span class="text-subtitle-1 font-weight-medium pa-6 pl-7">新增信息</span>
             </v-row>
             <!--抽屉表单-->
-            <v-row class="mt-0 px-6">
+            <v-row class="mt-0 px-4">
               <v-col cols="12" sm="12" md="4">
                 <span class="jh-input-label">学生ID</span>
                 <v-text-field
@@ -368,7 +368,7 @@ new Vue({
     isTableLoading: true,
     tableData: [],
     headers: [
-      {text: '操作', value: 'action', type: 'button', align: 'center', sortable: false, width: 120, class: 'fixed', cellClass: 'fixed'},
+      {text: '操作', value: 'action', type: 'button', sortable: false, width: 120, class: 'fixed', cellClass: 'fixed'},
       {text: "学生ID", value: "studentId", type: "input", width: 120},
       {text: "班级ID", value: "classId", type: "select", width: 140},
       {text: "学生名字", value: "name", type: "input", width: 120},
