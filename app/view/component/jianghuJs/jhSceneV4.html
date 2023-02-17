@@ -1,8 +1,8 @@
-<!--jhScene.html >>>>>>>>>>>>> -->
+<!-- jhScene.html >>>>>>>>>>>>> -->
 <script type="text/html" id="jh-scene">
 <div class="jh-scene">
 <v-row class="ma-0 ml-xs-n1">
-  <!--场景列表-->
+  <!-- 场景列表 -->
   <v-btn small :outlined="currentSceneId !== scene.id"
          v-for="(scene, index) in sceneList"
          :key="index"
@@ -11,9 +11,9 @@
          color="grey darken-1" class="mb-2 ml-1">
     {{ scene.name }}
   </v-btn>
-  <!--新增场景按钮-->
+  <!-- 新增场景按钮 -->
 
-  <!--场景操作菜单-->
+  <!-- 场景操作菜单 -->
   <v-menu offset-y v-model="isSceneOperationShown">
     <template v-slot:activator="{on, attrs}">
       <v-btn
@@ -99,7 +99,7 @@
       <v-card-text class="pb-2">
         <v-card outlined>
           <v-list dense class="scene-list">
-            <!--场景列表数据 >>>>>>>>>>>>>> -->
+            <!-- 场景列表数据 >>>>>>>>>>>>>> -->
             <template v-if="sceneCustomList && sceneCustomList.length">
               <v-list-item class="scene-item px-2" v-for="item in sceneCustomList" :key="item.value">
                 <v-list-item-content>
@@ -110,7 +110,7 @@
                 </v-list-item-icon>
               </v-list-item>
             </template>
-            <!--<<<<<<<<<<<<<<< 场景列表数据 -->
+            <!-- <<<<<<<<<<<<<<< 场景列表数据 -->
             <template v-else>
               <div class="text-center grey--text" style="line-height: 100px;">暂无自定义场景</div>
             </template>

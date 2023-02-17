@@ -21,15 +21,15 @@
       <!-- 页面内容 >>>>>>>>>>>>> -->
       <v-card class="rounded-lg">
         <v-row class="ma-0 pa-4">
-          <!--新增按钮-->
+          <!-- 新增按钮 -->
           <v-btn color="success" class="elevation-0 mr-2" @click="doUiAction('startCreateItem')" small>新增</v-btn>
           <v-spacer></v-spacer>
-          <!--搜索过滤-->
+          <!-- 搜索过滤 -->
           <v-col cols="12" xs="8" sm="4" md="3" xl="2" class="pa-0">
             <v-text-field color="success" v-model="searchInput" prefix="搜索：" class="jh-v-input" dense filled single-line></v-text-field>
           </v-col>
         </v-row>
-        <!--表格-->
+        <!-- 表格 -->
         <v-data-table
           :headers="headers"
           :items="tableData"
@@ -42,7 +42,7 @@
           checkbox-color="success"
           fixed-header
           class="jh-fixed-table-height elevation-0 mt-0 mb-xs-4">
-          <!--表格行操作按钮-->
+          <!-- 表格行操作按钮 -->
           <template v-slot:item.action="{ item }">
             <span
               role="button" class="success--text font-weight-medium font-size-2 mr-2"
@@ -55,15 +55,15 @@
               <v-icon size="16" class="success--text">mdi-trash-can-outline</v-icon>删除
             </span>
           </template>
-          <!--性别-->
+          <!-- 性别 -->
           <template v-slot:item.gender="{ item }">
             {{ getDisplayText({displayObj: constantObj.gender, displayValue: item.gender}) }}
           </template>
-          <!--年级-->
+          <!-- 年级 -->
           <template v-slot:item.level="{ item }">
             {{ getDisplayText({displayObj: constantObj.level, displayValue: item.level}) }}
           </template>
-          <!--没有数据-->
+          <!-- 没有数据 -->
           <template v-slot:loading>
             <div class="jh-no-data">数据加载中</div>
           </template>
@@ -73,7 +73,7 @@
           <template v-slot:no-results>
             <div class="jh-no-data">暂无数据</div>
           </template>
-          <!--表格分页-->
+          <!-- 表格分页 -->
           <template v-slot:footer.page-text="pagination">
             <span>{{pagination.pageStart}}-{{pagination.pageStop}}</span>
             <span class="ml-1">共{{pagination.itemsLength}}条</span>
@@ -82,14 +82,14 @@
       </v-card>
       <!-- <<<<<<<<<<<<< 页面内容 -->
 
-      <!--新增抽屉-->
+      <!-- 新增抽屉 -->
       <v-navigation-drawer v-model="isCreateDrawerShown" v-click-outside="drawerClickOutside" fixed temporary right width="80%" class="elevation-24">
         <v-form ref="createForm" lazy-validation>
-          <!--抽屉标题-->
+          <!-- 抽屉标题 -->
           <v-row>
             <span class="text-subtitle-1 font-weight-medium pa-6 pl-7">添加信息</span>
           </v-row>
-          <!--抽屉表单主体-->
+          <!-- 抽屉表单主体 -->
           <v-row class="mt-0 px-4">
             <v-col cols="12" sm="12" md="4">
               <span class="jh-input-label">学生ID</span>
@@ -133,27 +133,27 @@
               <v-text-field class="jh-v-input" dense single-line filled label="备注" v-model="createItem.remarks"></v-text-field>
             </v-col>
           </v-row>
-          <!--抽屉操作按钮-->
+          <!-- 抽屉操作按钮 -->
           <v-row class="justify-end mx-0 mt-8 px-6">
             <v-btn color="success" @click="doUiAction('createItem')" small>保存</v-btn>
             <v-btn class="ml-2" @click="isCreateDrawerShown = false" small>取消</v-btn>
           </v-row>
         </v-form>
-        <!--抽屉关闭按钮-->
+        <!-- 抽屉关闭按钮 -->
         <v-btn
           elevation="0" color="success" fab absolute top left small tile class="drawer-close-float-btn"
           @click="isCreateDrawerShown = false">
           <v-icon>mdi-close</v-icon>
         </v-btn>
       </v-navigation-drawer>
-      <!--编辑抽屉-->
+      <!-- 编辑抽屉 -->
       <v-navigation-drawer v-model="isUpdateDrawerShown" v-click-outside="drawerClickOutside" fixed temporary right width="80%" class="elevation-24">
         <v-form ref="updateForm" lazy-validation>
-          <!--抽屉标题-->
+          <!-- 抽屉标题 -->
           <v-row>
             <span class="text-subtitle-1 font-weight-medium pa-6 pl-7">修改信息</span>
           </v-row>
-          <!--抽屉表单-->
+          <!-- 抽屉表单 -->
           <v-row class="mt-0 px-4">
             <v-col cols="12" sm="12" md="4">
               <span class="jh-input-label">学生ID</span>
@@ -197,7 +197,7 @@
               <v-text-field class="jh-v-input" dense single-line filled label="备注" v-model="updateItem.remarks"></v-text-field>
             </v-col>
           </v-row>
-          <!--抽屉操作按钮-->
+          <!-- 抽屉操作按钮 -->
           <v-row class="justify-end mx-0 mt-8 px-6">
             <v-btn color="success" small @click="doUiAction('updateItem')">保存</v-btn>
             <v-btn class="ml-2" small @click="isUpdateDrawerShown = false">取消
@@ -205,7 +205,7 @@
           </v-row>
         </v-form>
 
-        <!--抽屉关闭按钮-->
+        <!-- 抽屉关闭按钮 -->
         <v-btn
           elevation="0" color="success" fab absolute top left small tile class="drawer-close-float-btn"
           @click="isUpdateDrawerShown = false">
