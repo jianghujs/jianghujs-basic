@@ -1,0 +1,8 @@
+{
+    "pageType": "1table-page",
+    "pageId": "studentManagment2",
+    "table": "student",
+    "featureList": [
+        {}
+    ]
+}
