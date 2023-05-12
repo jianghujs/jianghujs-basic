@@ -4,8 +4,8 @@
 
 ```sql
 # 数据库初始化
-create database `jianghujs-basic` default character set utf8mb4 collate utf8mb4_bin;
-use jianghujs-basic;
+create database `jianghujs_basic` default character set utf8mb4 collate utf8mb4_bin;
+use jianghujs_basic;
 # 运行 sql/init.sql 文件
 ```
 
@@ -19,7 +19,7 @@ use jianghujs-basic;
   port: 3306,
   user: 'root',
   password: '123456',
-  database: 'jianghujs-basic'
+  database: 'jianghujs_basic'
   ```
 4. 启动 npm run dev
    
