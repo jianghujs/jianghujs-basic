@@ -146,20 +146,14 @@
       <v-menu v-if="!isMobile" offset-y v-model="isAvatarMenuShown">
         <template v-slot:activator="{on, attrs}">
           <div text v-bind="attrs" v-on="on" class="jh-avatar-menu-btn px-1">
-            <span class="jh-font-size-3 black--text pr-1">{{ userInfo.user.username }}</span>
-            <v-icon>mdi-account-circle</v-icon>
+            <v-icon size="32">mdi-account-circle</v-icon>
+            <div class="ml-1">
+              <p class="jh-font-size-10 grey--text mb-0">{{ userInfo.user.userId }}</p>
+              <p class="jh-font-size-13 black--text mb-0">{{ userInfo.user.username }}</p>
+            </div>
           </div>
         </template>
         <v-list nav dense>
-          <v-list-item class="mt-2">
-            <v-list-item-icon class="mr-1 mt-1">
-              <v-icon size="16" color="grey darken-3">mdi-account-outline</v-icon>
-            </v-list-item-icon>
-            <v-list-item-content>
-              <v-list-item-title color="grey darken-3">{{ userInfo.user.userId }}</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-
           <!-- 右上角下拉菜单 -->
           <v-list-item v-for="avatarMenu of inAvatarMenuList" :key="avatarMenu.path" @click="openUrl(avatarMenu.path)">
             <v-list-item-icon class="mr-1 mt-1">

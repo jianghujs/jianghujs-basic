@@ -368,11 +368,24 @@
         background-color: #F6F6F6;
     }
 
-    /* table行hover浅绿色背景色 */
+    /* table行hover背景色 */
     .theme--light.v-data-table>.v-data-table__wrapper>table>tbody>tr:hover:not(.v-data-table__expanded__content):not(.v-data-table__empty-wrapper),
     .theme--light.v-data-table>.v-data-table__wrapper>table>tbody>tr:hover td.fixed,
     .theme--light.v-data-table.fixed-first-column>.v-data-table__wrapper>table>tbody>tr:hover td:nth-child(1) {
-        background: #EEF7ED !important;
+        background: #fff !important;
+    }
+    .theme--light.v-data-table>.v-data-table__wrapper>table>tbody>tr:nth-child(even):hover:not(.v-data-table__expanded__content):not(.v-data-table__empty-wrapper),
+    .theme--light.v-data-table>.v-data-table__wrapper>table>tbody>tr:nth-child(even):hover td.fixed,
+    .theme--light.v-data-table.fixed-first-column>.v-data-table__wrapper>table>tbody>tr:nth-child(even):hover td:nth-child(1) {
+        background: #F6F6F6 !important;
+    }
+
+    /* table行选中背景色 */
+    .theme--light.v-data-table tbody tr.v-data-table__selected{
+        background: #fff !important;
+    }
+    .theme--light.v-data-table tbody tr.v-data-table__selected:nth-child(even){
+        background: #F6F6F6 !important;
     }
 
     /* table 定高 */

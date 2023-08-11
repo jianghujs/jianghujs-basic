@@ -13,7 +13,6 @@
         <!-- 帮助页按钮 -->
         <v-icon @click="isHelpPageDrawerShown = true" color="success" small>mdi-help-circle-outline</v-icon>
       </div>
-      <!-- <v-breadcrumbs class="pb-3 pt-0 px-0" :items="breadcrumbs" divider="-"></v-breadcrumbs> -->
     </div>
     <!-- <<<<<<<<<<<<< 头部内容 -->
 
@@ -23,6 +22,7 @@
         <v-row class="ma-0 pa-4">
           <!-- 新增按钮 -->
           <v-btn color="success" class="elevation-0 mr-2" @click="doUiAction('startCreateItem')" small>新增</v-btn>
+          <v-btn color="success" class="elevation-0 mr-2" small :disabled="tableSelected.length === 0">批量删除</v-btn>
           <v-spacer></v-spacer>
           <!-- 搜索过滤 -->
           <v-col cols="12" xs="8" sm="4" md="3" xl="2" class="pa-0">
@@ -41,7 +41,8 @@
           :class="{'zebraLine': isTableZebraLineShown }"
           checkbox-color="success"
           fixed-header
-          class="jh-fixed-table-height elevation-0 mt-0 mb-xs-4">
+          class="jh-fixed-table-height elevation-0 mt-0 mb-xs-4"
+          show-select item-key="studentId" @item-selected="tableItemSelected" @toggle-select-all="tableToggleSelectAll" v-model="tableSelected">
           <!-- 表格行操作按钮 -->
           <template v-slot:item.action="{ item }">
             <template>
@@ -322,6 +323,7 @@ new Vue({
       {text: "操作时间", value: "operationAt", width: 250},
       {text: '操作', value: 'action', align: 'center', sortable: false, width: window.innerWidth < 500 ? 80 : 120, class: 'fixed', cellClass: 'fixed'},
     ],
+    tableSelected: [],
 
     isCreateDrawerShown: false,
     createItem: {},
@@ -527,8 +529,25 @@ new Vue({
     async clearDeleteItem() {
       this.deleteItem = {};
       this.deleteItemId = null;
-    }
+    },
     // ---------- <<<<<<<<<<< 删除数据 uiAction ---------
+
+    // ---------- table selected >>>>>>>>>>>> --------
+    tableItemSelected({ item, value }) {
+      if (value) {
+        this.tableSelected.push(item);
+      } else {
+        this.tableSelected = _.reject(this.tableSelected, ['studentId', item.studentId]);
+      }
+    },
+    tableToggleSelectAll({ items, value }) {
+      if (value) {
+        this.tableSelected = items;
+      } else {
+        this.tableSelected = [];
+      }
+    },
+    // ---------- <<<<<<<<<<< table selected  --------
   }
 })
 </script>

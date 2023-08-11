@@ -9,27 +9,28 @@
   <v-main class="mt-15">
     <!-- 头部内容 >>>>>>>>>>>>> -->
     <div class="jh-page-second-bar px-8">
-      <v-row>
+      <v-row class="align-center">
         <v-col cols="12" xs="12" sm="12" md="4" xl="3">
-          <div class="pt-3 text-h7 font-weight-bold">服务端搜索
+          <div class="py-2 text-h7 font-weight-bold">服务端搜索
             <!-- 帮助页按钮 -->
             <v-icon @click="isHelpPageDrawerShown = true" color="success" small>mdi-help-circle-outline
             </v-icon>
           </div>
-          <v-breadcrumbs class="pb-3 pt-0 pl-0" :items="breadcrumbs" divider="-"></v-breadcrumbs>
         </v-col>
         <!-- pc端的搜索条件表单 >>>>>>>> -->
         <v-col cols="12" xs="12" sm="12" md="8" xl="9">
-          <v-row class="jh-backend-form-container justify-end ma-0 py-1 pb-xs-2">
-            <v-col cols="12" xs="6" sm="6" md="4" xl="3" class="pa-xs-0 pb-2 pr-1 pr-xs-1">
-              <v-select v-model="serverSearchInput.level" color="success" prefix="年级：" class="jh-v-input bg-white" :items="constantObj.level" dense filled single-line></v-select>
-            </v-col>
-            <v-col cols="12" xs="6" sm="6" md="4" xl="3" class="pa-xs-0 pb-2 pl-1 pl-xs-1">
-              <v-select v-model="serverSearchInput.gender" color="success" prefix="性别：" class="jh-v-input bg-white" :items="constantObj.gender" dense filled single-line></v-select>
-            </v-col>
-            <v-btn class="jh-backend-search-btn elevation-0 ml-0 mt-3" color="success" small @click="doUiAction('getTableData')">
-              查询
-            </v-btn>
+          <v-row class="jh-backend-form-container justify-end ma-0 py-3">
+              <v-col cols="12" xs="12" sm="6" md="4" xl="3" class="pa-0 pr-0 pr-sm-2">
+                <v-select v-model="serverSearchInput.level" color="success" prefix="年级：" class="jh-v-input bg-white" :items="constantObj.level" dense filled single-line hide-details></v-select>
+              </v-col>
+              <v-col cols="12" xs="12" sm="6" md="4" xl="3" class="pa-0 pr-0 pr-md-2 pt-2 pt-sm-0">
+                <v-select v-model="serverSearchInput.gender" color="success" prefix="性别：" class="jh-v-input bg-white" :items="constantObj.gender" dense filled single-line hide-details></v-select>
+              </v-col>
+              <div class="jh-backend-search-btn">
+                <v-btn class="elevation-0 float-right mt-2 mt-md-0" color="success" small @click="doUiAction('getTableData')">
+                  查询
+                </v-btn>
+              </div>
           </v-row>
         </v-col>
         <!-- <<<<<<<< pc端的搜索条件表单 -->
@@ -89,6 +90,10 @@
           </template>
           <template v-slot:no-results>
             <div class="jh-no-data">暂无数据</div>
+          </template>
+          <!-- 查询条件 -->
+          <template v-slot:footer.prepend>
+            <div style="flex: auto;">{{searchSummary}}</div>
           </template>
           <!-- 表格分页 -->
           <template v-slot:footer.page-text="pagination">
@@ -293,6 +298,7 @@ new Vue({
       gender: null
     },
     searchInput: null,
+    searchSummary: '',
     isTableLoading: true,
     tableData: [],
     headers: [
@@ -391,6 +397,16 @@ new Vue({
         }
       })).data.appData.resultData.rows;
       this.tableData = rows;
+
+      const conditions = [];
+      if (this.serverSearchInput.level) {
+        conditions.push(`年级为【${this.serverSearchInput.level}】`);
+      }
+      if (this.serverSearchInput.gender) {
+        conditions.push(`性别为【${this.serverSearchInput.gender}】`);
+      }
+      this.searchSummary = conditions.length > 0  ? `${conditions.join('，')}，共${rows.length}条记录` : `共${rows.length}条记录`;
+
       this.isTableLoading = false;
     },
     // ---------- 新增数据 uiAction >>>>>>>>>> --------

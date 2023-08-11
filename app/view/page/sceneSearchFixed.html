@@ -23,12 +23,9 @@
         <!-- pc端的搜索条件表单 >>>>>>>> -->
         <v-col cols="12" xs="12" sm="12" md="8" xl="9">
           <v-row class="jh-backend-form-container justify-end ma-0 py-4 pt-xs-0">
-            <v-btn
-              small :outlined="currentSceneId !== scene.id" v-for="(scene, index) in sceneList"
-              :key="index" :dark="currentSceneId === scene.id"
-              @click="doUiAction('useScene', scene)" color="grey darken-1" class="mb-2 ml-1">
-              {{ scene.name }}
-            </v-btn>
+            <v-btn-toggle :value="0" mandatory dense class="mr-2" color="success" @change="doUiAction('useScene', sceneList[$event])" > 
+              <v-btn small v-for="scene, index in sceneList" :key="index"> {{scene.name}} </v-btn> 
+            </v-btn-toggle>
           </v-row>
         </v-col>
         <!-- <<<<<<<< pc端的搜索条件表单 -->
@@ -344,7 +341,7 @@ new Vue({
     currentSceneId: 'scene-fixed-all',
     sceneList: [
       {"form": {}, "name": "全部", "id": "scene-fixed-all"},
-      {"form": {"level": "01", "gender": "male"}, "name": "二年级的男生", "id": "scene-fixed-1"},
+      {"form": {"level": "01", "gender": "male"}, "name": "一年级的男生", "id": "scene-fixed-1"},
       {"form": {"level": "02", "gender": "female"}, "name": "二年级的女生", "id": "scene-fixed-2"},
     ],
     serverSearchInput: {
