@@ -66,12 +66,34 @@
           class="jh-fixed-table-height elevation-0 mt-0 mb-xs-4">
           <!-- 表格操作按钮 -->
           <template v-slot:item.action="{ item }">
-            <span role="button" class="success--text font-weight-medium font-size-2 mr-2" @click="doUiAction('startUpdateItem', item)">
-              <v-icon size="16" class="success--text">mdi-note-edit-outline</v-icon>修改
-            </span>
-            <span role="button" class="success--text font-weight-medium font-size-2" @click="doUiAction('deleteItem', item)">
-              <v-icon size="16" class="success--text">mdi-trash-can-outline</v-icon>删除
-            </span>
+            <template>
+              <!-- pc端 -->
+              <template v-if="!isMobile">
+                <span role="button" class="success--text font-weight-medium font-size-2 mr-2" @click="doUiAction('startUpdateItem', item)">
+                  <v-icon size="16" class="success--text">mdi-note-edit-outline</v-icon>修改
+                </span>
+                <span role="button" class="success--text font-weight-medium font-size-2" @click="doUiAction('deleteItem', item)">
+                  <v-icon size="16" class="success--text">mdi-trash-can-outline</v-icon>删除
+                </span>
+              </template>
+              <!-- 手机端 -->
+              <v-menu offset-y v-if="isMobile">
+                <template v-slot:activator="{ on, attrs }">
+                  <span role="button" class="success--text font-weight-medium font-size-2"
+                    v-bind="attrs" v-on="on">
+                    操作<v-icon size="14" class="success--text">mdi-chevron-down</v-icon>
+                  </span>
+                </template>
+                <v-list dense>
+                  <v-list-item @click="doUiAction('startUpdateItem', item)">
+                    <v-list-item-title>修改</v-list-item-title>
+                  </v-list-item>
+                  <v-list-item @click="doUiAction('deleteItem', item)">
+                    <v-list-item-title>删除</v-list-item-title>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
+            </template>
           </template>
           <!-- 性别 -->
           <template v-slot:item.gender="{ item }">
@@ -302,7 +324,6 @@ new Vue({
     isTableLoading: true,
     tableData: [],
     headers: [
-      {text: '操作', value: 'action', type: 'button', sortable: false, width: 120, class: 'fixed', cellClass: 'fixed'},
       {text: "学生ID", value: "studentId", type: "input", width: 120},
       {text: "班级ID", value: "classId", type: "select", width: 140},
       {text: "学生名字", value: "name", type: "input", width: 120},
@@ -314,6 +335,7 @@ new Vue({
       {text: "备注", value: "remarks", type: "textarea", width: 120},
       {text: "操作者", value: "operationByUser", type: "input", width: 120},
       {text: "操作时间", value: "operationAt", type: "input", width: 250},
+      {text: '操作', value: 'action', type: 'button', sortable: false, width: window.innerWidth < 500 ? 80 : 120, class: 'fixed', cellClass: 'fixed'},
     ],
 
     isCreateDrawerShown: false,
