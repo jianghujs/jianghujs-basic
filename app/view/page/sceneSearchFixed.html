@@ -397,49 +397,54 @@ new Vue({
   },
   methods: {
     async doUiAction(uiActionId, uiActionData) {
-      switch (uiActionId) {
-        case 'useScene':
-          await this.useScene(uiActionData);
-          await this.getTableData();
-          break;
-        case 'getTableData':
-          await this.getTableData();
-          break;
-        case 'startCreateItem':
-          await this.prepareCreateFormData();
-          await this.openCreateDrawer();
-          break;
-        case 'createItem':
-          await this.prepareCreateValidate();
-          await this.confirmCreateItemDialog();
-          await this.prepareDoCreateItem();
-          await this.doCreateItem();
-          await this.closeCreateDrawer();
-          await this.getTableData();
-          break;
-        case 'startUpdateItem':
-          await this.prepareUpdateFormData(uiActionData);
-          await this.openUpdateDrawer();
-          break;
-        case 'updateItem':
-          await this.prepareUpdateValidate();
-          await this.confirmUpdateItemDialog();
-          await this.prepareDoUpdateItem();
-          await this.doUpdateItem();
-          await this.closeUpdateDrawer();
-          await this.getTableData();
-          break;
-        case 'deleteItem':
-          await this.prepareDeleteFormData(uiActionData);
-          await this.confirmDeleteItemDialog();
-          await this.prepareDoDeleteItem();
-          await this.doDeleteItem();
-          await this.clearDeleteItem();
-          await this.getTableData();
-          break;
-        default:
-          console.error("[doUiAction] uiActionId not find", {uiActionId});
-          break;
+      try {
+        switch (uiActionId) {
+          case 'useScene':
+            await this.useScene(uiActionData);
+            await this.getTableData();
+            break;
+          case 'getTableData':
+            await this.getTableData();
+            break;
+          case 'startCreateItem':
+            await this.prepareCreateFormData();
+            await this.openCreateDrawer();
+            break;
+          case 'createItem':
+            await this.prepareCreateValidate();
+            await this.confirmCreateItemDialog();
+            await this.prepareDoCreateItem();
+            await this.doCreateItem();
+            await this.closeCreateDrawer();
+            await this.getTableData();
+            break;
+          case 'startUpdateItem':
+            await this.prepareUpdateFormData(uiActionData);
+            await this.openUpdateDrawer();
+            break;
+          case 'updateItem':
+            await this.prepareUpdateValidate();
+            await this.confirmUpdateItemDialog();
+            await this.prepareDoUpdateItem();
+            await this.doUpdateItem();
+            await this.closeUpdateDrawer();
+            await this.getTableData();
+            break;
+          case 'deleteItem':
+            await this.prepareDeleteFormData(uiActionData);
+            await this.confirmDeleteItemDialog();
+            await this.prepareDoDeleteItem();
+            await this.doDeleteItem();
+            await this.clearDeleteItem();
+            await this.getTableData();
+            break;
+          default:
+            console.error("[doUiAction] uiActionId not find", {uiActionId});
+            break;
+        }
+      } catch (error) {
+          console.error("[doUiAction] uiActionId error", {uiActionId}, error);
+        await window.jhMask.hide();
       }
     },
     /**
