@@ -204,7 +204,18 @@
     }
 
     body .theme--light.v-text-field--filled>.v-input__control>.v-input__slot {
+        background: #Ffff;
+        border: 1px solid #DFDFDF;
+    }
+
+    body .theme--light.v-text-field--filled.v-input--is-focused>.v-input__control>.v-input__slot {
+        background: #Ffff;
+        border: 1px solid var(--cPrimaryColor) ;
+    }
+
+    body .theme--light.v-text-field--filled.v-input--is-disabled>.v-input__control>.v-input__slot {
         background: #F2F2F2;
+        border: 1px solid #F2F2F2;
     }
 
     .v-select__selection--comma {
