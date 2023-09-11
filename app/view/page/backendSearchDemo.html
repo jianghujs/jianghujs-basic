@@ -324,7 +324,7 @@ new Vue({
     isTableLoading: true,
     tableData: [],
     headers: [
-      {text: "学生ID", value: "studentId", type: "input", width: 120},
+      {text: "学生ID", value: "studentId", type: "input", width: 80, class: window.innerWidth < 500 ? 'fixed' : '', cellClass: window.innerWidth < 500 ? 'fixed' : ''},
       {text: "班级ID", value: "classId", type: "select", width: 140},
       {text: "学生名字", value: "name", type: "input", width: 120},
       {text: "年级", value: "level", type: "select", width: 120},
@@ -335,7 +335,7 @@ new Vue({
       {text: "备注", value: "remarks", type: "textarea", width: 120},
       {text: "操作者", value: "operationByUser", type: "input", width: 120},
       {text: "操作时间", value: "operationAt", type: "input", width: 250},
-      {text: '操作', value: 'action', type: 'button', sortable: false, width: window.innerWidth < 500 ? 80 : 120, class: 'fixed', cellClass: 'fixed'},
+      {text: '操作', value: 'action', type: 'button', align: 'center', sortable: false, width: window.innerWidth < 500 ? 60 : 130, class: 'fixed', cellClass: 'fixed'},
     ],
 
     isCreateDrawerShown: false,
@@ -422,10 +422,10 @@ new Vue({
 
       const conditions = [];
       if (this.serverSearchInput.level) {
-        conditions.push(`年级为【${this.serverSearchInput.level}】`);
+        conditions.push(`年级为【${getDisplayText({displayObj: this.constantObj.level, displayValue: this.serverSearchInput.level})}】`);
       }
       if (this.serverSearchInput.gender) {
-        conditions.push(`性别为【${this.serverSearchInput.gender}】`);
+        conditions.push(`性别为【${getDisplayText({displayObj: this.constantObj.gender, displayValue: this.serverSearchInput.gender})}】`);
       }
       this.searchSummary = conditions.length > 0  ? `${conditions.join('，')}，共${rows.length}条记录` : `共${rows.length}条记录`;
 

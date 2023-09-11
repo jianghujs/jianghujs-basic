@@ -26,12 +26,8 @@
                 :initFormData="serverSearchInput" :sceneListKey="localSceneListKey"
                 :currentSceneId="currentSceneId" @useScene="doUiAction('useScene', $event)">
                 <template v-slot:form="{form}">
-                  <v-select
-                    v-model="form.level" color="success" prefix="年级：" class="jh-v-input mb-2"
-                    :items="constantObj.level" dense filled single-line></v-select>
-                  <v-select
-                    v-model="form.gender" color="success" prefix="性别：" class="jh-v-input"
-                    :items="constantObj.gender" dense filled single-line></v-select>
+                  <v-select class="jh-v-input mb-2" dense single-line filled clearable prefix="年级：" v-model="form.level" :items="constantObj.level"></v-select>
+                  <v-select class="jh-v-input" dense single-line filled clearable prefix="性别：" v-model="form.gender" :items="constantObj.gender"></v-select>
                 </template>
               </jh-scene>
             </v-row>
