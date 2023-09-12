@@ -9,11 +9,16 @@
   <v-main class="mt-15">
     <!-- 头部内容 >>>>>>>>>>>>> -->
     <div class="jh-page-second-bar px-8">
-      <div class="pt-3 text-h7 font-weight-bold">前端resource
-        <!-- 帮助页按钮 -->
-        <v-icon @click="isHelpPageDrawerShown = true" color="success" small>mdi-help-circle-outline</v-icon>
-      </div>
-      <v-breadcrumbs class="pb-3 pt-0 pl-0" :items="breadcrumbs" divider="-"></v-breadcrumbs>
+      <v-row class="align-center">
+        <v-col cols="12" xs="12" sm="12" md="4" xl="3">
+          <div class="py-4 text-body-1 font-weight-bold">前端resource
+            <!-- 帮助页按钮 -->
+            <span role="button" class="success--text font-weight-regular jh-font-size-13 ml-2" @click="isHelpPageDrawerShown = true">
+              <v-icon size="13" class="success--text">mdi-help-circle-outline</v-icon>帮助
+            </span>
+          </div>
+        </v-col>
+      </v-row>
     </div>
     <!-- <<<<<<<<<<<<< 头部内容 -->
 
