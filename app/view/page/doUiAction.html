@@ -160,7 +160,7 @@
             </v-col>
           </v-row>
           <!-- 抽屉操作按钮 -->
-          <v-row class="justify-end mx-0 mt-8 px-4">
+          <v-row class="justify-end mx-0 my-8 px-4">
             <v-btn color="success" @click="doUiAction('createItem')" small>保存</v-btn>
             <v-btn class="ml-2" @click="isCreateDrawerShown = false" small>取消</v-btn>
           </v-row>
@@ -225,7 +225,7 @@
             </v-col>
           </v-row>
           <!-- 抽屉操作按钮 -->
-          <v-row class="justify-end mx-0 mt-8 px-4">
+          <v-row class="justify-end mx-0 my-8 px-4">
             <v-btn color="success" small @click="doUiAction('updateItem')">保存</v-btn>
             <v-btn class="ml-2" small @click="isUpdateDrawerShown = false">取消
             </v-btn>
@@ -283,19 +283,9 @@ new Vue({
   vueComponent: 'page',
   vuetify: new Vuetify(),
   data: {
-    // 面包屑
-    breadcrumbs: [
-      {
-        text: '首页',
-        disabled: true,
-      },
-      {
-        text: 'doUiAction',
-        disabled: true,
-      }
-    ],
     isHelpPageDrawerShown: false,
     isMobile: window.innerWidth < 500,
+    
     // 表格相关数据
     isTableZebraLineShown: true,
     validationRules: {

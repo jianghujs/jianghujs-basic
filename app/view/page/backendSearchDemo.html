@@ -13,8 +13,9 @@
         <v-col cols="12" xs="12" sm="12" md="4" xl="3">
           <div class="py-4 text-body-1 font-weight-bold">服务端搜索
             <!-- 帮助页按钮 -->
-            <v-icon @click="isHelpPageDrawerShown = true" color="success" small>mdi-help-circle-outline
-            </v-icon>
+            <span role="button" class="success--text font-weight-regular jh-font-size-13 ml-2" @click="isHelpPageDrawerShown = true">
+              <v-icon size="13" class="success--text">mdi-help-circle-outline</v-icon>帮助
+            </span>
           </div>
         </v-col>
         <!-- pc端的搜索条件表单 >>>>>>>> -->
@@ -64,7 +65,7 @@
           :class="{'zebraLine': isTableZebraLineShown }"
           fixed-header
           class="jh-fixed-table-height elevation-0 mt-0 mb-xs-4">
-          <!-- 表格操作按钮 -->
+          <!-- 表格行操作按钮 -->
           <template v-slot:item.action="{ item }">
             <template>
               <!-- pc端 -->
@@ -72,8 +73,8 @@
                 <span role="button" class="success--text font-weight-medium font-size-2 mr-2" @click="doUiAction('startUpdateItem', item)">
                   <v-icon size="16" class="success--text">mdi-note-edit-outline</v-icon>修改
                 </span>
-                <span role="button" class="success--text font-weight-medium font-size-2" @click="doUiAction('deleteItem', item)">
-                  <v-icon size="16" class="success--text">mdi-trash-can-outline</v-icon>删除
+                <span role="button" class="red--text text--accent-2 font-weight-medium font-size-2" @click="doUiAction('deleteItem', item)">
+                  <v-icon size="16" class="red--text text--accent-2">mdi-trash-can-outline</v-icon>删除
                 </span>
               </template>
               <!-- 手机端 -->
@@ -335,7 +336,7 @@ new Vue({
       {text: "备注", value: "remarks", type: "textarea", width: 120},
       {text: "操作者", value: "operationByUser", type: "input", width: 120},
       {text: "操作时间", value: "operationAt", type: "input", width: 250},
-      {text: '操作', value: 'action', type: 'button', align: 'center', sortable: false, width: window.innerWidth < 500 ? 60 : 130, class: 'fixed', cellClass: 'fixed'},
+      {text: '操作', value: 'action', align: 'center', sortable: false, width: window.innerWidth < 500 ? 80 : 120, class: 'fixed', cellClass: 'fixed'},
     ],
 
     isCreateDrawerShown: false,
