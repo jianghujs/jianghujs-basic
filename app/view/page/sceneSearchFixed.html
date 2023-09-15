@@ -11,12 +11,11 @@
     <div class="jh-page-second-bar px-8">
       <v-row class="align-center">
         <v-col cols="12" xs="12" sm="12" md="4" xl="3">
-          <div class="py-2 text-h7 font-weight-bold">场景搜索
+          <div class="py-4 text-body-1 font-weight-bold">场景搜索
             <!-- 帮助页按钮 -->
-            <v-icon
-              @click="isHelpPageDrawerShown = true" color="success"
-              small>mdi-help-circle-outline
-            </v-icon>
+            <span role="button" class="success--text font-weight-regular jh-font-size-13 ml-2" @click="isHelpPageDrawerShown = true">
+              <v-icon size="13" class="success--text">mdi-help-circle-outline</v-icon>帮助
+            </span>
           </div>
         </v-col>
         <!-- pc端的搜索条件表单 >>>>>>>> -->
@@ -30,7 +29,7 @@
         <!-- <<<<<<<< pc端的搜索条件表单 -->
       </v-row>
     </div>
-
+    <!-- <<<<<<<<<<<<< 头部内容 -->
 
     <div class="jh-page-body-container px-8">
       <!-- 页面内容 >>>>>>>>>>>>> -->
