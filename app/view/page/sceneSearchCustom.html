@@ -11,12 +11,11 @@
       <div class="jh-page-second-bar px-8">
         <v-row class="align-center">
           <v-col cols="12" xs="12" sm="12" md="4" xl="3">
-            <div class="pt-3 text-h7 font-weight-bold">定制场景搜索
+            <div class="py-4 text-body-1 font-weight-bold">定制场景搜索
               <!-- 帮助页按钮 -->
-              <v-icon
-                @click="isHelpPageDrawerShown = true" color="success"
-                small>mdi-help-circle-outline
-              </v-icon>
+              <span role="button" class="success--text font-weight-regular jh-font-size-13 ml-2" @click="isHelpPageDrawerShown = true">
+                <v-icon size="13" class="success--text">mdi-help-circle-outline</v-icon>帮助
+              </span>
             </div>
           </v-col>
           <!-- pc端的搜索条件表单 >>>>>>>> -->
@@ -67,7 +66,7 @@
             :class="{'zebraLine': isTableZebraLineShown }"
             fixed-header
             class="jh-fixed-table-height elevation-0 mt-0 mb-xs-4">
-            <!-- 表格操作按钮 -->
+            <!-- 表格行操作按钮 -->
             <template v-slot:item.action="{ item }">
               <template>
                 <!-- pc端 -->
@@ -75,8 +74,8 @@
                   <span role="button" class="success--text font-weight-medium font-size-2 mr-2" @click="doUiAction('startUpdateItem', item)">
                     <v-icon size="16" class="success--text">mdi-note-edit-outline</v-icon>修改
                   </span>
-                  <span role="button" class="success--text font-weight-medium font-size-2" @click="doUiAction('deleteItem', item)">
-                    <v-icon size="16" class="success--text">mdi-trash-can-outline</v-icon>删除
+                  <span role="button" class="red--text text--accent-2 font-weight-medium font-size-2" @click="doUiAction('deleteItem', item)">
+                    <v-icon size="16" class="red--text text--accent-2">mdi-trash-can-outline</v-icon>删除
                   </span>
                 </template>
                 <!-- 手机端 -->
@@ -98,17 +97,6 @@
                 </v-menu>
               </template>
             </template>
-            <!-- 表格底部右侧功能按钮 -->
-            <template v-slot:footer.prepend>
-              <v-menu top offset-y :close-on-content-click="false">
-                <template v-slot:activator="{on, attrs}">
-                  <v-btn icon v-bind="attrs" v-on="on">
-                    <v-icon>mdi-menu</v-icon>
-                  </v-btn>
-                </template>
-                <v-switch v-model="isTableZebraLineShown" hide-details class="mx-3 my-2" label="显示斑马纹" dense flat></v-switch>
-              </v-menu>
-            </template>
             <!-- 性别 -->
             <template v-slot:item.gender="{ item }">
               {{ getDisplayText({displayObj: constantObj.gender, displayValue: item.gender}) }}
@@ -127,6 +115,10 @@
             <template v-slot:no-results>
               <div class="jh-no-data">暂无数据</div>
             </template>
+            <!-- 查询条件 -->
+            <template v-slot:footer.prepend>
+              <div style="flex: auto;">{{searchSummary}}</div>
+            </template>
             <!-- 表格分页 -->
             <template v-slot:footer.page-text="pagination">
               <span>{{pagination.pageStart}}-{{pagination.pageStop}}</span>
@@ -141,13 +133,14 @@
           class="elevation-24">
           <v-form ref="createForm" lazy-validation>
             <!-- 抽屉标题 -->
-            <v-row>
-              <span class="text-subtitle-1 font-weight-medium pa-6 pl-7">新增信息</span>
+            <v-row no-gutters>
+              <span class="text-h7 font-weight-bold pa-4">添加信息</span>
             </v-row>
+            <v-divider class="jh-divider"></v-divider>
             <!-- 抽屉表单 -->
             <v-row class="mt-0 px-4">
               <v-col cols="12" sm="12" md="4">
-                <span class="jh-input-label">学生ID</span>
+                <span class="jh-input-label">学生ID<span class="red--text text--accent-2 ml-1">*必填</span></span>
                 <v-text-field
                   class="jh-v-input" dense single-line filled label="学生ID"
                   v-model="createItem.studentId" :rules="validationRules.requireRules"></v-text-field>
@@ -205,7 +198,7 @@
               </v-col>
             </v-row>
             <!-- 抽屉操作按钮 -->
-            <v-row class="justify-end mx-0 mt-8 px-6">
+            <v-row class="justify-end mx-0 my-8 px-4">
               <v-btn color="success" @click="doUiAction('createItem')" small>保存</v-btn>
               <v-btn class="elevation-0 ml-2" @click="isCreateDrawerShown = false" small>取消</v-btn>
             </v-row>
@@ -223,13 +216,14 @@
           class="elevation-24">
           <v-form ref="updateForm" lazy-validation>
             <!-- 抽屉标题 -->
-            <v-row>
-              <span class="text-subtitle-1 font-weight-medium pa-6 pl-7">新增信息</span>
+            <v-row no-gutters>
+              <span class="text-h7 font-weight-bold pa-4">修改信息</span>
             </v-row>
+            <v-divider class="jh-divider"></v-divider>
             <!-- 抽屉表单 -->
             <v-row class="mt-0 px-4">
               <v-col cols="12" sm="12" md="4">
-                <span class="jh-input-label">学生ID</span>
+                <span class="jh-input-label">学生ID<span class="red--text text--accent-2 ml-1">*必填</span></span>
                 <v-text-field
                   class="jh-v-input" disabled dense single-line filled label="学生ID"
                   v-model="updateItem.studentId" :rules="validationRules.requireRules"></v-text-field>
@@ -287,7 +281,7 @@
               </v-col>
             </v-row>
             <!-- 抽屉操作按钮 -->
-            <v-row class="justify-end mx-0 mt-8 px-6">
+            <v-row class="justify-end mx-0 my-8 px-4">
               <v-btn color="success" @click="doUiAction('updateItem')" small>保存</v-btn>
               <v-btn class="elevation-0 ml-2" @click="isUpdateDrawerShown = false" small>取消</v-btn>
             </v-row>
@@ -378,6 +372,7 @@ new Vue({
     },
     currentTableGenderType: 'all',
     searchInput: null,
+    searchSummary: '',
     isTableLoading: true,
     tableData: [],
     headers: [
@@ -392,7 +387,7 @@ new Vue({
       {text: "备注", value: "remarks", type: "textarea", width: 120},
       {text: "操作者", value: "operationByUser", type: "input", width: 120},
       {text: "操作时间", value: "operationAt", type: "input", width: 250},
-      {text: '操作', value: 'action', type: 'button', sortable: false, width: window.innerWidth < 500 ? 80 : 120, class: 'fixed', cellClass: 'fixed'},
+      {text: '操作', value: 'action', align: 'center', sortable: false, width: window.innerWidth < 500 ? 80 : 120, class: 'fixed', cellClass: 'fixed'},
     ],
 
     isCreateDrawerShown: false,
@@ -420,10 +415,11 @@ new Vue({
           break;
         case 'useScene':
           await this.useScene(uiActionData);
-          await this.getTableData();
+          await this.doUiAction('getTableData');
           break;
         case 'getTableData':
           await this.getTableData();
+          await this.setSearchSummary();
           break;
         case 'startCreateItem':
           await this.prepareCreateFormData();
@@ -435,7 +431,7 @@ new Vue({
           await this.prepareDoCreateItem();
           await this.doCreateItem();
           await this.closeCreateDrawer();
-          await this.getTableData();
+          await this.doUiAction('getTableData');
           break;
         case 'startUpdateItem':
           await this.prepareUpdateFormData(uiActionData);
@@ -447,7 +443,7 @@ new Vue({
           await this.prepareDoUpdateItem();
           await this.doUpdateItem();
           await this.closeUpdateDrawer();
-          await this.getTableData();
+          await this.doUiAction('getTableData');
           break;
         case 'deleteItem':
           await this.prepareDeleteFormData(uiActionData);
@@ -455,7 +451,7 @@ new Vue({
           await this.prepareDoDeleteItem();
           await this.doDeleteItem();
           await this.clearDeleteItem();
-          await this.getTableData();
+          await this.doUiAction('getTableData');
           break;
         default:
           console.error("[doUiAction] uiActionId not find", {uiActionId});
@@ -485,6 +481,16 @@ new Vue({
       })).data.appData.resultData.rows;
       this.tableData = rows;
       this.isTableLoading = false;
+    },
+    setSearchSummary(){
+      const conditions = [];
+      if (this.serverSearchInput.level) {
+        conditions.push(`年级为【${getDisplayText({displayObj: this.constantObj.level, displayValue: this.serverSearchInput.level})}】`);
+      }
+      if (this.serverSearchInput.gender) {
+        conditions.push(`性别为【${getDisplayText({displayObj: this.constantObj.gender, displayValue: this.serverSearchInput.gender})}】`);
+      }
+      this.searchSummary = conditions.length > 0  ? `${conditions.join('，')}，共${this.tableData.length}条记录` : `共${this.tableData.length}条记录`;
     },
     // ---------- 场景 uiAction >>>>>>>>>> --------
     setDefaultSceneData() {

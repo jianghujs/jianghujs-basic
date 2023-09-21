@@ -362,6 +362,7 @@ new Vue({
       switch (uiActionId) {
         case 'getTableData':
           await this.getTableData();
+          await this.setSearchSummary();
           break;
         case 'startCreateItem':
           await this.prepareCreateFormData();
@@ -373,7 +374,7 @@ new Vue({
           await this.prepareDoCreateItem();
           await this.doCreateItem();
           await this.closeCreateDrawer();
-          await this.getTableData();
+          await this.doUiAction('getTableData');
           break;
         case 'startUpdateItem':
           await this.prepareUpdateFormData(uiActionData);
@@ -385,7 +386,7 @@ new Vue({
           await this.prepareDoUpdateItem();
           await this.doUpdateItem();
           await this.closeUpdateDrawer();
-          await this.getTableData();
+          await this.doUiAction('getTableData');
           break;
         case 'deleteItem':
           await this.prepareDeleteFormData(uiActionData);
@@ -393,7 +394,7 @@ new Vue({
           await this.prepareDoDeleteItem();
           await this.doDeleteItem();
           await this.clearDeleteItem();
-          await this.getTableData();
+          await this.doUiAction('getTableData');
           break;
         default:
           console.error("[doUiAction] uiActionId not find", {uiActionId});
@@ -422,7 +423,9 @@ new Vue({
         }
       })).data.appData.resultData.rows;
       this.tableData = rows;
-
+      this.isTableLoading = false;
+    },
+    setSearchSummary(){
       const conditions = [];
       if (this.serverSearchInput.level) {
         conditions.push(`年级为【${getDisplayText({displayObj: this.constantObj.level, displayValue: this.serverSearchInput.level})}】`);
@@ -430,9 +433,7 @@ new Vue({
       if (this.serverSearchInput.gender) {
         conditions.push(`性别为【${getDisplayText({displayObj: this.constantObj.gender, displayValue: this.serverSearchInput.gender})}】`);
       }
-      this.searchSummary = conditions.length > 0  ? `${conditions.join('，')}，共${rows.length}条记录` : `共${rows.length}条记录`;
-
-      this.isTableLoading = false;
+      this.searchSummary = conditions.length > 0  ? `${conditions.join('，')}，共${this.tableData.length}条记录` : `共${this.tableData.length}条记录`;
     },
     // ---------- 新增数据 uiAction >>>>>>>>>> --------
     async prepareCreateFormData() {
