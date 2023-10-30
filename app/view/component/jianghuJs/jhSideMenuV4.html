@@ -170,285 +170,289 @@
 </script>
 
 <script>
-Vue.component('jh-menu', {
-  template: "#jh-menu",
-  vueComponent: 'jh-menu',
-  vuetify: new Vuetify(),
-  data() {
-    return {
-      isMobile: window.innerWidth < 600,
-      tabsMaxWidth: 'calc(100vw - 353px)',
-      appDirectoryLink: '<$ ctx.app.config.appDirectoryLink $>',
-      appType: '<$ ctx.app.config.appType $>',
-      appTitle: '<$ ctx.app.config.appTitle $>',
-      userInfo: window.userInfo,
-      // 弹出菜单数据
-      isMobileMenuDrawerShown: !(window.innerWidth < 600),
-      isAvatarMenuShown: false,
-      // 用户菜单
-      menuSort: null,
-      menuGroup: null,
-      inMenuList: [],
-      inAvatarMenuList: [],
-      inMenuShownStatusList: [],
-      currentMenuTabIndex: -1,
-      // 当前二级菜单pageID
-      currentSecondMenuPageId: null,
+  Vue.component('jh-menu', {
+    template: "#jh-menu",
+    vueComponent: 'jh-menu',
+    vuetify: new Vuetify(),
+    data() {
+      return {
+        isMobile: window.innerWidth < 600,
+        tabsMaxWidth: 'calc(100vw - 353px)',
+        appDirectoryLink: '<$ ctx.app.config.appDirectoryLink $>',
+        appType: '<$ ctx.app.config.appType $>',
+        appTitle: '<$ ctx.app.config.appTitle $>',
+        userInfo: window.userInfo,
+        // 弹出菜单数据
+        isMobileMenuDrawerShown: !(window.innerWidth < 600),
+        isAvatarMenuShown: false,
+        // 用户菜单
+        menuSort: null,
+        menuGroup: null,
+        inMenuList: [],
+        inAvatarMenuList: [],
+        inMenuShownStatusList: [],
+        currentMenuTabIndex: -1,
+        // 当前二级菜单pageID
+        currentSecondMenuPageId: null,
 
-    };
-  },
-  watch: {
-    isMobileMenuDrawerShown(value) {
+      };
+    },
+    watch: {
+      isMobileMenuDrawerShown(value) {
+        this.setCurrentMenuItem();
+      },
+      inMenuShownStatusList: {
+        deep: true,
+        handler(value, oValue) {
+          if (this.currentMenuTabIndex > -1 && !value[this.currentMenuTabIndex]) {
+            this.setCurrentMenuItem();
+          }
+        }
+      }
+    },
+    created() {
+      this.computedPageId();
+      this.groupMenuList();
+      this.computedMenuList();
+      this.computedMultiAppMenuList();
+      this.computedAvatarMenuList();
       this.setCurrentMenuItem();
+      this.getTabsMaxWidth();
     },
-    inMenuShownStatusList: {
-      deep: true,
-      handler(value, oValue) {
-        if (this.currentMenuTabIndex > -1 && !value[this.currentMenuTabIndex]) {
-          this.setCurrentMenuItem();
-        }
-      }
-    }
-  },
-  created() {
-    this.computedPageId();
-    this.groupMenuList();
-    this.computedMenuList();
-    this.computedMultiAppMenuList();
-    this.computedAvatarMenuList();
-    this.setCurrentMenuItem();
-    this.getTabsMaxWidth();
-  },
-  methods: {
-    // 获取当前页面PageId
-    computedPageId() {
-      const urlPathList = window.location.pathname.split('/');
-      this.currentPageId = urlPathList && urlPathList[urlPathList.length - 1];
-    },
-    // 动态计算菜单栏目的最大宽度，按照实际的标题宽度计算
-    getTabsMaxWidth() {
-      this.$nextTick(() => {
-        if (this.$refs.toolbarTitle) {
-          this.tabsMaxWidth = 'calc(100vw - ' + (this.$refs.toolbarTitle.offsetWidth + 195) + 'px)';
-        }
-      })
-    },
-    // 跳转链接
-    openUrl(url, queryParams) {
-      if (queryParams) {
-        const queryStrings = Object.keys(queryParams)
-          .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(queryParams[k]))
-          .join('&');
-        window.location.href = url + '?' + queryStrings;
-      } else {
-        window.location.href = url;
-      }
-    },
-    // 定位当前页面在属于哪个菜单
-    setCurrentMenuItem() {
-      // 一级菜单定位
-      const index = _.findIndex(this.inMenuList, {path: location.pathname});
-      if (index > -1) {
-        // 设置标题、菜单选中
-        this.currentMenuTabIndex = index;
-        const currentPageTitle = this.inMenuList[index].title;
-        document.title = this.appTitle + (currentPageTitle ? " - " + currentPageTitle : "");
-        return;
-      }
-      // 子菜单定位
-      this.inMenuList.some((item, index) => {
-        const findSecondMenuSuccess = item.children && item.children.some(child => {
-          if (child.pageId === this.currentPageId) {
-            this.currentMenuTabIndex = index;
-            this.currentSecondMenuPageId = child.pageId;
-            item.active = true;
-            const currentPageTitle = `[${item.title}]${child.title}`;
-            document.title = this.appTitle + (currentPageTitle ? " - " + currentPageTitle : "");
-            return true;
+    methods: {
+      // 获取当前页面PageId
+      computedPageId() {
+        const urlPathList = window.location.pathname.split('/');
+        this.currentPageId = urlPathList && urlPathList[urlPathList.length - 1];
+      },
+      // 动态计算菜单栏目的最大宽度，按照实际的标题宽度计算
+      getTabsMaxWidth() {
+        this.$nextTick(() => {
+          if (this.$refs.toolbarTitle) {
+            this.tabsMaxWidth = 'calc(100vw - ' + (this.$refs.toolbarTitle.offsetWidth + 195) + 'px)';
           }
-          return false;
         })
-        return findSecondMenuSuccess;
-      })
-
-    },
-    // 菜单数据分组、排序处理
-    groupMenuList() {
-      // 菜单元数据处理
-      const menuListResource = _
-        .chain(this.userInfo.allowPageList)
-        .filter(page => _.includes(['showInMenu', 'link'], page.pageType) || (_.includes(['dynamicInMenu', 'avatarInMenu'], page.pageType) && this.currentPageId === page.pageId))
-        .value();
-      // 分组菜单数据
-      this.menuGroup = _.groupBy(menuListResource, function (item) {
-        if (item.pageName.startsWith("[")) {
-          const pageName = item.pageName.substring(1);
-          const pageNameArr = pageName.split("]");
-          return `${pageNameArr[0]}`;
+      },
+      // 跳转链接
+      openUrl(url, queryParams) {
+        if (queryParams) {
+          const queryStrings = Object.keys(queryParams)
+            .map(k => encodeURIComponent(k) + '=' + encodeURIComponent(queryParams[k]))
+            .join('&');
+          window.location.href = url + '?' + queryStrings;
+        } else {
+          window.location.href = url;
         }
-        return `${item.pageName}`;
-      });
-      // 二级菜单排序
-      for (let key in this.menuGroup) {
-        this.menuGroup[key] = _.orderBy(this.menuGroup[key], ['sort'], ['asc'])
-      }
-      // 一级菜单排序
-      this.menuSort = Object.keys(this.menuGroup).sort((a, b) => {
-        return this.menuGroup[a][0].sort - this.menuGroup[b][0].sort
-      })
-    },
-    // 菜单构建
-    computedMenuList() {
-      this.inMenuList = this.menuSort.map(key => {
-        const page = this.menuGroup[key];
-        // 没有子菜单，直接构建菜单
-        if (page.length === 1) {
-          const menu = page[0];
-          return {
-            path: menu.pageType === 'link' ? menu.pageFile : `/${window.appInfo.appId}/page/${menu.pageId}`,
-            pageId: menu.pageId,
-            title: menu.pageName,
-            children: null
-          };
+      },
+      // 定位当前页面在属于哪个菜单
+      setCurrentMenuItem() {
+        // 一级菜单定位
+        const index = _.findIndex(this.inMenuList, { path: location.pathname });
+        if (index > -1) {
+          // 设置标题、菜单选中
+          this.currentMenuTabIndex = index;
+          const currentPageTitle = this.inMenuList[index].title;
+          document.title = this.appTitle + (currentPageTitle ? " - " + currentPageTitle : "");
+          return;
         }
-        // 二级的菜单创建
-        const children = page.map(child => {
-          let title = '';
-          if (child.pageName.startsWith("[")) {
-            const pageName = child.pageName.substring(1);
-            title = pageName.split("]")[1];
-          } else if (child.pageName.includes("|")) {
-            title = child.pageName.split('|')[1];
-          } else {
-            title = child.pageName;
-          }
-          return {
-            path: child.pageType === 'link' ? child.pageFile : `/${window.appInfo.appId}/page/${child.pageId}`,
-            pageId: child.pageId,
-            title,
-            children: null
-          };
-        });
-        return {
-          path: null,
-          pageId: null,
-          title: key,
-          children
-        }
-      })
-    },
-    // 多应用项目，添加回到目录
-    computedMultiAppMenuList() {
-      if(window.appInfo.appId !== 'directory') {
-        const appType = '<$ ctx.app.config.appType $>';
-        if (appType === 'multiApp' && this.appDirectoryLink) {
-          this.inMenuList.unshift({
-            path: this.appDirectoryLink,
-            pageId: 'directory',
-            title: '回到目录',
-            children: null
-          });
-        }
-      }
-    },
-    // 头像菜单构建
-    computedAvatarMenuList() {
-      this.inAvatarMenuList = _
-        .chain(this.userInfo.allowPageList)
-        .filter(['pageType', 'showInAvatarMenu'])
-        .map((page) => {
-          return {
-            path: `/${window.appInfo.appId}/page/${page.pageId}`,
-            title: page.pageName,
-            sort: parseInt(page.sort)
-          };
-        })
-        .orderBy(['sort'], ['asc'])
-        .value();
-    },
-    // 登出
-    async logout() {
-      try {
-        await window.jianghuAxios({
-          data: {
-            appData: {
-              pageId: 'allPage',
-              actionId: 'logout'
+        // 子菜单定位
+        this.inMenuList.some((item, index) => {
+          const findSecondMenuSuccess = item.children && item.children.some(child => {
+            if (child.pageId === this.currentPageId) {
+              this.currentMenuTabIndex = index;
+              this.currentSecondMenuPageId = child.pageId;
+              item.active = true;
+              const currentPageTitle = `[${item.title}]${child.title}`;
+              document.title = this.appTitle + (currentPageTitle ? " - " + currentPageTitle : "");
+              return true;
             }
+            return false;
+          })
+          return findSecondMenuSuccess;
+        })
+
+      },
+      // 菜单数据分组、排序处理
+      groupMenuList() {
+        // 菜单元数据处理
+        const menuListResource = _
+          .chain(this.userInfo.allowPageList)
+          .filter(page => _.includes(['showInMenu', 'link'], page.pageType) || (_.includes(['dynamicInMenu', 'avatarInMenu'], page.pageType) && this.currentPageId === page.pageId))
+          .value();
+        // 分组菜单数据
+        this.menuGroup = _.groupBy(menuListResource, function (item) {
+          if (item.pageName.startsWith("[")) {
+            const pageName = item.pageName.substring(1);
+            const pageNameArr = pageName.split("]");
+            return `${pageNameArr[0]}`;
+          }
+          return `${item.pageName}`;
+        });
+        // 二级菜单排序
+        for (let key in this.menuGroup) {
+          this.menuGroup[key] = _.orderBy(this.menuGroup[key], ['sort'], ['asc'])
+        }
+        // 一级菜单排序
+        this.menuSort = Object.keys(this.menuGroup).sort((a, b) => {
+          return this.menuGroup[a][0].sort - this.menuGroup[b][0].sort
+        })
+      },
+      // 菜单构建
+      computedMenuList() {
+        this.inMenuList = this.menuSort.map(key => {
+          const page = this.menuGroup[key];
+          // 没有子菜单，直接构建菜单
+          if (page.length === 1) {
+            const menu = page[0];
+            return {
+              path: menu.pageType === 'link' ? menu.pageFile : `/${window.appInfo.appId}/page/${menu.pageId}`,
+              pageId: menu.pageId,
+              title: menu.pageName,
+              children: null
+            };
+          }
+          // 二级的菜单创建
+          const children = page.map(child => {
+            let title = '';
+            if (child.pageName.startsWith("[")) {
+              const pageName = child.pageName.substring(1);
+              title = pageName.split("]")[1];
+            } else if (child.pageName.includes("|")) {
+              title = child.pageName.split('|')[1];
+            } else {
+              title = child.pageName;
+            }
+            return {
+              path: child.pageType === 'link' ? child.pageFile : `/${window.appInfo.appId}/page/${child.pageId}`,
+              pageId: child.pageId,
+              title,
+              children: null
+            };
+          });
+          return {
+            path: null,
+            pageId: null,
+            title: key,
+            children
           }
         })
-        vtoast.success('注销成功');
-        this.routeToLoginPage();
-      } catch (error) {
-        vtoast.fail(error.errorReason);
-        this.routeToLoginPage();
+      },
+      // 多应用项目，添加回到目录
+      computedMultiAppMenuList() {
+        if (window.appInfo.appId !== 'directory') {
+          const appType = '<$ ctx.app.config.appType $>';
+          if (appType === 'multiApp' && this.appDirectoryLink) {
+            this.inMenuList.unshift({
+              path: this.appDirectoryLink,
+              pageId: 'directory',
+              title: '回到目录',
+              children: null
+            });
+          }
+        }
+      },
+      // 头像菜单构建
+      computedAvatarMenuList() {
+        this.inAvatarMenuList = _
+          .chain(this.userInfo.allowPageList)
+          .filter(['pageType', 'showInAvatarMenu'])
+          .map((page) => {
+            return {
+              path: `/${window.appInfo.appId}/page/${page.pageId}`,
+              title: page.pageName,
+              sort: parseInt(page.sort)
+            };
+          })
+          .orderBy(['sort'], ['asc'])
+          .value();
+      },
+      // 登出
+      async logout() {
+        try {
+          await window.jianghuAxios({
+            data: {
+              appData: {
+                pageId: 'allPage',
+                actionId: 'logout'
+              }
+            }
+          })
+          vtoast.success('注销成功');
+          this.routeToLoginPage();
+        } catch (error) {
+          vtoast.fail(error.errorReason);
+          this.routeToLoginPage();
+        }
+      },
+      // 导航到登陆页
+      routeToLoginPage() {
+        localStorage.removeItem(`${window.appInfo.appId}_authToken`);
+        setTimeout(() => {
+          location.href = `/${window.appInfo.appId}/page/login`;
+        }, 700);
       }
     },
-    // 导航到登陆页
-    routeToLoginPage() {
-      localStorage.removeItem(`${window.appInfo.appId}_authToken`);
-      setTimeout(() => {
-        location.href = `/${window.appInfo.appId}/page/login`;
-      }, 700);
-    }
-  },
-});
+  });
 
 </script>
 <style>
-.jh-user-info{
-  position: fixed;
-  bottom: 16px;
-  width: 100%;
-  white-space: nowrap;
-}
-
-.jh-page-nav-bar .v-list-item, .jh-page-nav-bar .v-list-group__header{
-  border-bottom: 1px solid rgba(0, 0, 0, 0.03);
-}
-
-.jh-page-nav-bar .v-list-group__header .v-list-item{
-  border-bottom: none;
-}
-
-@media (max-width: 600px) {
-  body .jh-page-nav-bar .v-list-group .v-list-group__header{
-    padding: 0 !important;
+  .jh-user-info {
+    position: fixed;
+    bottom: 16px;
+    width: 100%;
+    white-space: nowrap;
   }
-  body .jh-page-nav-bar .v-list-group .v-list-item{
-    border-top: none;
+
+  .jh-page-nav-bar .v-list-item,
+  .jh-page-nav-bar .v-list-group__header {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.03);
   }
-}
 
-.second-active .v-list-item__title {
-  color: #4caf50 !important;
-}
+  .jh-page-nav-bar .v-list-group__header .v-list-item {
+    border-bottom: none;
+  }
 
-.jh-avatar-menu-btn {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  transition: all .3s;
-  border-radius: 5px;
-}
+  @media (max-width: 600px) {
+    body .jh-page-nav-bar .v-list-group .v-list-group__header {
+      padding: 0 !important;
+    }
 
-.jh-avatar-menu-btn:hover {
-  opacity: 0.8;
-}
+    body .jh-page-nav-bar .v-list-item {
+      border-top: none;
+    }
+  }
 
-.second-active {
-  caret-color: #4caf50 !important;
-  background-color: rgba(76, 175, 80, 0.1) !important;
-}
-.jh-toolbar-title{
-  height: 60px;
-  line-height: 60px;
-}
-.jh-menu-drawer-close-float-btn{
-  top: 120px !important;
-  right: -40px;
-  position: fixed;
-  left: auto !important;
-}
+  .second-active .v-list-item__title {
+    color: #4caf50 !important;
+  }
+
+  .jh-avatar-menu-btn {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: all .3s;
+    border-radius: 5px;
+  }
+
+  .jh-avatar-menu-btn:hover {
+    opacity: 0.8;
+  }
+
+  .second-active {
+    caret-color: #4caf50 !important;
+    background-color: rgba(76, 175, 80, 0.1) !important;
+  }
+
+  .jh-toolbar-title {
+    height: 60px;
+    line-height: 60px;
+  }
+
+  .jh-menu-drawer-close-float-btn {
+    top: 120px !important;
+    right: -40px;
+    position: fixed;
+    left: auto !important;
+  }
 </style>
 <!-- <<<<<<<<<<<<< jhMenu.html -->
