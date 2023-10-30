@@ -6,23 +6,25 @@
     v-model="isMobileMenuDrawerShown"
     app
     clipped
-    style="z-index: 99999"
     class="jh-page-nav-bar"
     width="208"
     floating
+    mobile-breakpoint="600"
     :hide-overlay="!isMobile"
+    style="z-index: 99;"
   >
     <!-- 页面标题 -->
     <v-toolbar-title ref="toolbarTitle" class="px-4 jh-toolbar-title">
       <span class="text-h7 font-weight-bold">{{ appTitle }}</span>
     </v-toolbar-title>
+    <v-divider class="jh-divider"></v-divider>
 
     <!-- 菜单 -->
-    <v-list flat>
+    <v-list flat class="mx-2">
       <v-list-item-group :value="currentMenuTabIndex" >
         <template v-for="(item, index) in inMenuList">
           <template v-if="item.children && item.children.length > 0">
-            <v-list-group :value="item.active">
+            <v-list-group :value="item.active" :class="{'mx-2': isMobile}">
               <template v-slot:activator>
                 <v-list-item class="pl-0" :ripple="false">
                   <v-list-item-content>
@@ -33,13 +35,10 @@
                 </v-list-item>
               </template>
               <v-list-item @click="openUrl(menu.path, menu.query)" v-for="menu in item.children" color="rgba(0, 0, 0, 0.87)"
-                :class="{'second-active': currentSecondMenuPageId === menu.pageId && currentMenuTabIndex === index, 'mx-2': isMobile}">
+                :class="{'second-active': currentSecondMenuPageId === menu.pageId && currentMenuTabIndex === index}">
                 <v-list-item-content>
                   <v-list-item-title class="pl-6 pl-sm-4">{{ menu.title }}</v-list-item-title>
                 </v-list-item-content>
-                <v-list-item-action v-if="isMobile">
-                  <v-icon>mdi-chevron-right</v-icon>
-                </v-list-item-action>
               </v-list-item>
             </v-list-group>
           </template>
@@ -54,9 +53,6 @@
                 {{ item.title }}
               </v-list-item-title>
             </v-list-item-content>
-            <v-list-item-action v-if="isMobile">
-              <v-icon>mdi-chevron-right</v-icon>
-            </v-list-item-action>
           </v-list-item>
         </template>
       </v-list-item-group>
@@ -65,10 +61,11 @@
     <!-- pc端底部用户信息 -->
     <template v-solt:bottom>
       <div v-if="!isMobile" class="jh-user-info">
+        <v-divider class="jh-divider"></v-divider>
         <v-menu offset-y v-model="isAvatarMenuShown" :nudge-right="208">
           <!-- 头像 -->
           <template v-slot:activator="{on, attrs}">
-            <div text v-bind="attrs" v-on="on" class="d-flex justify-space-between px-4">
+            <div text v-bind="attrs" v-on="on" class="d-flex justify-space-between px-4 pt-4">
               <v-icon :size="34">mdi-account-circle</v-icon>
               <div class="ml-1">
                 <p class="jh-font-size-12 black--text mb-0">{{ userInfo.user.username }}</p>
@@ -404,6 +401,23 @@ Vue.component('jh-menu', {
   bottom: 16px;
   width: 100%;
   white-space: nowrap;
+}
+
+.jh-page-nav-bar .v-list-item, .jh-page-nav-bar .v-list-group__header{
+  border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+}
+
+.jh-page-nav-bar .v-list-group__header .v-list-item{
+  border-bottom: none;
+}
+
+@media (max-width: 600px) {
+  body .jh-page-nav-bar .v-list-group .v-list-group__header{
+    padding: 0 !important;
+  }
+  body .jh-page-nav-bar .v-list-group .v-list-item{
+    border-top: none;
+  }
 }
 
 .second-active .v-list-item__title {

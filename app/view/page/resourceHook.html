@@ -1,4 +1,4 @@
-{% extends 'template/jhTemplateSideMenu.html'%}
+{% extends 'template/jhTemplateV4.html'%}
 
 {% block vueTemplate %}
 
@@ -6,9 +6,9 @@
 <div>
 <v-app mobile-breakpoint="sm">
   <jh-menu />
-  <v-main class="mt-15 mt-sm-0 jh-has-side-menu-main">
+  <v-main class="mt-15">
     <!-- 头部内容 >>>>>>>>>>>>> -->
-    <div class="jh-page-second-bar px-4">
+    <div class="jh-page-second-bar px-8">
       <v-row class="align-center">
         <v-col cols="12" xs="12" sm="12" md="4" xl="3">
           <div class="py-4 text-body-1 font-weight-bold">前端resource
@@ -22,7 +22,7 @@
     </div>
     <!-- <<<<<<<<<<<<< 头部内容 -->
 
-    <div class="jh-page-body-container px-4">
+    <div class="jh-page-body-container px-8">
       <!-- 页面内容 >>>>>>>>>>>>> -->
       <v-card class="rounded-lg">
         <v-row class="ma-0 pa-4">
