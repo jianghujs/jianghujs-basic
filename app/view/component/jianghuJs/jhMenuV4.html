@@ -154,7 +154,6 @@
               <v-icon :size="34">mdi-account-circle</v-icon>
               <div class="ml-1">
                 <p class="jh-font-size-12 black--text mb-0">{{ userInfo.user.username }}</p>
-                <!-- <p class="jh-font-size-10 grey--text mb-0">{{ userInfo.user.userId }}</p> -->
               </div>
             </div>
             <!-- 移动端右上角用户信息 -->
@@ -171,6 +170,13 @@
               </v-list-item-content>
             </v-list-item>
             
+            <v-list-item>
+              <v-list-item-content>
+                <p class="jh-font-size-12 grey--text mb-0">{{ userInfo.user.userId }}</p>
+              </v-list-item-content>
+            </v-list-item>
+            <v-divider class="my-1 jh-divider"></v-divider>
+
             <v-list-item v-for="avatarMenu of inAvatarMenuList" :key="avatarMenu.path" @click="openUrl(avatarMenu.path)">
               <v-list-item-icon class="mr-1 mt-1">
                 <v-icon size="16" color="grey darken-3">mdi-account-cog-outline</v-icon>
