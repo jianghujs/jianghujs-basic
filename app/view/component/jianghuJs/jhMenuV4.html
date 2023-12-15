@@ -141,24 +141,27 @@
 
       <div style="white-space: nowrap" class="d-flex align-center">
         <!-- PC端右上角菜单 -->
-        <template  v-if="!isMobile">
+        <div class="d-none d-lg-flex align-center">
           <div class="d-flex align-center mr-2">
-            <div class="ml-4" role="button" v-for="rightMenu of inRightMenuList" :key="rightMenu.path" @click="openUrl(rightMenu.path)">{{rightMenu.title}}</div>
+            <div class="d-flex align-center ml-4 jh-right-menu" role="button" v-for="rightMenu of inRightMenuList" :key="rightMenu.path" @click="openUrl(rightMenu.path)">
+              <div v-if="rightMenu.icon" v-html='rightMenu.icon'></div>
+              <div :class="{'ml-1': rightMenu.icon}">{{rightMenu.title}}</div>
+            </div>
           </div>
           <v-divider vertical class="mx-3 jh-divider" v-if="inRightMenuList.length > 0"></v-divider>
-        </template>
+        </div>
         <v-menu offset-y v-model="isAvatarMenuShown">
           <template v-slot:activator="{on, attrs}">
             <!-- pc端右上角用户信息 -->
             <div v-if="!isMobile" text v-bind="attrs" v-on="on" class="jh-avatar-menu-btn px-1">
-              <v-icon :size="34">mdi-account-circle</v-icon>
+              <v-icon :size="32" color="grey lighten-2">mdi-account-circle</v-icon>
               <div class="ml-1">
                 <p class="jh-font-size-12 black--text mb-0">{{ userInfo.user.username }}</p>
               </div>
             </div>
             <!-- 移动端右上角用户信息 -->
             <div v-else text v-bind="attrs" v-on="on" class="jh-avatar-menu-btn px-1">
-              <v-icon :size="32">mdi-account-circle</v-icon>
+              <v-icon :size="32" color="grey lighten-2">mdi-account-circle</v-icon>
             </div>
           </template>
           <v-list nav dense>
@@ -170,12 +173,23 @@
               </v-list-item-content>
             </v-list-item>
             
-            <v-list-item>
+            <template v-if="!isMobile">
+              <v-list-item>
+                <v-list-item-content>
+                  <p class="jh-font-size-12 grey--text mb-0">{{ userInfo.user.userId }}</p>
+                </v-list-item-content>
+              </v-list-item>
+              <v-divider class="my-1 jh-divider"></v-divider>
+            </template>
+
+            <v-list-item class="d-lg-none" v-for="rightMenu of inRightMenuList" :key="rightMenu.path" @click="openUrl(rightMenu.path)">
+              <v-list-item-icon class="mr-1 mt-1">
+                <v-icon size="16" color="grey darken-3">mdi-account-cog-outline</v-icon>
+              </v-list-item-icon>
               <v-list-item-content>
-                <p class="jh-font-size-12 grey--text mb-0">{{ userInfo.user.userId }}</p>
+                <v-list-item-title color="grey darken-3">{{ rightMenu.title }}</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
-            <v-divider class="my-1 jh-divider"></v-divider>
 
             <v-list-item v-for="avatarMenu of inAvatarMenuList" :key="avatarMenu.path" @click="openUrl(avatarMenu.path)">
               <v-list-item-icon class="mr-1 mt-1">
@@ -395,7 +409,8 @@
             return {
               path: _.includes(page.pageId, 'http') ? page.pageId : `/${window.appInfo.appId}/page/${page.pageId}`,
               title: page.pageName,
-              sort: parseInt(page.sort)
+              sort: parseInt(page.sort),
+              icon: page.pageIcon
             };
           })
           .orderBy(['sort'], ['asc'])
@@ -499,6 +514,12 @@
     right: -40px;
     position: fixed;
     left: auto !important;
+  }
+
+  /* 右上角菜单 */
+  .jh-right-menu svg{
+    width: 28px;
+    height: 28px;    
   }
 </style>
 <!-- <<<<<<<<<<<<< jhMenu.html -->
