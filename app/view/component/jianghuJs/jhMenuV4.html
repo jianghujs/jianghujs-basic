@@ -81,7 +81,6 @@
       </v-toolbar-title>
       <!-- pc端菜单 >>>>>>>>>>>>> -->
       <v-tabs
-        v-model="currentMenuTabIndex"
         v-if="!isMobile"
         show-arrows
         slider-size="0"
@@ -93,7 +92,7 @@
           <template v-if="item.pageId && !item.children">
             <v-tab
               class="px-2 mx-1 jh-header-tab"
-              active-class="jh-header-tab-active"
+              :class="{'jh-header-tab-active': currentMenuTabIndex === index}"
               :key="item.path"
               @click="openUrl(item.path, item.query)"
             >
@@ -319,7 +318,6 @@
           })
           return findSecondMenuSuccess;
         })
-
       },
       // 菜单数据分组、排序处理
       groupMenuList() {
@@ -514,6 +512,14 @@
     right: -40px;
     position: fixed;
     left: auto !important;
+  }
+
+  /* 左上角菜单 */
+  .jh-header-tab.v-tab--active{
+    color: var(--gray-900) !important;
+  }
+  .jh-header-tab.jh-header-tab-active{
+    color: #4caf50 !important;
   }
 
   /* 右上角菜单 */
