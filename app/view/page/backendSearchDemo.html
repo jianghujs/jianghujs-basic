@@ -6,12 +6,12 @@
 <div>
 <v-app mobile-breakpoint="sm">
   <jh-menu />
-  <v-main class="mt-15">
+  <v-main class="mt-12">
     <!-- 头部内容 >>>>>>>>>>>>> -->
     <div class="jh-page-second-bar px-8">
-      <v-row class="align-center">
+      <v-row class="align-center" dense>
         <v-col cols="12" xs="12" sm="12" md="4" xl="3">
-          <div class="py-4 text-body-1 font-weight-bold">服务端搜索
+          <div class="py-3 text-body-1 font-weight-bold d-flex align-center">服务端搜索
             <!-- 帮助页按钮 -->
             <span role="button" class="success--text font-weight-regular jh-font-size-13 ml-2" @click="isHelpPageDrawerShown = true">
               <v-icon size="13" class="success--text">mdi-help-circle-outline</v-icon>帮助
@@ -20,7 +20,7 @@
         </v-col>
         <!-- pc端的搜索条件表单 >>>>>>>> -->
         <v-col cols="12" xs="12" sm="12" md="8" xl="9">
-          <v-row class="jh-backend-form-container justify-end ma-0 py-3">
+          <v-row class="jh-backend-form-container justify-end ma-0 py-2">
               <v-col cols="12" xs="12" sm="6" md="4" xl="3" class="pa-0 pr-0 pr-sm-2">
                 <v-select v-model="serverSearchInput.level" color="success" prefix="年级：" class="jh-v-input bg-white" :items="constantObj.level" dense filled single-line hide-details></v-select>
               </v-col>
