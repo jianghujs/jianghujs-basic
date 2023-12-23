@@ -40,9 +40,9 @@
     <div>
       <v-app mobile-breakpoint="sm">
         <!-- 菜单栏 >>>>>>>>>>>>> -->
-        <v-app-bar app clipped-left height="60" class="jh-page-header px-8" style="z-index: 50;" flat>
+        <v-app-bar app clipped-left height="52" class="jh-page-header px-8" style="z-index: 50;" flat>
           <!-- 页面标题 -->
-          <v-toolbar-title ref="toolbarTitle" class="mr-8 pl-0">
+          <v-toolbar-title ref="toolbarTitle" class="mr-5 pl-0">
             <span class="text-h7 font-weight-bold">江湖演示-初级</span>
           </v-toolbar-title>
           <!-- 菜单 -->
@@ -72,7 +72,7 @@
           <div class="jh-page-second-bar px-8">
             <v-row class="align-center">
               <v-col cols="12" xs="12" sm="12" md="4" xl="3">
-                <div class="py-4 text-body-1 font-weight-bold">前端对接
+                <div class="py-4 text-body-1 font-weight-bold d-flex align-center">前端对接
                   <!-- 帮助页按钮 -->
                   <span role="button" class="success--text font-weight-regular jh-font-size-13 ml-2" @click="isHelpPageDrawerShown = true">
                     <v-icon size="13" class="success--text">mdi-help-circle-outline</v-icon>帮助
@@ -86,7 +86,7 @@
           <div class="jh-page-body-container px-8">
             <!-- 页面内容 >>>>>>>>>>>>> -->
             <v-card class="rounded-lg">
-              <v-row class="ma-0 pa-4">
+              <v-row class="ma-0 pa-3">
                 <!-- 新增按钮 -->
                 <v-btn color="success" class="elevation-0 mr-2" @click="doUiAction('startCreateItem')" small>新增</v-btn>
                 <v-spacer></v-spacer>
