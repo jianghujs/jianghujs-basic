@@ -14,11 +14,8 @@
     "egg-scripts": "^2.11.0"
   },
   "devDependencies": {
-    "egg-bin": "^4.11.0",
-    "egg-mock": "^3.21.0",
-    "eslint": "^7.32.0",
-    "eslint-config-egg": "^7.1.0",
-    "eslint-plugin-jsdoc": "^37.6.1"
+    "autod": "^3.0.1",
+    "autod-egg": "^1.1.0"
   },
   "engines": {
     "node": ">=10.0.0"
@@ -27,13 +24,7 @@
     "start": "egg-scripts start --workers=2 --daemon --port=7205 --title=jianghujs-basic",
     "stop": "egg-scripts stop --title=jianghujs-basic",
     "dev": "egg-bin dev --port=7205",
-    "debug": "egg-bin debug",
-    "test": "npm run lint -- --fix && npm run test-local",
-    "test-local": "egg-bin test",
-    "cov": "egg-bin cov",
-    "lint": "eslint .",
-    "ci": "npm run lint && npm run cov",
-    "jianghu-init:studentManagement2": "jianghu-init json --jsonFile='./app/view/_jianghu-init-json-file/studentManagement2.json'"
+    "jianghu-init:json:dev": "jianghu-init json dev"
   },
   "repository": {
     "type": "git",
