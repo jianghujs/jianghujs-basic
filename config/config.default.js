@@ -15,6 +15,7 @@ module.exports = appInfo => {
     appId,
     appTitle: '江湖演示-基础',
     appLogo: `${appId}/public/img/logo.svg`,
+    keys: `${appId}_1638108566009`,
 
     indexPage: `/${appId}/page/doUiAction`,
     loginPage: `/${appId}/page/login`,
