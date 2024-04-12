@@ -56,11 +56,40 @@ CREATE TABLE `_constant` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='常量表; 软删除未启用;';
 
+
 -- ----------------------------
 -- Records of _constant
 -- ----------------------------
 BEGIN;
 COMMIT;
+
+-- ----------------------------
+-- Table structure for _constant_ui
+-- ----------------------------
+DROP TABLE IF EXISTS `_constant_ui`;
+CREATE TABLE `_constant_ui` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `constantKey` varchar(255) DEFAULT NULL,
+  `constantType` varchar(255) DEFAULT NULL COMMENT '常量类型; object, array',
+  `pageId` varchar(255) DEFAULT 'all' COMMENT '页面id',
+  `desc` varchar(255) DEFAULT NULL COMMENT '描述',
+  `en` text COMMENT '常量内容; object, array',
+  `zh` text COMMENT '常量内容; object, array',
+  `operation` varchar(255) DEFAULT 'insert' COMMENT '操作; insert, update, jhInsert, jhUpdate, jhDelete jhRestore',
+  `operationByUserId` varchar(255) DEFAULT NULL COMMENT '操作者userId',
+  `operationByUser` varchar(255) DEFAULT NULL COMMENT '操作者用户名',
+  `operationAt` varchar(255) DEFAULT NULL COMMENT '操作时间; E.g: 2021-05-28T10:24:54+08:00 ',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE KEY `pageId_constantKey_unique` (`constantKey`,`pageId`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='常量表;';
+
+-- ----------------------------
+-- Records of _constant_ui
+-- ----------------------------
+BEGIN;
+INSERT INTO `_constant_ui` (`id`, `constantKey`, `constantType`, `pageId`, `desc`, `en`, `zh`, `operation`, `operationByUserId`, `operationByUser`, `operationAt`) VALUES (6, 'footer', 'object', 'all', '', '{ \"copyright\": \"Copyright © 2022 openjianghu.org\" }', '{ \"copyright\": \"Copyright © 2022 cn.openjianghu.org\" }', 'insert', NULL, NULL, NULL);
+COMMIT;
+
 
 -- ----------------------------
 -- Table structure for _group
