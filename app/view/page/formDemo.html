@@ -19,16 +19,15 @@
           </v-col>
 
           <v-col cols="12" sm="12" md="4">
-              <span class="jh-input-label">搜索</span>
+              <span class="jh-input-label">水果搜索</span>
               <v-autocomplete v-model="selectedItem" :items="items" hint="开始打字..." persistent-hint class="jh-v-input" dense single-line filled></v-autocomplete>
           </v-col>
           <v-col cols="12" sm="12" md="4">
-              <span class="jh-input-label">我同意</span>
-              <v-checkbox v-model="termsAccepted" class="jh-v-input" dense single-line filled></v-checkbox>
+              <v-checkbox v-model="termsAccepted" label="同意条款" class="jh-v-input" dense single-line filled></v-checkbox>
           </v-col>
           <v-col cols="12" sm="12" md="4">
               <span class="jh-input-label">开关</span>
-              <v-switch v-model="isDarkMode" class="jh-v-input" dense single-line filled></v-switch>
+              <v-switch v-model="switchEnable" class="jh-v-input" dense single-line filled></v-switch>
           </v-col>
           <v-col cols="12" sm="12" md="4">
               <span class="jh-input-label">音量</span>
@@ -36,18 +35,16 @@
           </v-col>
           <v-col cols="12" sm="12" md="4">
               <span class="jh-input-label">价格范围</span>
-              <v-range-slider v-model="rangeValues" min="0" max="100" class="jh-v-input" dense single-line
-                  filled></v-range-slider>
+              <v-range-slider v-model="rangeValues" min="0" max="100" class="jh-v-input" dense single-line filled></v-range-slider>
           </v-col>
           <v-col cols="12" sm="12" md="4">
               <span class="jh-input-label">评分</span>
-              <v-rating v-model="rating" :readonly="false" color="yellow darken-3" background-color="grey darken-1" class="jh-v-input"
-                  dense single-line filled></v-rating>
+              <v-rating v-model="rating" :readonly="false" color="yellow darken-3" background-color="grey darken-1" class="jh-v-input" dense single-line filled></v-rating>
           </v-col>
           <v-col cols="12" sm="12" md="4">
             <span class="jh-input-label">上传文件</span>
             <v-file-input v-model="file" class="jh-v-input" dense filled single-line chips label="请选择文件" ></v-file-input>
-        </v-col>
+          </v-col>
           <v-col cols="12" sm="12" md="4">
             <span class="jh-input-label">评论</span>
             <v-textarea v-model="comment" rows="3" class="jh-v-input" dense single-line filled></v-textarea>
@@ -92,7 +89,7 @@
       items: ['苹果', '香蕉', '橙子', '草莓', '葡萄'],
       termsAccepted: false,
       favSeason: '夏季',
-      isDarkMode: false,
+      switchEnable: false,
       volume: 50,
       rangeValues: [0, 100],
       rating: 3,
