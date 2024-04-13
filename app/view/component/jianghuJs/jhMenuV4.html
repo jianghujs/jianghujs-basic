@@ -140,7 +140,7 @@
 
       <div style="white-space: nowrap" class="d-flex align-center">
         <!-- PC端右上角菜单 -->
-        <div class="d-none d-lg-flex align-center">
+        <div class="d-flex d-lg-flex align-center">
           <div class="d-flex align-center mr-2">
             <div class="d-flex align-center ml-4 jh-right-menu" role="button" v-for="rightMenu of inRightMenuList" :key="rightMenu.path" @click="openUrl(rightMenu.path)">
               <div v-if="rightMenu.icon" v-html='rightMenu.icon'></div>
@@ -165,30 +165,19 @@
           </template>
           <v-list nav dense>
             <!-- 右上角下拉菜单 -->
-            <v-list-item v-if="isMobile">
+            <v-list-item>
               <v-list-item-content>
                 <p class="jh-font-size-12 black--text mb-0">{{ userInfo.user.username }}</p>
                 <p class="jh-font-size-10 grey--text mb-0">{{ userInfo.user.userId }}</p>
               </v-list-item-content>
             </v-list-item>
-            
-            <template v-if="!isMobile">
-              <v-list-item>
-                <v-list-item-content>
-                  <p class="jh-font-size-12 grey--text mb-0">{{ userInfo.user.userId }}</p>
-                </v-list-item-content>
-              </v-list-item>
+
+            <template>
+              <div style="max-width: 220px;">
+                <v-chip x-small class="jh-font-size-10 mr-1 mb-1" v-for="(userGroupRole, i) of userInfo.userGroupRoleList" :key="i">{{ userGroupRole.groupName||userGroupRole.groupId }} | {{ userGroupRole.roleName||userGroupRole.roleId }}</v-chip>
+              </div>
               <v-divider class="my-1 jh-divider"></v-divider>
             </template>
-
-            <v-list-item class="d-lg-none" v-for="rightMenu of inRightMenuList" :key="rightMenu.path" @click="openUrl(rightMenu.path)">
-              <v-list-item-icon class="mr-1 mt-1">
-                <v-icon size="16" color="grey darken-3">mdi-account-cog-outline</v-icon>
-              </v-list-item-icon>
-              <v-list-item-content>
-                <v-list-item-title color="grey darken-3">{{ rightMenu.title }}</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
 
             <v-list-item v-for="avatarMenu of inAvatarMenuList" :key="avatarMenu.path" @click="openUrl(avatarMenu.path)">
               <v-list-item-icon class="mr-1 mt-1">
@@ -449,9 +438,9 @@
       },
       // 导航到登陆页
       routeToLoginPage() {
-        localStorage.removeItem(`${window.appInfo.appId}_authToken`);
+        localStorage.removeItem(`${window.appInfo.authTokenKey}_authToken`);
         setTimeout(() => {
-          location.href = `/${window.appInfo.appId}/page/login`;
+          location.href = '<$ ctx.app.config.loginPage $>';
         }, 700);
       }
     },
