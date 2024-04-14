@@ -28,7 +28,9 @@
         <v-row class="ma-0 pa-3">
           <!-- 新增按钮 -->
           <v-btn color="success" class="elevation-0 mr-2" @click="doUiAction('startCreateItem')" small>新增</v-btn>
-          <v-btn class="red--text text--accent-2 elevation-0 mr-2" small outlined :disabled="tableSelected.length === 0">批量删除</v-btn>
+          <v-btn class="red--text text--accent-2 elevation-0 mr-2" small outlined 
+            @click="doUiAction('deleteItemBatch')"
+            :disabled="tableSelected.length === 0">批量删除</v-btn>
           <v-spacer></v-spacer>
           <!-- 搜索过滤 -->
           <v-col cols="12" xs="8" sm="4" md="3" xl="2" class="pa-0">
@@ -375,6 +377,12 @@ new Vue({
           await this.clearDeleteItem();
           await this.getTableData();
           break;
+        case 'deleteItemBatch':
+          await this.confirmDeleteItemDialog();
+          await this.doDeleteItemBatch();
+          await this.clearTableSelected();
+          await this.getTableData();
+          break;
         default:
           console.error("[doUiAction] uiActionId not find", {uiActionId});
           break;
@@ -527,6 +535,27 @@ new Vue({
     async clearDeleteItem() {
       this.deleteItem = {};
       this.deleteItemId = null;
+    },
+    // ---------- <<<<<<<<<<< 删除数据 uiAction ---------
+    // ---------- 删除数据 uiAction >>>>>>>>>>>> --------
+    async doDeleteItemBatch() {
+      await window.vtoast.loading("批量删除");
+      for (const item of this.tableSelected) {
+        await window.jianghuAxios({
+          data: {
+            appData: {
+              pageId: 'doUiAction',
+              actionId: 'deleteItem',
+              actionData: {},
+              where: {id: item.id}
+            }
+          }
+        });
+      }
+      await window.vtoast.success("批量删除");
+    },
+    async clearTableSelected() {
+      this.tableSelected = [];
     },
     // ---------- <<<<<<<<<<< 删除数据 uiAction ---------
 
