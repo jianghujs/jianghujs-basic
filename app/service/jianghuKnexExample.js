@@ -14,6 +14,10 @@ class JianghuKnexExampleService extends Service {
         await this.jhUpdate();
         await this.leftJoin();
         await this.offset();
+
+        await this.batchUpdate();
+        await this.batchUpdateOfDiffList();
+
     }
 
     async select() {
@@ -85,6 +89,50 @@ class JianghuKnexExampleService extends Service {
         });
         this.app.logger.info('jianghuKnexExample.js transaction()', '=====>', classObj);
     }
+
+    async batchUpdate() {
+        const studentList = [{studentId: 'S10001', studentStatus: '正常'}, {studentId: 'S10003', studentStatus: '毕业' }];
+        await this.app.jianghuKnex.transaction(async trx => {
+            for (const item of studentList) {
+                await trx("student", this.ctx)
+                    .where({ studentId: item.studentId })
+                    .jhUpdate({ studentStatus: item.studentStatus });
+            }
+        })
+        this.app.logger.info('jianghuKnexExample.js batchUpdate()', '=====>');
+    }
+
+    async batchUpdateOfDiffList() {
+        const newStudentList = [{studentId: 'S10004', studentStatus: '毕业'}, {studentId: 'S10005', studentStatus: '毕业' }];
+        const studentIdList = newStudentList.map(item => item.studentId);
+        const oldStudentList = await this.app.jianghuKnex("student").whereIn('studentId', studentIdList).select();
+        const diffStudentList = newStudentList.filter(newStudent => {
+            const oldStudent = oldStudentList.find(item => item.studentId === newStudent.studentId);
+            if (newStudent.studentStatus != oldStudent.studentStatus) { return true; }
+            return false;
+        });
+        if (diffStudentList.length > 0) {
+            await this.app.jianghuKnex.transaction(async trx => {
+                const queries = diffStudentList.map(diffItem =>
+                    trx("student", this.ctx)
+                        .where({ studentId: diffItem.studentId })
+                        .update({ studentStatus: diffItem.studentStatus })
+                );
+                await Promise
+                    .all(queries).then(trx.commit)
+                    .catch((err) => {
+                        logger.error("[jianghuKnex.transaction error]", err);
+                        throw err;
+                    });
+            });
+        }
+        this.app.logger.info('jianghuKnexExample.js batchUpdateOfDiffList()', '=====>');
+    }
 }
 
 module.exports = JianghuKnexExampleService;
+
+
+
+
+
