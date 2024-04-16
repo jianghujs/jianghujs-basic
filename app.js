@@ -1,4 +1,5 @@
 'use strict';
+const jianghuKnexExample = require("./app/service/jianghuKnexExample");
 
 class AppBootHook {
   constructor(app) {
@@ -6,6 +7,8 @@ class AppBootHook {
   }
 
   async serverDidReady() {
+    // const ctx = this.app.createAnonymousContext();
+    // ctx.service.jianghuKnexExample.callAll();
   }
 
 }
