@@ -6,9 +6,8 @@
       v-model="isMobileMenuDrawerShown"
       app
       clipped
-      v-if="isMobile"
       style="z-index: 99999"
-      class="jh-page-nav-bar"
+      class="jh-page-nav-bar hidden-md-and-up"
     >
       <!-- 页面标题 -->
       <v-toolbar-title ref="toolbarTitle" class="px-4 jh-toolbar-title">
@@ -74,18 +73,36 @@
       flat
     >
       <!-- 手机端左侧菜单开启按钮 -->
-      <v-app-bar-nav-icon color="success" @click.stop="isMobileMenuDrawerShown = !isMobileMenuDrawerShown" v-if="isMobile"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon color="success" @click.stop="isMobileMenuDrawerShown = !isMobileMenuDrawerShown" class="hidden-md-and-up">
+        <!-- <div class="border border-green-500 rounded px-1">
+          菜单
+        </div> -->
+      </v-app-bar-nav-icon>
       <!-- 页面标题 -->
       <v-toolbar-title ref="toolbarTitle" class="mr-5 pl-0">
-        <span class="text-h7 font-weight-bold">{{ appTitle }}</span>
+        <span class="hidden-sm-and-down text-h7 font-weight-bold">
+          <slot name="title">{{ appTitle }}</slot>
+        </span>
+        <span class="hidden-md-and-up font-medium">
+          <div class="text-sm">{{ appTitle }}</div>
+          <div class="text-xs">
+            <slot name="title">
+            </slot>
+          </div>
+        </span>
       </v-toolbar-title>
       <!-- pc端菜单 >>>>>>>>>>>>> -->
+       <div></div>
+       <div 
+       style="flex-grow: 1; flex-shrink: 1">
+
+       </div>
       <v-tabs
-        v-if="!isMobile"
+        class="hidden-sm-and-down"
         show-arrows
         slider-size="0"
         color="success"
-        :style="{maxWidth: tabsMaxWidth}"
+        style="white-space: nowrap; overflow: hidden;"
       >
         <template v-for="(item, index) in inMenuList">
           <!-- 一级菜单 >>>>>>>>>>>> -->
@@ -141,25 +158,27 @@
       <div style="white-space: nowrap" class="d-flex align-center">
         <!-- PC端右上角菜单 -->
         <div class="d-flex d-lg-flex align-center">
-          <div class="d-flex align-center mr-2">
-            <div class="d-flex align-center ml-4 jh-right-menu" role="button" v-for="rightMenu of inRightMenuList" :key="rightMenu.path" @click="openUrl(rightMenu.path)">
-              <div v-if="rightMenu.icon" v-html='rightMenu.icon'></div>
-              <div :class="{'ml-1': rightMenu.icon}">{{rightMenu.title}}</div>
+          <slot name="action">
+            <div class="d-flex align-center mr-2">
+              <div class="d-flex align-center ml-4 jh-right-menu" role="button" v-for="rightMenu of inRightMenuList" :key="rightMenu.path" @click="openUrl(rightMenu.path)">
+                <div v-if="rightMenu.icon" v-html='rightMenu.icon'></div>
+                <div :class="{'ml-1': rightMenu.icon}">{{rightMenu.title}}</div>
+              </div>
             </div>
-          </div>
-          <v-divider vertical class="mx-3 jh-divider" v-if="inRightMenuList.length > 0"></v-divider>
+            <v-divider vertical class="mx-3 jh-divider" v-if="inRightMenuList.length > 0"></v-divider>
+          </slot>
         </div>
-        <v-menu offset-y v-model="isAvatarMenuShown">
+        <v-menu v-if="showAvatar" offset-y v-model="isAvatarMenuShown">
           <template v-slot:activator="{on, attrs}">
             <!-- pc端右上角用户信息 -->
-            <div v-if="!isMobile" text v-bind="attrs" v-on="on" class="jh-avatar-menu-btn px-1">
+            <div text v-bind="attrs" v-on="on" class="jh-avatar-menu-btn px-1 hidden-xs-only">
               <v-icon :size="32" color="grey lighten-2">mdi-account-circle</v-icon>
               <div class="ml-1">
                 <p class="jh-font-size-12 black--text mb-0">{{ userInfo.user.username }}</p>
               </div>
             </div>
             <!-- 移动端右上角用户信息 -->
-            <div v-else text v-bind="attrs" v-on="on" class="jh-avatar-menu-btn px-1">
+            <div text v-bind="attrs" v-on="on" class="jh-avatar-menu-btn px-1 hidden-sm-and-up">
               <v-icon :size="32" color="grey lighten-2">mdi-account-circle</v-icon>
             </div>
           </template>
@@ -209,9 +228,15 @@
     template: "#jh-menu",
     vueComponent: 'jh-menu',
     vuetify: new Vuetify(),
+    props: {
+      showAvatar: {
+        type: Boolean,
+        default: true
+      }
+    },
     data() {
       return {
-        isMobile: window.innerWidth < 500,
+        isMobile: window.innerWidth < 960,
         tabsMaxWidth: 'calc(100vw - 353px)',
         appDirectoryLink: '<$ ctx.app.config.appDirectoryLink $>',
         appType: '<$ ctx.app.config.appType $>',
@@ -244,6 +269,14 @@
             this.setCurrentMenuItem();
           }
         }
+      }
+    },
+    computed: {
+      allowPageList() {
+        if (this.userInfo.allowPageList.some(e => e.pageId.startsWith('mobile/'))) {
+          return this.userInfo.allowPageList.filter(e => this.isMobile ? e.pageId.startsWith('mobile/') : !e.pageId.startsWith('mobile/'));
+        }
+        return this.userInfo.allowPageList;
       }
     },
     created() {
@@ -312,7 +345,7 @@
       groupMenuList() {
         // 菜单元数据处理
         const menuListResource = _
-          .chain(this.userInfo.allowPageList)
+          .chain(this.allowPageList)
           .filter(page => _.includes(['showInMenu', 'link'], page.pageType) || (_.includes(['dynamicInMenu', 'avatarInMenu'], page.pageType) && this.currentPageId === page.pageId))
           .value();
         // 分组菜单数据
@@ -390,7 +423,7 @@
       // 右侧菜单构建
       computedRightMenuList() {
         this.inRightMenuList = _
-          .chain(this.userInfo.allowPageList)
+          .chain(this.allowPageList)
           .filter(['pageType', 'showInRightMenu'])
           .map((page) => {
             return {
@@ -406,7 +439,7 @@
       // 头像菜单构建
       computedAvatarMenuList() {
         this.inAvatarMenuList = _
-          .chain(this.userInfo.allowPageList)
+          .chain(this.allowPageList)
           .filter(['pageType', 'showInAvatarMenu'])
           .map((page) => {
             return {
@@ -492,8 +525,8 @@
   }
 
   .jh-toolbar-title {
-    height: 60px;
-    line-height: 60px;
+    height: 51px;
+    line-height: 51px;
   }
 
   .jh-menu-drawer-close-float-btn {

@@ -7,6 +7,27 @@
         font-size: 12px;
         line-height: 32px;
     }
+    .jh-input-label-group {
+        color: var(--cPrimaryColor);
+        padding-left: 10px;
+        font-size: 1rem !important;
+        line-height: 1.75rem;
+        letter-spacing: .009375em !important;
+        font-family: Roboto, sans-serif !important;
+        font-weight: 500 !important;
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+    .jh-input-label-group::before {
+        content: "";
+        background-color: var(--cPrimaryColor);
+        position: absolute;
+        height: calc(100% - 12px); /* 高度为父元素高度减去3px */
+        width: 4px;
+        bottom: 6px;
+        left: 0;
+    }
     .jh-no-data {
       text-align: center;
       max-width: calc(100vw - 64px);
@@ -33,12 +54,14 @@
 
 
     /* header 菜单 >>>>>> */
+    .jh-page-header {
+        border-bottom: 1px solid #E6E6E6 !important;
+    }
     .jh-header-tab {
         border-radius: 5px;
         margin: 8px 0;
         text-transform: none;
         font-weight: 400;
-        min-width: auto;
     }
     .jh-header-tab-active {
         background: #F6F6F6;
@@ -114,5 +137,127 @@
     body .v-navigation-drawer.jh-drawer-level-2{
         z-index: 102 !important;
     }
+    .cursor-pointer {
+        cursor: pointer;
+    }
+
+    .flex-1 {
+        flex: 1;
+    }
+
+    /* 边框 */
+    .jh-border {
+        border: 1px solid #eee;
+    }
+    .jh-border-b {
+        border-bottom: 1px solid #eee;
+    }
+    .jh-border-t {
+        border-top: 1px solid #eee;
+    }
+    .jh-border-r {
+        border-right: 1px solid #eee;
+    }
+    .jh-border-l {
+        border-left: 1px solid #eee;
+    }
+    
+    .jh-page-second-bar span[role="button"] {
+        min-width: 40px;
+    }
+
+    /* 移动端table、搜索栏 */
+    .v-data-table.v-data-table--mobile>.v-data-table__wrapper>table>tbody>tr>td:first-child, .v-data-table.v-data-table--mobile>.v-data-table__wrapper>table>tfoot>tr>td:first-child, .v-data-table.v-data-table--mobile>.v-data-table__wrapper>table>thead>tr>th:first-child {
+    padding-left: 15px !important;
+    }
+    @media (max-width: 600px) {
+      .v-data-table>.v-data-table__wrapper>table>tbody>tr>td, .v-data-table>.v-data-table__wrapper>table>tbody>tr>th, .v-data-table>.v-data-table__wrapper>table>tfoot>tr>td, .v-data-table>.v-data-table__wrapper>table>tfoot>tr>th, .v-data-table>.v-data-table__wrapper>table>thead>tr>td, .v-data-table>.v-data-table__wrapper>table>thead>tr>th {
+          padding: 0 15px !important;
+      }
+    }
+    .v-data-table .v-data-table__mobile-table-row {
+      border-bottom: 5px solid rgb(243 244 246 / var(--tw-bg-opacity));
+    }
+    .v-data-table .v-data-table__mobile-table-row:last-child {
+      border-bottom: none;
+    }
+    .v-data-table-header.v-data-table-header-mobile {
+      display: none;
+    }
+
+    .jh-mobile-search-bar .v-menu__content {
+      background-color: rgba(0, 0, 0, 0.3);
+      height: calc(100vh - 88px);
+      box-shadow: none;
+      border-radius: 0;
+    }
+    .jh-safe-bottom {
+      padding-bottom: 0;
+      padding-bottom: calc(constant(safe-area-inset-bottom) / 5 * 3);
+      padding-bottom: calc(env(safe-area-inset-bottom) / 5 * 3);
+    }
+
+    /* 状态样式 >>>>>> */
+    .jh-status-tag-success, .jh-status-tag-primary, .jh-status-tag-green{
+      background-color: #EAF6EA !important;
+      border-color: #EAF6EA !important;
+      color: #4caf50 !important;
+      caret-color: #4caf50 !important;
+    }
+    .jh-status-tag-error, .jh-status-tag-red{
+        background-color: #FFD2D4 !important;
+        border-color: #FFD2D4 !important;
+        color: #D44041 !important;
+        caret-color: #D44041 !important;
+    }
+    .jh-status-tag-default, .jh-status-tag-grey{
+        background-color: #CFD8DC !important;
+        border-color: #CFD8DC !important;
+        color: #455A64 !important;
+        caret-color: #455A64 !important;
+    }
+    .jh-status-tag-info, .jh-status-tag-blue{
+        background-color: #DDEAFF !important;
+        border-color: #DDEAFF !important;
+        color: #266AD5 !important;
+        caret-color: #266AD5 !important;
+    }
+    .jh-status-tag-warning, .jh-status-tag-orange{
+        background-color: #FFEAD0 !important;
+        border-color: #FFEAD0 !important;
+        color: #DC8424 !important;
+        caret-color: #DC8424 !important;
+    }
+    .jh-status-tag-indigo{
+        background-color: #C5CAE9 !important;
+        border-color: #C5CAE9 !important;
+        color: #303F9F !important;
+        caret-color: #303F9F !important;
+    }
+    .jh-status-tag-teal{
+        background-color: #B2DFDB !important;
+        border-color: #B2DFDB !important;
+        color: #00796B !important;
+        caret-color: #00796B !important;
+    }
+    .jh-status-tag-brown{
+        background-color: #D7CCC8 !important;
+        border-color: #D7CCC8 !important;
+        color: #5D4037 !important;
+        caret-color: #5D4037 !important;
+    }
+    .jh-status-tag-pink{
+        background-color: #F8BBD0 !important;
+        border-color: #F8BBD0 !important;
+        color: #C2185B !important;
+        caret-color: #C2185B !important;
+    }
+    .jh-status-tag-purple{
+        background-color: #E1BEE7 !important;
+        border-color: #E1BEE7 !important;
+        color: #7B1FA2 !important;
+        caret-color: #7B1FA2 !important;
+    }
+    /* <<<<< 状态样式 */
 </style>
 <!-- <<<<<<<<<<<<< JH CSS -->

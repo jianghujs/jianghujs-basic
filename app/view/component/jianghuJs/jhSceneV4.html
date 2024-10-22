@@ -1,9 +1,9 @@
 <!-- jhScene.html >>>>>>>>>>>>> -->
 <script type="text/html" id="jh-scene">
 <div class="jh-scene">
-<v-row class="ma-0 ml-xs-n1">
+<v-row class="ma-0">
   <!-- 场景列表 -->
-  <v-btn-toggle :value="0" mandatory dense class="mr-2" color="success" @change="doUiAction('useScene', sceneList[$event])" > 
+  <v-btn-toggle :value="currentSceneIndex" mandatory dense class="mr-md-2" color="success" @change="doUiAction('useScene', sceneList[$event])" > 
     <v-btn small v-for="scene, index in sceneList" :key="index"> {{scene.name}} </v-btn> 
   </v-btn-toggle>
   <!-- 新增场景按钮 -->
@@ -166,6 +166,8 @@ Vue.component('jh-scene', {
       isSceneOperationShown: false,
       // 场景管理弹窗
       isSceneListShown: false,
+
+      currentSceneIndex: 0,
     };
   },
   created() {
@@ -247,6 +249,7 @@ Vue.component('jh-scene', {
     // 使用默认场景
     async useDefaultScene() {
       let defaultScene = this.sceneList.find(item => item.default === true);
+      this.currentSceneIndex = this.sceneList.findIndex(item => item.id === defaultScene.id);
       if (defaultScene) {
         this.useScene(defaultScene);
       }
@@ -294,6 +297,7 @@ Vue.component('jh-scene', {
     // 添加完成，直接使用新添加的场景
     async userNewCreateScene() {
       const newSceneItem = this.sceneList.find(item => item.id === this.createItem.id);
+      this.currentSceneIndex = this.sceneList.findIndex(item => item.id === newSceneItem.id);
       console.log('newSceneItem', newSceneItem)
       if(newSceneItem != null) {
         this.doUiAction('useScene', newSceneItem);
@@ -340,7 +344,7 @@ Vue.component('jh-scene', {
       if(localSceneList == null) localSceneList = '[]';
       localSceneList = JSON.parse(localSceneList);
       localSceneList = localSceneList.filter(item => item.id !== this.deleteItem.id);
-      localStorage.setItem('sceneData', JSON.stringify(localSceneList));
+      localStorage.setItem(this.sceneListKey, JSON.stringify(localSceneList));
     },
     // =================================场景管理 <<<<<<<<<<<< ======================================
   },
