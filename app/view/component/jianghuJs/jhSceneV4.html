@@ -11,7 +11,7 @@
   <!-- 场景操作菜单 -->
   <v-menu offset-y v-model="isSceneOperationShown">
     <template v-slot:activator="{on, attrs}">
-      <v-btn-toggle dense color="white"> 
+      <v-btn-toggle v-if="showActionBtn" dense color="white"> 
         <v-btn small v-bind="attrs" v-on="on"><v-icon right small class="mx-0">mdi-chevron-down</v-icon></v-btn> 
       </v-btn-toggle>
     </template>
@@ -139,6 +139,10 @@ Vue.component('jh-scene', {
     currentSceneId: {
       type: String,
       default: null
+    },
+    showActionBtn: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
