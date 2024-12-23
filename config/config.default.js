@@ -26,6 +26,14 @@ module.exports = appInfo => {
     primaryColor: "#4caf50",
     primaryColorA80: "#EEF7EE",
 
+    enableFrameworkAgent: false,
+    // 登录安全配置
+    loginSecurity: {
+      enableLoginCaptcha: true,
+      limitLoginAttemptCount: 5, // 限制登录尝试次数
+      limitLoginTime: 300, // 限制登录时长（秒)}
+    },
+
     static: {
       dynamic: true,
       preload: false,
