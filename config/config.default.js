@@ -40,6 +40,7 @@ module.exports = appInfo => {
     jianghuConfig: {
       enableUploadStaticFileCache: true,
       enableUploadStaticFileAuthorization: true,
+      enableLoginCaptcha: true,
     },
 
     view: {

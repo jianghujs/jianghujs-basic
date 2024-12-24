@@ -8,7 +8,7 @@
       <v-main>
         <v-row class="align-center" style="height: 100vh">
           <v-col cols="12" align="center">
-            <div class="mb-10 text-h7 font-weight-bold success--text"><$ ctx.app.config.appTitle $></div>
+            <div class="mb-10 text-h7 font-weight-bold primary--text"><$ ctx.app.config.appTitle $></div>
             <v-card class="login-form-card pa-8">
               <v-card-text class="pa-0">
                 <div class="title">登录您的账户</div>
@@ -31,13 +31,32 @@
                         <v-icon @click="isPasswordShown = !isPasswordShown" small class="mdi-eye">{{isPasswordShown ? 'mdi-eye-off-outline' : 'mdi-eye-outline'}}</v-icon>
                       </div>
                     </v-col>
+                    <v-col cols="12" v-if="captchaSvg">
+                      <div class="captcha-wrapper">
+                        
+                        <div 
+                          class="captcha-image" 
+                          @click="getCaptcha" 
+                          title="点击刷新验证码"
+                        >
+                          <img :src="captchaSvg" class="captcha-img" alt="验证码" />
+                        </div>
+                        <div>=</div>
+                        <input
+                          class="jh-cus-input captcha-input"
+                          v-model="captchaCode"
+                          type="text"
+                          placeholder="验证码"
+                        />
+                      </div>
+                    </v-col>
                     <v-col cols="12">
-                      <v-checkbox class="jh-v-input" dense single-line filled v-model="isRememberPassword" color="success" label="记住密码"/>
+                      <v-checkbox class="jh-v-input" dense single-line filled v-model="isRememberPassword" color="primary" label="记住密码"/>
                     </v-col>
                   </v-row>
                   <!-- 操作按钮 -->
                   <v-row class="my-0 px-3">
-                    <v-btn block color="success" @click="doUiAction('login')" small>登录</v-btn>
+                    <v-btn block color="primary" @click="doUiAction('login')" small>登录</v-btn>
                   </v-row>
                 </v-form>
               </v-card-text>
@@ -78,16 +97,25 @@
         password: '',
         isPasswordShown: false,
         isRememberPassword: true,
+
+        // 验证码
+        enableLoginCaptcha: '<$ ctx.app.config.jianghuConfig.enableLoginCaptcha $>' === 'true',
+        captchaCode: '',
+        captchaSvg: ''
       };
     },
     mounted() {
       this.doUiAction('getUrlObj');
+      this.doUiAction('getCaptcha');
     },
     methods: {
       async doUiAction(uiActionId, uiActionData) {
         switch (uiActionId) {
           case 'getUrlObj':
             await this.getUrlObj();
+            break;
+          case 'getCaptcha':
+            await this.getCaptcha();
             break;
           case 'login':
             await this.prepareLoginData();
@@ -111,7 +139,7 @@
 
         this.redirectUrl = urlObj.get('redirectUrl');
       },
-      // ---------- <<<<<<<<<<< getUrlObj uiAction ---------
+      // ---------- <<<<<<<<<<< getUrlObj uiAction  --------
 
       // ---------- login uiAction >>>>>>>>>> --------
       async prepareLoginData() {
@@ -129,6 +157,7 @@
                 actionData: {
                   userId: this.userId,
                   password: this.password,
+                  captchaCode: this.captchaCode,
                   deviceId: this.deviceId
                 },
               }
@@ -138,13 +167,42 @@
 
           window.vtoast.success('登录成功');
         } catch (error) {
-          throw new Error("登录失败");
+          this.getCaptcha();
+          const { errorCode, errorReason } = error || {};
+          if (errorCode) {
+            window.vtoast.fail(errorReason);
+            throw new Error("登录失败", { errorCode, errorReason });
+          } else {
+            window.vtoast.fail('登录失败');
+            throw new Error("登录失败");
+          }
+        }
+      },
+      async getCaptcha() {
+        if (!this.enableLoginCaptcha) {
+          return;
+        }
+        const result = await window.jianghuAxios({
+          data: {
+            appData: {
+              pageId: 'login',
+              actionId: 'getLoginCaptcha',
+              actionData: {
+                deviceId: window.deviceId
+              }
+            }
+          }
+        });
+        let captchaSvg = result.data.appData.resultData;
+        if (captchaSvg) {
+          this.captchaSvg = captchaSvg;
+          this.captchaCode = '';
         }
       },
       async setLocalStorage() {
-        localStorage.setItem(`${window.appInfo.appId}_authToken`, this.loginResult.authToken);
-        localStorage.setItem(`${window.appInfo.appId}_userId`, this.loginResult.userId);
-        localStorage.setItem(`${window.appInfo.appId}_deviceId`, this.deviceId);
+        localStorage.setItem(`${window.appInfo.authTokenKey}_authToken`, this.loginResult.authToken);
+        localStorage.setItem(`${window.appInfo.authTokenKey}_userId`, this.loginResult.userId);
+        localStorage.setItem(`${window.appInfo.authTokenKey}_deviceId`, this.deviceId);
       },
       async redirectToPreLoginURL() {
         let redirectTo = `/${window.appInfo.appId}`;
@@ -153,7 +211,7 @@
         }
         window.location.href = redirectTo;
       }
-      // ---------- <<<<<<<<<<< login uiAction ---------
+      // ---------- <<<<<<<<<<< login uiAction  --------
     }
   });
 </script>
@@ -177,7 +235,7 @@
   .jh-cus-input:focus,
   .jh-cus-input:focus-visible,
   input:focus-visible {
-    border: thin solid #4caf50 !important;
+    border: thin solid var(--cPrimaryColor) !important;
   }
 
   /* ---------- <<<<<<<<<<< 输入框 -------- */
@@ -194,5 +252,32 @@
   }
 
   /* ---------- <<<<<<<<<<< 密码框 -------- */
+
+  /* ---------- 验证码 >>>>>>>>>> -------- */
+  .captcha-wrapper {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  .captcha-input {
+    flex: 1;
+  }
+  .captcha-image {
+    width: 120px;
+    height: 32px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f5f5f5;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .captcha-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  /* ---------- <<<<<<<<<<< 验证码 -------- */
 </style>
 {% endblock %}
